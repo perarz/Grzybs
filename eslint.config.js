@@ -13,14 +13,6 @@ module.exports = defineConfig([
     },
   },
   {
-    // react-three-fiber elements (<mesh>, <latheGeometry>…) take Three.js props this DOM rule doesn't know;
-    // TypeScript still checks them.
-    files: ['src/components/mushroom3d/**'],
-    rules: {
-      'react/no-unknown-property': 'off',
-    },
-  },
-  {
     ignores: ['dist/*', '.expo/*', 'node_modules/*'],
   },
 ]);

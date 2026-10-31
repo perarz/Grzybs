@@ -1,9 +1,7 @@
-import { router } from 'expo-router';
-
 import { AppText } from '@/components/AppText';
-import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { Screen } from '@/components/Screen';
+import { SPECIES } from '@/data/species';
 
 export default function AtlasScreen() {
   return (
@@ -11,7 +9,7 @@ export default function AtlasScreen() {
       <Card>
         <AppText variant="heading">Gatunki</AppText>
         <AppText color="textMuted">
-          Wkrótce: popularne grzyby z Polski z filtrowaniem po cechach i ostrzeżeniami przed
+          Gatunków w atlasie: {SPECIES.length}. Wkrótce: filtrowanie po cechach i ostrzeżenia przed
           groźnymi sobowtórami.
         </AppText>
       </Card>
@@ -21,9 +19,6 @@ export default function AtlasScreen() {
           Wkrótce: zrób zdjęcie znaleziska, aby odblokować gatunek w atlasie.
         </AppText>
       </Card>
-      {__DEV__ ? (
-        <Button label="Test 3D (dev)" onPress={() => router.push('/dev/3d-test')} />
-      ) : null}
     </Screen>
   );
 }
