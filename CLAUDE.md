@@ -1,7 +1,7 @@
 # Grzybnik – zasady projektu
 
 Aplikacja mobilna o grzybiarstwie (zadanie rekrutacyjne Software Mansion).
-React Native + Expo (SDK 57) + TypeScript + expo-router. Główny cel: emulator Androida i Expo Go.
+React Native + Expo (SDK 58) + TypeScript + expo-router. Główny cel: emulator Androida i Expo Go.
 Interfejs po polsku, kod, nazwy plików i commity po angielsku.
 
 Autor uczy się Reacta w trakcie projektu – kod ma być **prosty, czytelny i solidny**.
