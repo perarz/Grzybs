@@ -13,7 +13,7 @@ Autor uczy się Reacta w trakcie projektu – kod ma być **prosty, czytelny i s
 ## Zasady kodu
 
 - Najprostsze rozwiązanie, które działa. Zero abstrakcji „na zapas”.
-- Jeden komponent = jedna odpowiedzialność. Plik > ~150 linii → podziel.
+- Jeden komponent = jedna odpowiedzialność. Plik > ~150 linii → podziel (nie dotyczy statycznych danych w `src/data`).
 - Logika (obliczenia, baza, API) poza komponentami: `src/features/*/` jako funkcje lub hooki.
 - Czytelne nazwy zamiast komentarzy; komentarz tylko, gdy wyjaśnia „dlaczego”.
 - TypeScript strict, zero `any`.
@@ -54,9 +54,9 @@ Import przez alias `@/` → `src/`.
 ## Plan etapów
 
 - Etap 0 – Setup ✅
-- Etap 1 – Test 3D ✅ (działa w Expo Go; canvas renderuje na żądanie, dotyk omija canvas)
-- Etap 2 – Dane ~25 gatunków (cechy, sezony, sobowtóry, parametry 3D)
-- Etap 3 – Atlas: karty, kategorie, wyszukiwarka, filtr cech; ekran gatunku (zegar sezonu, sobowtóry z alertem, suwak porównania, 3D)
+- Etap 1 – Test 3D ✅ → porzucony (proceduralne modele wyglądały zbyt słabo – zamiast nich zdjęcia)
+- Etap 2 – Dane ~25 gatunków (cechy, sezony, sobowtóry, zdjęcia na wolnej licencji)
+- Etap 3 – Atlas: karty, kategorie, wyszukiwarka, filtr cech; ekran gatunku (zegar sezonu, sobowtóry z alertem, suwak porównania)
 - Etap 4 – Odblokowywanie zdjęciem: zdjęcie → wybór gatunku → kontrola sobowtórów → animacja odkrycia, postęp w atlasie
 - Etap 5 – Nauka: grzyb dnia, gra „Sobowtór”, quiz
 - Etap 6 – Mapa: spoty, „Zaparkowałem tutaj”, powrót do auta (kompas/mapa), alarm zmroku, obsługa GPS

@@ -16,7 +16,7 @@ Uniwersalna aplikacja grzybiarza w trzech częściach: **Atlas** gatunków z ost
 
 | Moduł | Opis                                                                                                                                     | Status    |
 | ----- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| Atlas | ~25 gatunków z Polski, filtrowanie po cechach, sobowtóry z alertami, sezonowość, podgląd 3D; odblokowywanie gatunków zdjęciem znaleziska | planowane |
+| Atlas | 26 gatunków z Polski ze zdjęciami, filtrowanie po cechach, sobowtóry z alertami, sezonowość; odblokowywanie gatunków zdjęciem znaleziska | w budowie |
 | Nauka | Grzyb dnia, gra „Sobowtór”, quiz o cechach gatunków                                                                                      | planowane |
 | Mapa  | Prywatne miejscówki, „Zaparkowałem tutaj”, powrót do auta z kompasem, alarm zmroku                                                       | planowane |
 
@@ -65,7 +65,45 @@ src/theme/       kolory (jasny/ciemny), typografia, odstępy
 
 ## Źródła i licencje
 
-TODO: zdjęcia (autor, licencja), źródła wiedzy o gatunkach.
+**Wiedza o gatunkach** (jadalność, toksyczność, sezony, siedliska, sobowtóry) – opracowana własnymi słowami na podstawie:
+
+- artykułów o poszczególnych gatunkach w [polskiej Wikipedii](https://pl.wikipedia.org),
+- [Medycyna Praktyczna – zatrucie piestrzenicą kasztanowatą](https://www.mp.pl/pacjent/pierwsza_pomoc/441487,zatrucie-piestrzenica-kasztanowata),
+- poradnika Lasów Państwowych [„Bezpieczne grzybobranie”](https://www.lasy.gov.pl/pl/informacje/aktualnosci/wystawa-o-grzybach-juz-otwarta/BEZPIECZNE-GRZYBOBRANIE.pdf/@@download/file/BEZPIECZNE-GRZYBOBRANIE.pdf),
+- kalendarzy grzybiarza stacji sanitarno-epidemiologicznych ([gov.pl](https://www.gov.pl/web/psse-wabrzezno/w-lesie-grzybow-coraz-wiecej)).
+
+Niepewne fakty są oznaczone w kodzie jako `TODO: verify`.
+
+**Zdjęcia gatunków** pochodzą z [Wikimedia Commons](https://commons.wikimedia.org), są na licencjach Creative Commons i zostały zmniejszone do 800 px. Kliknij nazwę gatunku, aby zobaczyć oryginał.
+
+| Gatunek                                                                                                               | Autor                               | Licencja        |
+| --------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | --------------- |
+| [Borowik szlachetny](https://commons.wikimedia.org/wiki/File:Boletus_edulis_IT.jpg)                                   | ReddishClover                       | CC BY-SA 4.0    |
+| [Podgrzybek brunatny](https://commons.wikimedia.org/wiki/File:Boletus_badius_G1.jpg)                                  | Jerzy Opioła                        | CC BY-SA 4.0    |
+| [Koźlarz babka](https://commons.wikimedia.org/wiki/File:Leccinum_scabrum_G3.1.jpg)                                    | Jerzy Opioła                        | CC BY-SA 4.0    |
+| [Koźlarz czerwony](https://commons.wikimedia.org/wiki/File:Leccinum_aurantiacum_G4.JPG)                               | Jerzy Opioła                        | CC BY-SA 3.0    |
+| [Maślak zwyczajny](https://commons.wikimedia.org/wiki/File:Suillus_luteus_2.jpg)                                      | Jerzy Opioła                        | CC BY-SA 3.0    |
+| [Pieprznik jadalny](https://commons.wikimedia.org/wiki/File:Cantharellus_cibarius_20090717-02.jpg)                    | Heisenberg-pl                       | CC BY-SA 3.0    |
+| [Czubajka kania](https://commons.wikimedia.org/wiki/File:Macrolepiota-procera.jpg)                                    | Chrumps                             | CC BY-SA 4.0    |
+| [Gołąbek zielonawy](https://commons.wikimedia.org/wiki/File:Russula_virescens_B%C5%BB2.1.jpg)                         | Jerzy Opioła                        | CC BY-SA 3.0    |
+| [Pieczarka polna](https://commons.wikimedia.org/wiki/File:2012-02-13_Agaricus_campestris_L_199588.jpg)                | Byrain (Mushroom Observer)          | CC BY-SA 3.0    |
+| [Opieńka miodowa](<https://commons.wikimedia.org/wiki/File:Armillaria_mellea_PN1_(5).jpg>)                            | Jerzy Opioła                        | CC BY-SA 4.0    |
+| [Mleczaj rydz](https://commons.wikimedia.org/wiki/File:Lactarius_deliciosus.jpg)                                      | Eric Steinert                       | CC BY-SA 3.0    |
+| [Smardz jadalny](https://commons.wikimedia.org/wiki/File:2011-04-30_Morchella_esculenta.jpg)                          | Andreas Kunze                       | CC BY-SA 3.0    |
+| [Purchawka chropowata](https://commons.wikimedia.org/wiki/File:Lycoperdon_perlatum_a3.jpg)                            | Jerzy Opioła                        | CC BY-SA 4.0    |
+| [Goryczak żółciowy](https://commons.wikimedia.org/wiki/File:Tylopilus_felleus_060914c.jpg)                            | bernd gliwa                         | CC BY-SA 2.5    |
+| [Lisówka pomarańczowa](https://commons.wikimedia.org/wiki/File:Hygrophoropsis_aurantiaca_B%C5%BB5.2.jpg)              | Jerzy Opioła                        | CC BY-SA 3.0    |
+| [Muchomor czerwony](https://commons.wikimedia.org/wiki/File:Amanita_muscaria_3_vliegenzwammen_op_rij.jpg)             | Onderwijsgek                        | CC BY-SA 3.0 nl |
+| [Muchomor plamisty](https://commons.wikimedia.org/wiki/File:Amanita_pantherina_ts4.jpg)                               | Tomasz Sobczak                      | CC BY-SA 4.0    |
+| [Maślanka wiązkowa](https://commons.wikimedia.org/wiki/File:Hypholoma_fasciculare_LC0091.jpg)                         | Jörg Hempel                         | CC BY-SA 2.0 de |
+| [Mleczaj wełnianka](https://commons.wikimedia.org/wiki/File:Lactarius_torminosus_G2.jpg)                              | Jerzy Opioła                        | CC BY-SA 3.0    |
+| [Tęgoskór pospolity](<https://commons.wikimedia.org/wiki/File:Earthballs_(908565114).jpg>)                            | Jason Hollinger                     | CC BY 2.0       |
+| [Pieczarka karbolowa](https://commons.wikimedia.org/wiki/File:2010-11-13_Agaricus_xanthodermus_Genev_120348_crop.jpg) | Lord Mayonnaise (Mushroom Observer) | CC BY-SA 3.0    |
+| [Krowiak podwinięty](https://commons.wikimedia.org/wiki/File:Paxillus_involutus_G2.jpg)                               | Selso                               | CC BY-SA 3.0    |
+| [Muchomor sromotnikowy](<https://commons.wikimedia.org/wiki/File:Amanita_phalloides_a1_(1).JPG>)                      | Jerzy Opioła                        | CC BY-SA 4.0    |
+| [Muchomor jadowity](<https://commons.wikimedia.org/wiki/File:Amanita_virosa_a1_(7).JPG>)                              | Jerzy Opioła                        | CC BY-SA 4.0    |
+| [Hełmówka jadowita](https://commons.wikimedia.org/wiki/File:Galerina_marginata_61108.jpg)                             | Dan Molter (Mushroom Observer)      | CC BY-SA 3.0    |
+| [Piestrzenica kasztanowata](https://commons.wikimedia.org/wiki/File:Gyromitra_esculenta_BPN1.jpg)                     | Jerzy Opioła                        | CC BY-SA 4.0    |
 
 ## Zastrzeżenie
 
