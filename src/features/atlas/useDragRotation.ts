@@ -18,8 +18,9 @@ const MIN_VELOCITY = 0.02;
 const MAX_FRAME_SECONDS = 1 / 20;
 
 /**
- * Rotation driven by a finger. The canvas renders on demand (only while something moves),
- * so every change here asks for a new frame with invalidate().
+ * Rotation driven by a finger. The canvas renders on demand: touching it starts the frame loop
+ * and advanceRotation keeps it going while the finger is down or the model still spins.
+ * Touch moves only update numbers, so a flood of touch events never means extra renders.
  */
 export function useDragRotation() {
   const rotation = useRef<DragRotation>({
@@ -35,6 +36,7 @@ export function useDragRotation() {
     onBegin: () => {
       rotation.current.isDragging = true;
       rotation.current.velocityY = 0;
+      invalidate();
     },
     onUpdate: (event) => {
       rotation.current.y += event.changeX * RADIANS_PER_POINT;
@@ -43,7 +45,6 @@ export function useDragRotation() {
         -MAX_TILT,
         MAX_TILT,
       );
-      invalidate();
     },
     onDeactivate: (event) => {
       rotation.current.velocityY = event.velocityX * RADIANS_PER_POINT;
@@ -62,9 +63,9 @@ export function useDragRotation() {
   return { rotation, gesture, spin };
 }
 
-/** Called every rendered frame. Returns true while the model keeps turning and needs more frames. */
+/** Called every rendered frame. Returns true while another frame is needed. */
 export function advanceRotation(rotation: DragRotation, deltaSeconds: number): boolean {
-  if (rotation.isDragging) return false;
+  if (rotation.isDragging) return true;
 
   const seconds = Math.min(deltaSeconds, MAX_FRAME_SECONDS);
   rotation.y += rotation.velocityY * seconds;
