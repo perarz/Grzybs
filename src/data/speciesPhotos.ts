@@ -1,0 +1,161 @@
+import type { SpeciesId, SpeciesPhoto } from '@/features/atlas/types';
+
+// Photos from Wikimedia Commons, resized to 800 px and bundled so the atlas works offline.
+export const SPECIES_PHOTOS: Record<SpeciesId, SpeciesPhoto> = {
+  'boletus-edulis': {
+    source: require('../../assets/images/species/boletus-edulis.jpg'),
+    author: 'ReddishClover',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Boletus_edulis_IT.jpg',
+  },
+  'imleria-badia': {
+    source: require('../../assets/images/species/imleria-badia.jpg'),
+    author: 'Jerzy Opioła',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Boletus_badius_G1.jpg',
+  },
+  'leccinum-scabrum': {
+    source: require('../../assets/images/species/leccinum-scabrum.jpg'),
+    author: 'Jerzy Opioła',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Leccinum_scabrum_G3.1.jpg',
+  },
+  'leccinum-aurantiacum': {
+    source: require('../../assets/images/species/leccinum-aurantiacum.jpg'),
+    author: 'Jerzy Opioła',
+    license: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Leccinum_aurantiacum_G4.JPG',
+  },
+  'suillus-luteus': {
+    source: require('../../assets/images/species/suillus-luteus.jpg'),
+    author: 'Jerzy Opioła',
+    license: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Suillus_luteus_2.jpg',
+  },
+  'cantharellus-cibarius': {
+    source: require('../../assets/images/species/cantharellus-cibarius.jpg'),
+    author: 'Heisenberg-pl',
+    license: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Cantharellus_cibarius_20090717-02.jpg',
+  },
+  'macrolepiota-procera': {
+    source: require('../../assets/images/species/macrolepiota-procera.jpg'),
+    author: 'Chrumps',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Macrolepiota-procera.jpg',
+  },
+  'russula-virescens': {
+    source: require('../../assets/images/species/russula-virescens.jpg'),
+    author: 'Jerzy Opioła',
+    license: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Russula_virescens_B%C5%BB2.1.jpg',
+  },
+  'agaricus-campestris': {
+    source: require('../../assets/images/species/agaricus-campestris.jpg'),
+    author: 'Byrain (Mushroom Observer)',
+    license: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:2012-02-13_Agaricus_campestris_L_199588.jpg',
+  },
+  'armillaria-mellea': {
+    source: require('../../assets/images/species/armillaria-mellea.jpg'),
+    author: 'Jerzy Opioła',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Armillaria_mellea_PN1_(5).jpg',
+  },
+  'lactarius-deliciosus': {
+    source: require('../../assets/images/species/lactarius-deliciosus.jpg'),
+    author: 'Eric Steinert',
+    license: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Lactarius_deliciosus.jpg',
+  },
+  'morchella-esculenta': {
+    source: require('../../assets/images/species/morchella-esculenta.jpg'),
+    author: 'Andreas Kunze',
+    license: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:2011-04-30_Morchella_esculenta.jpg',
+  },
+  'lycoperdon-perlatum': {
+    source: require('../../assets/images/species/lycoperdon-perlatum.jpg'),
+    author: 'Jerzy Opioła',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Lycoperdon_perlatum_a3.jpg',
+  },
+  'tylopilus-felleus': {
+    source: require('../../assets/images/species/tylopilus-felleus.jpg'),
+    author: 'bernd gliwa',
+    license: 'CC BY-SA 2.5',
+    url: 'https://commons.wikimedia.org/wiki/File:Tylopilus_felleus_060914c.jpg',
+  },
+  'hygrophoropsis-aurantiaca': {
+    source: require('../../assets/images/species/hygrophoropsis-aurantiaca.jpg'),
+    author: 'Jerzy Opioła',
+    license: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Hygrophoropsis_aurantiaca_B%C5%BB5.2.jpg',
+  },
+  'amanita-muscaria': {
+    source: require('../../assets/images/species/amanita-muscaria.jpg'),
+    author: 'Onderwijsgek',
+    license: 'CC BY-SA 3.0 nl',
+    url: 'https://commons.wikimedia.org/wiki/File:Amanita_muscaria_3_vliegenzwammen_op_rij.jpg',
+  },
+  'amanita-pantherina': {
+    source: require('../../assets/images/species/amanita-pantherina.jpg'),
+    author: 'Tomasz Sobczak',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Amanita_pantherina_ts4.jpg',
+  },
+  'hypholoma-fasciculare': {
+    source: require('../../assets/images/species/hypholoma-fasciculare.jpg'),
+    author: 'Jörg Hempel',
+    license: 'CC BY-SA 2.0 de',
+    url: 'https://commons.wikimedia.org/wiki/File:Hypholoma_fasciculare_LC0091.jpg',
+  },
+  'lactarius-torminosus': {
+    source: require('../../assets/images/species/lactarius-torminosus.jpg'),
+    author: 'Jerzy Opioła',
+    license: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Lactarius_torminosus_G2.jpg',
+  },
+  'scleroderma-citrinum': {
+    source: require('../../assets/images/species/scleroderma-citrinum.jpg'),
+    author: 'Jason Hollinger',
+    license: 'CC BY 2.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Earthballs_(908565114).jpg',
+  },
+  'agaricus-xanthodermus': {
+    source: require('../../assets/images/species/agaricus-xanthodermus.jpg'),
+    author: 'Lord Mayonnaise (Mushroom Observer)',
+    license: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:2010-11-13_Agaricus_xanthodermus_Genev_120348_crop.jpg',
+  },
+  'paxillus-involutus': {
+    source: require('../../assets/images/species/paxillus-involutus.jpg'),
+    author: 'Selso',
+    license: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Paxillus_involutus_G2.jpg',
+  },
+  'amanita-phalloides': {
+    source: require('../../assets/images/species/amanita-phalloides.jpg'),
+    author: 'Jerzy Opioła',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Amanita_phalloides_a1_(1).JPG',
+  },
+  'amanita-virosa': {
+    source: require('../../assets/images/species/amanita-virosa.jpg'),
+    author: 'Jerzy Opioła',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Amanita_virosa_a1_(7).JPG',
+  },
+  'galerina-marginata': {
+    source: require('../../assets/images/species/galerina-marginata.jpg'),
+    author: 'Dan Molter (Mushroom Observer)',
+    license: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Galerina_marginata_61108.jpg',
+  },
+  'gyromitra-esculenta': {
+    source: require('../../assets/images/species/gyromitra-esculenta.jpg'),
+    author: 'Jerzy Opioła',
+    license: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Gyromitra_esculenta_BPN1.jpg',
+  },
+};

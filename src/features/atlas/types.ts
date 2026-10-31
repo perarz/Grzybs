@@ -69,6 +69,14 @@ export type Species = {
   rarity: Rarity;
 };
 
+export type SpeciesPhoto = {
+  /** A bundled image – the number Metro returns from require(). */
+  source: number;
+  author: string;
+  license: string;
+  url: string;
+};
+
 export type LookalikeDifference = {
   trait: string;
   first: string;
