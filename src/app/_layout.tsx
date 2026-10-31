@@ -1,8 +1,10 @@
 import { Stack, ThemeProvider, type ErrorBoundaryProps } from 'expo-router';
+import { SQLiteProvider } from 'expo-sqlite';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { ErrorFallback } from '@/components/ErrorFallback';
+import { DATABASE_NAME, initDatabase } from '@/db/initDatabase';
 import { getNavigationTheme, useTheme } from '@/theme';
 
 export function ErrorBoundary(props: ErrorBoundaryProps) {
@@ -14,12 +16,15 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeProvider value={getNavigationTheme(colors, isDark)}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
-        </Stack>
-        <StatusBar style={isDark ? 'light' : 'dark'} />
-      </ThemeProvider>
+      {/* No onError on purpose: the provider rethrows, so a broken database shows ErrorBoundary instead of a crash. */}
+      <SQLiteProvider databaseName={DATABASE_NAME} onInit={initDatabase}>
+        <ThemeProvider value={getNavigationTheme(colors, isDark)}>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+          </Stack>
+          <StatusBar style={isDark ? 'light' : 'dark'} />
+        </ThemeProvider>
+      </SQLiteProvider>
     </GestureHandlerRootView>
   );
 }
