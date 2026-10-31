@@ -21,6 +21,7 @@ export default function RootLayout() {
         <ThemeProvider value={getNavigationTheme(colors, isDark)}>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="dev/3d-test" options={{ headerShown: true, title: 'Test 3D' }} />
           </Stack>
           <StatusBar style={isDark ? 'light' : 'dark'} />
         </ThemeProvider>
