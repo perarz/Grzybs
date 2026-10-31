@@ -8,21 +8,16 @@ type IconProps = {
 
 const STROKE_WIDTH = 1.8;
 
-export function ForecastIcon({ color, size }: IconProps) {
+export function MapIcon({ color, size }: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path
-        d="M7 14a4 4 0 0 1-.5-7.97A5.5 5.5 0 0 1 17 6.5a3.5 3.5 0 0 1 0 7.5Z"
+        d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11Z"
         stroke={color}
         strokeWidth={STROKE_WIDTH}
         strokeLinejoin="round"
       />
-      <Path
-        d="M8 17.5l-1 2.5M12 17.5l-1 2.5M16 17.5l-1 2.5"
-        stroke={color}
-        strokeWidth={STROKE_WIDTH}
-        strokeLinecap="round"
-      />
+      <Circle cx={12} cy={10} r={2.2} stroke={color} strokeWidth={STROKE_WIDTH} />
     </Svg>
   );
 }
@@ -48,32 +43,17 @@ export function AtlasIcon({ color, size }: IconProps) {
   );
 }
 
-export function MapIcon({ color, size }: IconProps) {
+export function LearnIcon({ color, size }: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path
-        d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11Z"
-        stroke={color}
-        strokeWidth={STROKE_WIDTH}
-        strokeLinejoin="round"
-      />
-      <Circle cx={12} cy={10} r={2.2} stroke={color} strokeWidth={STROKE_WIDTH} />
-    </Svg>
-  );
-}
-
-export function CollectionIcon({ color, size }: IconProps) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path d="M7 10a5 5 0 0 1 10 0" stroke={color} strokeWidth={STROKE_WIDTH} />
-      <Path
-        d="M3 10h18l-2 8.4a2 2 0 0 1-2 1.6H7a2 2 0 0 1-2-1.6Z"
+        d="M12 3a6 6 0 0 0-3.5 10.9c.6.4.9 1 .9 1.7V16h5.2v-.4c0-.7.3-1.3.9-1.7A6 6 0 0 0 12 3Z"
         stroke={color}
         strokeWidth={STROKE_WIDTH}
         strokeLinejoin="round"
       />
       <Path
-        d="M9 13.5l.4 3.5M12 13.5v3.5M15 13.5l-.4 3.5"
+        d="M9.5 18.5h5M10.5 21h3"
         stroke={color}
         strokeWidth={STROKE_WIDTH}
         strokeLinecap="round"

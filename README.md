@@ -1,6 +1,6 @@
 # Grzybnik 🍄
 
-Mobilny przewodnik grzybiarza: atlas gatunków z ostrzeżeniami przed trującymi sobowtórami, prywatna mapa miejscówek z powrotem do auta, rejestr zbiorów i prognoza „grzybowej pogody”. Działa offline – w lesie zasięg bywa słaby.
+Uniwersalna aplikacja grzybiarza w trzech częściach: **Atlas** gatunków z ostrzeżeniami przed trującymi sobowtórami (gatunki odblokowujesz zdjęciami swoich znalezisk), **Nauka** z grą i quizami oraz **Mapa** z prywatnymi miejscówkami i powrotem do auta. Działa offline – w lesie zasięg bywa słaby.
 
 > Projekt powstał jako zadanie rekrutacyjne do Software Mansion.
 
@@ -14,12 +14,11 @@ Mobilny przewodnik grzybiarza: atlas gatunków z ostrzeżeniami przed trującymi
 
 ## Funkcje
 
-| Moduł    | Opis                                                                               | Status    |
-| -------- | ---------------------------------------------------------------------------------- | --------- |
-| Atlas    | ~25 gatunków z Polski, filtrowanie po cechach, sobowtóry z alertami, sezonowość    | planowane |
-| Zbiory   | Znaleziska ze zdjęciami, Grzybodex, statystyki                                     | planowane |
-| Mapa     | Prywatne miejscówki, „Zaparkowałem tutaj”, powrót do auta z kompasem, alarm zmroku | planowane |
-| Prognoza | Indeks grzybowy 0–100 z opadów i temperatury (Open-Meteo), cache offline           | planowane |
+| Moduł | Opis                                                                                                                                     | Status    |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| Atlas | ~25 gatunków z Polski, filtrowanie po cechach, sobowtóry z alertami, sezonowość, podgląd 3D; odblokowywanie gatunków zdjęciem znaleziska | planowane |
+| Nauka | Grzyb dnia, gra „Sobowtór”, quiz o cechach gatunków                                                                                      | planowane |
+| Mapa  | Prywatne miejscówki, „Zaparkowałem tutaj”, powrót do auta z kompasem, alarm zmroku                                                       | planowane |
 
 ## Uruchomienie
 
@@ -51,7 +50,7 @@ Expo SDK 58 · React Native 0.88 · TypeScript (strict) · expo-router · Reanim
 ```
 src/app/         ekrany (expo-router), zakładki w (tabs)/
 src/components/  współdzielone komponenty UI
-src/features/    logika funkcji (forecast, atlas, spots, navigation, collection, safety)
+src/features/    logika funkcji (atlas, collection, learn, spots, navigation, safety)
 src/db/          SQLite: połączenie i migracje
 src/data/        statyczne dane gatunków
 src/theme/       kolory (jasny/ciemny), typografia, odstępy
@@ -59,14 +58,14 @@ src/theme/       kolory (jasny/ciemny), typografia, odstępy
 
 ## Decyzje techniczne
 
-- **Offline-first:** dane użytkownika w SQLite z wersjonowanymi migracjami (`PRAGMA user_version`); sieć tylko do pogody.
+- **Offline-first:** dane użytkownika w SQLite z wersjonowanymi migracjami (`PRAGMA user_version`); aplikacja nie potrzebuje sieci (poza kafelkami mapy).
 - **Expo Go:** wyłącznie biblioteki dostępne w Expo Go – aplikację da się uruchomić bez budowania natywnego.
 - **Odporność na błędy:** globalny `ErrorBoundary` z przyciskiem „Spróbuj ponownie” zamiast crasha.
 - TODO: uzupełniać w kolejnych etapach.
 
 ## Źródła i licencje
 
-TODO: zdjęcia (autor, licencja), źródła wiedzy o gatunkach, dane pogodowe ([Open-Meteo](https://open-meteo.com/), CC BY 4.0).
+TODO: zdjęcia (autor, licencja), źródła wiedzy o gatunkach.
 
 ## Zastrzeżenie
 

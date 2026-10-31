@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 
-import { AtlasIcon, CollectionIcon, ForecastIcon, MapIcon } from '@/components/icons/TabIcons';
+import { AtlasIcon, LearnIcon, MapIcon } from '@/components/icons/TabIcons';
 import { TabBarIcon } from '@/components/TabBarIcon';
 import { typography, useTheme } from '@/theme';
 
@@ -19,28 +19,6 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Prognoza',
-          tabBarIcon: ({ color, size, focused }) => (
-            <TabBarIcon focused={focused}>
-              <ForecastIcon color={color} size={size} />
-            </TabBarIcon>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="atlas"
-        options={{
-          title: 'Atlas',
-          tabBarIcon: ({ color, size, focused }) => (
-            <TabBarIcon focused={focused}>
-              <AtlasIcon color={color} size={size} />
-            </TabBarIcon>
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="map"
         options={{
           title: 'Mapa',
@@ -51,13 +29,25 @@ export default function TabsLayout() {
           ),
         }}
       />
+      {/* Atlas is the index route, so the app opens on it – in the middle of the tab bar. */}
       <Tabs.Screen
-        name="collection"
+        name="index"
         options={{
-          title: 'Zbiory',
+          title: 'Atlas',
           tabBarIcon: ({ color, size, focused }) => (
             <TabBarIcon focused={focused}>
-              <CollectionIcon color={color} size={size} />
+              <AtlasIcon color={color} size={size} />
+            </TabBarIcon>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="learn"
+        options={{
+          title: 'Nauka',
+          tabBarIcon: ({ color, size, focused }) => (
+            <TabBarIcon focused={focused}>
+              <LearnIcon color={color} size={size} />
             </TabBarIcon>
           ),
         }}

@@ -4,11 +4,15 @@ import { Screen } from '@/components/Screen';
 
 export default function MapScreen() {
   return (
-    <Screen title="Mapa" subtitle="Twoje miejscówki i bezpieczny powrót">
+    <Screen title="Mapa" subtitle="Twoje spoty i bezpieczny powrót">
       <Card>
         <AppText variant="heading">Miejscówki</AppText>
+        <AppText color="textMuted">Wkrótce: prywatne punkty na mapie z notatkami.</AppText>
+      </Card>
+      <Card>
+        <AppText variant="heading">Powrót do auta</AppText>
         <AppText color="textMuted">
-          Wkrótce: prywatne punkty na mapie i nawigacja do zaparkowanego auta.
+          Wkrótce: zapisz miejsce parkowania i wróć do auta z kompasem, zanim zrobi się ciemno.
         </AppText>
       </Card>
     </Screen>

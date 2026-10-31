@@ -1,16 +1,29 @@
+import { router } from 'expo-router';
+
 import { AppText } from '@/components/AppText';
+import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { Screen } from '@/components/Screen';
 
-export default function ForecastScreen() {
+export default function AtlasScreen() {
   return (
-    <Screen title="Prognoza" subtitle="Czy warto dziś iść na grzyby?">
+    <Screen title="Atlas" subtitle="Poznaj gatunki i odblokuj je swoimi zdjęciami">
       <Card>
-        <AppText variant="heading">Indeks grzybowy</AppText>
+        <AppText variant="heading">Gatunki</AppText>
         <AppText color="textMuted">
-          Wkrótce: ocena 0–100 na podstawie opadów i temperatury z ostatnich dwóch tygodni.
+          Wkrótce: popularne grzyby z Polski z filtrowaniem po cechach i ostrzeżeniami przed
+          groźnymi sobowtórami.
         </AppText>
       </Card>
+      <Card>
+        <AppText variant="heading">Twoja kolekcja</AppText>
+        <AppText color="textMuted">
+          Wkrótce: zrób zdjęcie znaleziska, aby odblokować gatunek w atlasie.
+        </AppText>
+      </Card>
+      {__DEV__ ? (
+        <Button label="Test 3D (dev)" onPress={() => router.push('/dev/3d-test')} />
+      ) : null}
     </Screen>
   );
 }
