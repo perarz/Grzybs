@@ -55,7 +55,7 @@ Import przez alias `@/` → `src/`.
 
 - Etap 0 – Setup ✅
 - Etap 1 – Test 3D ✅ → porzucony (proceduralne modele wyglądały zbyt słabo – zamiast nich zdjęcia)
-- Etap 2 – Dane ~25 gatunków (cechy, sezony, sobowtóry, zdjęcia na wolnej licencji)
+- Etap 2 – Dane 26 gatunków (cechy, sezony, sobowtóry, zdjęcia na wolnej licencji) ✅
 - Etap 3 – Atlas: karty, kategorie, wyszukiwarka, filtr cech; ekran gatunku (zegar sezonu, sobowtóry z alertem, suwak porównania)
 - Etap 4 – Odblokowywanie zdjęciem: zdjęcie → wybór gatunku → kontrola sobowtórów → animacja odkrycia, postęp w atlasie
 - Etap 5 – Nauka: grzyb dnia, gra „Sobowtór”, quiz
