@@ -1,56 +1,73 @@
-# Welcome to your Expo app 👋
+# Grzybnik 🍄
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Mobilny przewodnik grzybiarza: atlas gatunków z ostrzeżeniami przed trującymi sobowtórami, prywatna mapa miejscówek z powrotem do auta, rejestr zbiorów i prognoza „grzybowej pogody”. Działa offline – w lesie zasięg bywa słaby.
 
-## Get started
+> Projekt powstał jako zadanie rekrutacyjne do Software Mansion.
 
-1. Install dependencies
+<!-- TODO: GIF / zrzuty ekranu -->
 
-   ```bash
-   npm install
-   ```
+## Platforma i testy
 
-2. Start the app
+- **Przygotowana głównie pod:** Android
+- **Testowana na fizycznym urządzeniu:** TODO (uzupełnić przed oddaniem)
+- **Emulator:** Android Studio, Medium Phone (API 37)
 
-   ```bash
-   npx expo start
-   ```
+## Funkcje
 
-In the output, you'll find options to open the app in a
+| Moduł    | Opis                                                                               | Status    |
+| -------- | ---------------------------------------------------------------------------------- | --------- |
+| Atlas    | ~25 gatunków z Polski, filtrowanie po cechach, sobowtóry z alertami, sezonowość    | planowane |
+| Zbiory   | Znaleziska ze zdjęciami, Grzybodex, statystyki                                     | planowane |
+| Mapa     | Prywatne miejscówki, „Zaparkowałem tutaj”, powrót do auta z kompasem, alarm zmroku | planowane |
+| Prognoza | Indeks grzybowy 0–100 z opadów i temperatury (Open-Meteo), cache offline           | planowane |
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Uruchomienie
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Wymagania: Node.js LTS (wersja w `.nvmrc`), npm.
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- **Emulator Androida:** uruchom emulator w Android Studio, potem w terminalu z `expo start` naciśnij `a` (Expo CLI sam zainstaluje Expo Go).
+- **Telefon:** zainstaluj Expo Go ze sklepu i zeskanuj kod QR z terminala.
 
-### Other setup steps
+## Skrypty
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+| Komenda             | Co robi                    |
+| ------------------- | -------------------------- |
+| `npm start`         | serwer deweloperski Expo   |
+| `npm run lint`      | ESLint + Prettier          |
+| `npm run typecheck` | sprawdzenie typów (tsc)    |
+| `npm run format`    | formatowanie kodu Prettier |
 
-## Learn more
+## Stack
 
-To learn more about developing your project with Expo, look at the following resources:
+Expo SDK 57 · React Native 0.86 · TypeScript (strict) · expo-router · Reanimated · Gesture Handler · react-native-svg · react-native-maps · expo-location · expo-sensors · expo-image-picker · expo-sqlite · zustand · suncalc
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Struktura
 
-## Join the community
+```
+src/app/         ekrany (expo-router), zakładki w (tabs)/
+src/components/  współdzielone komponenty UI
+src/features/    logika funkcji (forecast, atlas, spots, navigation, collection, safety)
+src/db/          SQLite: połączenie i migracje
+src/data/        statyczne dane gatunków
+src/theme/       kolory (jasny/ciemny), typografia, odstępy
+```
 
-Join our community of developers creating universal apps.
+## Decyzje techniczne
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- **Offline-first:** dane użytkownika w SQLite z wersjonowanymi migracjami (`PRAGMA user_version`); sieć tylko do pogody.
+- **Expo Go:** wyłącznie biblioteki dostępne w Expo Go – aplikację da się uruchomić bez budowania natywnego.
+- **Odporność na błędy:** globalny `ErrorBoundary` z przyciskiem „Spróbuj ponownie” zamiast crasha.
+- TODO: uzupełniać w kolejnych etapach.
+
+## Źródła i licencje
+
+TODO: zdjęcia (autor, licencja), źródła wiedzy o gatunkach, dane pogodowe ([Open-Meteo](https://open-meteo.com/), CC BY 4.0).
+
+## Zastrzeżenie
+
+Aplikacja ma charakter edukacyjny i **nie zastępuje konsultacji z grzyboznawcą**. Nigdy nie jedz grzyba, którego nie jesteś w 100% pewien.
