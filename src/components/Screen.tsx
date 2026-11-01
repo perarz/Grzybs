@@ -19,6 +19,9 @@ export function Screen({ title, subtitle, children }: ScreenProps) {
   return (
     <ScrollView
       style={{ backgroundColor: colors.background }}
+      // Taps on chips and buttons work while the keyboard is open; scrolling hides it.
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="on-drag"
       contentContainerStyle={[styles.content, { paddingTop: insets.top + spacing.lg }]}
     >
       <View style={styles.header}>
