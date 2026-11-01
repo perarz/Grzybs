@@ -16,7 +16,7 @@ Uniwersalna aplikacja grzybiarza w trzech częściach: **Atlas** gatunków z ost
 
 | Moduł | Opis                                                                                                                                     | Status    |
 | ----- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| Atlas | 26 gatunków z Polski ze zdjęciami, filtrowanie po cechach, sobowtóry z alertami, sezonowość; odblokowywanie gatunków zdjęciem znaleziska | w budowie |
+| Atlas | 26 gatunków z Polski ze zdjęciami, filtrowanie po cechach, sobowtóry z alertami, sezonowość; odblokowywanie gatunków zdjęciem znaleziska | przeglądanie gotowe, odblokowywanie w budowie |
 | Nauka | Grzyb dnia, gra „Sobowtór”, quiz o cechach gatunków                                                                                      | planowane |
 | Mapa  | Prywatne miejscówki, „Zaparkowałem tutaj”, powrót do auta z kompasem, alarm zmroku                                                       | planowane |
 
