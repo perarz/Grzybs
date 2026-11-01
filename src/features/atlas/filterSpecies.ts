@@ -46,9 +46,9 @@ export function filterSpecies(
   );
 }
 
-/** How many features are set in the filter panel – the search box and category chips don't count. */
+/** How many questions of the identification key are answered. */
 export function countFeatureFilters(filter: SpeciesFilter): number {
-  const options = [
+  const answers = [
     filter.underside,
     filter.capColor,
     filter.ring,
@@ -56,13 +56,17 @@ export function countFeatureFilters(filter: SpeciesFilter): number {
     filter.colorChange,
     filter.habitat,
   ];
-  const setOptions = options.filter((option) => option !== null).length;
-  return setOptions + (filter.inSeasonOnly ? 1 : 0);
+  return answers.filter((answer) => answer !== null).length;
 }
 
-/** Clears the filter panel but keeps what the user typed and the chosen category. */
+/** Clears the key's answers but keeps the search, the category and the season switch. */
 export function clearFeatureFilters(filter: SpeciesFilter): SpeciesFilter {
-  return { ...EMPTY_FILTER, query: filter.query, edibility: filter.edibility };
+  return {
+    ...EMPTY_FILTER,
+    query: filter.query,
+    edibility: filter.edibility,
+    inSeasonOnly: filter.inSeasonOnly,
+  };
 }
 
 const PLAIN_LETTERS: Record<string, string> = {

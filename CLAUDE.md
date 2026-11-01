@@ -18,7 +18,7 @@ Autor uczy się Reacta w trakcie projektu – kod ma być **prosty, czytelny i s
 - Czytelne nazwy zamiast komentarzy; komentarz tylko, gdy wyjaśnia „dlaczego”.
 - TypeScript strict, zero `any`.
 - Style tylko przez tokeny z `src/theme` (kolory, odstępy, typografia, promienie, ruch) – żadnych „magicznych” wartości w komponentach.
-- Wygląd „zielnik / atlas terenowy”: papier, tusz, jeden rdzawy akcent; Fraunces (nazwy, tytuły), kursywa Fraunces (łacina), IBM Plex Mono (etykiety), małe promienie. Unikaj szablonowego wyglądu (pigułki, duże promienie, generyczne palety).
+- Wygląd „las”: mech i świerk, akcent w kolorze kurki; nagłówek z warstwami świerków (paralaksa), ciemnozielony pasek zakładek; Fraunces (nazwy, tytuły), kursywa Fraunces (łacina), IBM Plex Mono (etykiety), małe promienie. Unikaj szablonowego wyglądu (pigułki, duże promienie, generyczne palety). Wybór z wielu opcji – krok po kroku w `BottomSheet`, nie wielkie panele.
 - Wszystko klikalne przez `PressableScale` (sprężyna + haptyka); zmiany stanu animowane (Reanimated), nie skokowe.
 - Wszystko, co może zawieść (lokalizacja, czujniki, sieć, baza, uprawnienia), ma obsługę błędu i stan zastępczy – aplikacja nigdy się nie crashuje.
 - Offline-first: dane użytkownika w SQLite (`src/db`); wszystko działa bez sieci (poza kafelkami mapy).

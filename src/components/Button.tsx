@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { radius, spacing, useTheme } from '@/theme';
 
@@ -10,14 +10,15 @@ type ButtonProps = {
   onPress: () => void;
   /** Secondary is an outlined button for less important actions. */
   variant?: 'primary' | 'secondary';
+  style?: StyleProp<ViewStyle>;
 };
 
-export function Button({ label, onPress, variant = 'primary' }: ButtonProps) {
+export function Button({ label, onPress, variant = 'primary', style }: ButtonProps) {
   const { colors } = useTheme();
   const isPrimary = variant === 'primary';
 
   return (
-    <PressableScale accessibilityRole="button" onPress={onPress}>
+    <PressableScale accessibilityRole="button" onPress={onPress} style={style}>
       <View
         style={[
           styles.button,

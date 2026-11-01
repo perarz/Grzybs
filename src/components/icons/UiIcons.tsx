@@ -115,3 +115,39 @@ export function ChevronDownIcon({ color, size }: IconProps) {
     </Svg>
   );
 }
+
+export function CheckIcon({ color, size }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M5 12.5l4.5 4.5L19 7.5"
+        stroke={color}
+        strokeWidth={ICON_STROKE_WIDTH + 0.6}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+/** A magnifier with a little mushroom inside – the identification key. */
+export function IdentifyIcon({ color, size }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Circle cx={10.5} cy={10.5} r={7} stroke={color} strokeWidth={ICON_STROKE_WIDTH} />
+      <Path
+        d="m15.5 15.5 5 5"
+        stroke={color}
+        strokeWidth={ICON_STROKE_WIDTH}
+        strokeLinecap="round"
+      />
+      <Path
+        d="M6.5 11 Q10.5 5.5 14.5 11 Z M10.5 11 L10.5 14"
+        stroke={color}
+        strokeWidth={ICON_STROKE_WIDTH - 0.4}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}

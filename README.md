@@ -61,7 +61,8 @@ src/theme/       kolory (jasny/ciemny), typografia, odstępy
 - **Offline-first:** dane użytkownika w SQLite z wersjonowanymi migracjami (`PRAGMA user_version`); aplikacja nie potrzebuje sieci (poza kafelkami mapy).
 - **Expo Go:** wyłącznie biblioteki dostępne w Expo Go – aplikację da się uruchomić bez budowania natywnego.
 - **Odporność na błędy:** globalny `ErrorBoundary` z przyciskiem „Spróbuj ponownie” zamiast crasha.
-- **Wygląd „zielnik”:** papier, tusz i jeden rdzawy akcent zamiast szablonowej palety. Nazwy szeryfowym Fraunces, łacina kursywą, etykiety maszynowym IBM Plex Mono, jadalność jako pieczątka, karty jak arkusze zielnika z numerem okazu.
+- **Wygląd „las”:** paleta mchu i świerka z akcentem koloru kurki, nagłówek z trzema warstwami świerków rysowanymi w SVG (przesuwają się z różną prędkością przy przewijaniu), słońce w dzień i księżyc w nocy. Nazwy szeryfowym Fraunces, łacina kursywą, etykiety maszynowym IBM Plex Mono, jadalność jako pieczątka, karty jak arkusze zielnika z numerem okazu.
+- **Klucz do oznaczania:** zamiast panelu filtrów – pytania krok po kroku w wysuwanym arkuszu (spód kapelusza, kolor, pierścień, pochwa, zmiana barwy, siedlisko). Każda odpowiedź ma ilustrację i liczbę gatunków, które zostaną; odpowiedzi prowadzące donikąd są wyszarzone.
 - **Ruch i dotyk:** każdy klikalny element ugina się na sprężynie i odpowiada haptyką (`expo-haptics`), duże tytuły zwijają się w pasek jak w iOS, karty płynnie przestawiają się przy filtrowaniu (Reanimated – layout animations i CSS transitions).
 - TODO: uzupełniać w kolejnych etapach.
 
