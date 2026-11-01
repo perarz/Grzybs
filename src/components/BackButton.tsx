@@ -1,14 +1,15 @@
 import { router } from 'expo-router';
-import { Pressable, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { radius, spacing, useTheme } from '@/theme';
 
 import { BackIcon } from './icons/UiIcons';
+import { PressableScale } from './PressableScale';
 
 const BUTTON_SIZE = 40;
-const ICON_SIZE = 24;
+const ICON_SIZE = 22;
 
-/** A round back button that floats over photos. */
+/** A round paper button – readable both over photos and on the top bar. */
 export function BackButton() {
   const { colors } = useTheme();
 
@@ -22,7 +23,7 @@ export function BackButton() {
   }
 
   return (
-    <Pressable
+    <PressableScale
       accessibilityRole="button"
       accessibilityLabel="Wróć"
       hitSlop={spacing.sm}
@@ -30,7 +31,7 @@ export function BackButton() {
       style={[styles.button, { backgroundColor: colors.surface, borderColor: colors.border }]}
     >
       <BackIcon color={colors.text} size={ICON_SIZE} />
-    </Pressable>
+    </PressableScale>
   );
 }
 

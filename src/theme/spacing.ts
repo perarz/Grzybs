@@ -7,9 +7,11 @@ export const spacing = {
   xxl: 32,
 } as const;
 
+// Printed-card corners: small and crisp. The pill is kept for round controls only.
 export const radius = {
-  sm: 8,
-  md: 12,
-  lg: 20,
+  xs: 2,
+  sm: 4,
+  md: 8,
+  lg: 14,
   pill: 999,
 } as const;

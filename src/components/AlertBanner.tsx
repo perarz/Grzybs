@@ -17,11 +17,13 @@ type AlertBannerProps = {
 const TONE_COLORS = {
   danger: { accent: 'danger', background: 'dangerMuted' },
   warning: { accent: 'poisonous', background: 'warningMuted' },
-  info: { accent: 'primary', background: 'primaryMuted' },
+  info: { accent: 'textMuted', background: 'primaryMuted' },
 } satisfies Record<Tone, { accent: keyof ThemeColors; background: keyof ThemeColors }>;
 
-const ICON_SIZE = 22;
+const ICON_SIZE = 16;
+const RULE_WIDTH = 3;
 
+/** A margin note: a coloured rule, a typewritten title and the message. */
 export function AlertBanner({ tone, title, children }: AlertBannerProps) {
   const { colors } = useTheme();
   const { accent, background } = TONE_COLORS[tone];
@@ -31,27 +33,28 @@ export function AlertBanner({ tone, title, children }: AlertBannerProps) {
       accessibilityRole="alert"
       style={[styles.banner, { backgroundColor: colors[background], borderColor: colors[accent] }]}
     >
-      <WarningIcon color={colors[accent]} size={ICON_SIZE} />
-      <View style={styles.text}>
-        <AppText variant="bodyStrong" color={accent}>
+      <View style={styles.title}>
+        <WarningIcon color={colors[accent]} size={ICON_SIZE} />
+        <AppText variant="label" color={accent}>
           {title}
         </AppText>
-        <AppText>{children}</AppText>
       </View>
+      <AppText>{children}</AppText>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   banner: {
-    flexDirection: 'row',
-    gap: spacing.md,
-    borderRadius: radius.md,
-    borderLeftWidth: spacing.xs,
-    padding: spacing.lg,
+    gap: spacing.sm,
+    borderRadius: radius.sm,
+    borderLeftWidth: RULE_WIDTH,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
   },
-  text: {
-    flex: 1,
-    gap: spacing.xs,
+  title: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
   },
 });

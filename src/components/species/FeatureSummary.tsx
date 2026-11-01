@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
-import { Card } from '@/components/Card';
+import { SectionHeader } from '@/components/SectionHeader';
 import {
   CAP_COLOR_LABELS,
   HABITAT_LABELS,
@@ -15,7 +15,7 @@ type FeatureSummaryProps = {
   species: Species;
 };
 
-/** The same features the atlas filter uses, shown as a short table. */
+/** The same features the atlas filter uses, as a ruled table. */
 export function FeatureSummary({ species }: FeatureSummaryProps) {
   const { colors } = useTheme();
   const { features } = species;
@@ -37,35 +37,43 @@ export function FeatureSummary({ species }: FeatureSummaryProps) {
   ];
 
   return (
-    <Card>
-      <AppText variant="heading">Cechy w skrócie</AppText>
-      {rows.map((row, index) => (
-        <View
-          key={row.label}
-          style={[
-            styles.row,
-            index > 0 && {
-              borderTopColor: colors.border,
-              borderTopWidth: StyleSheet.hairlineWidth,
-            },
-          ]}
-        >
-          <AppText color="textMuted">{row.label}</AppText>
-          <AppText variant="bodyStrong" style={styles.value}>
-            {row.value.toLowerCase()}
-          </AppText>
-        </View>
-      ))}
-    </Card>
+    <View style={styles.section}>
+      <SectionHeader title="Cechy w skrócie" />
+      <View>
+        {rows.map((row, index) => (
+          <View
+            key={row.label}
+            style={[
+              styles.row,
+              index > 0 && {
+                borderTopColor: colors.border,
+                borderTopWidth: StyleSheet.hairlineWidth,
+              },
+            ]}
+          >
+            <AppText variant="label" color="textMuted">
+              {row.label}
+            </AppText>
+            <AppText variant="bodyStrong" style={styles.value}>
+              {row.value.toLowerCase()}
+            </AppText>
+          </View>
+        ))}
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  section: {
+    gap: spacing.sm,
+  },
   row: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     gap: spacing.lg,
-    paddingTop: spacing.sm,
+    paddingVertical: spacing.sm,
   },
   value: {
     flex: 1,

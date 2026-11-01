@@ -4,7 +4,7 @@ import { Screen } from '@/components/Screen';
 
 export default function MapScreen() {
   return (
-    <Screen title="Mapa" subtitle="Twoje spoty i bezpieczny powrót">
+    <Screen eyebrow="Teren" title="Mapa" subtitle="Twoje spoty i bezpieczny powrót.">
       <Card>
         <AppText variant="heading">Miejscówki</AppText>
         <AppText color="textMuted">Wkrótce: prywatne punkty na mapie z notatkami.</AppText>

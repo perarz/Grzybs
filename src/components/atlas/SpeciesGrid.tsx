@@ -1,7 +1,8 @@
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
+import Animated, { FadeInDown, FadeOut, LinearTransition } from 'react-native-reanimated';
 
 import type { Species } from '@/features/atlas/types';
-import { spacing } from '@/theme';
+import { durations, spacing, springs } from '@/theme';
 
 import { SpeciesCard } from './SpeciesCard';
 
@@ -11,6 +12,13 @@ type SpeciesGridProps = {
 
 const COLUMNS = 2;
 const COLUMN_GAP = spacing.md;
+// Cards arrive one after another, but the cascade stops early so the list is never slow.
+const STAGGER_MS = 45;
+const MAX_STAGGERED_CARDS = 8;
+
+const cardLayout = LinearTransition.springify()
+  .damping(springs.settle.damping)
+  .stiffness(springs.settle.stiffness);
 
 export function SpeciesGrid({ species }: SpeciesGridProps) {
   const { width } = useWindowDimensions();
@@ -19,11 +27,22 @@ export function SpeciesGrid({ species }: SpeciesGridProps) {
   const cardWidth = Math.floor((width - spacing.lg * 2 - COLUMN_GAP * (COLUMNS - 1)) / COLUMNS);
 
   return (
-    <View style={styles.grid}>
-      {species.map((item) => (
-        <SpeciesCard key={item.id} species={item} width={cardWidth} />
+    <Animated.View layout={cardLayout} style={styles.grid}>
+      {species.map((item, index) => (
+        // Filtering doesn't redraw the list: leaving cards fade out, the rest glide into place.
+        <Animated.View
+          key={item.id}
+          entering={FadeInDown.delay(Math.min(index, MAX_STAGGERED_CARDS) * STAGGER_MS)
+            .springify()
+            .damping(springs.settle.damping)}
+          exiting={FadeOut.duration(durations.fast)}
+          layout={cardLayout}
+          style={{ width: cardWidth }}
+        >
+          <SpeciesCard species={item} />
+        </Animated.View>
       ))}
-    </View>
+    </Animated.View>
   );
 }
 

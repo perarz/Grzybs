@@ -86,3 +86,32 @@ export function WarningIcon({ color, size }: IconProps) {
     </Svg>
   );
 }
+
+export function SlidersIcon({ color, size }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M4 7h10M18 7h2M4 17h4M12 17h8"
+        stroke={color}
+        strokeWidth={ICON_STROKE_WIDTH}
+        strokeLinecap="round"
+      />
+      <Circle cx={16} cy={7} r={2} stroke={color} strokeWidth={ICON_STROKE_WIDTH} />
+      <Circle cx={10} cy={17} r={2} stroke={color} strokeWidth={ICON_STROKE_WIDTH} />
+    </Svg>
+  );
+}
+
+export function ChevronDownIcon({ color, size }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M6 9l6 6 6-6"
+        stroke={color}
+        strokeWidth={ICON_STROKE_WIDTH}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}

@@ -1,77 +1,82 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
+import { PressableScale } from '@/components/PressableScale';
+import { getCatalogNumber } from '@/data/species';
 import { SPECIES_PHOTOS } from '@/data/speciesPhotos';
 import type { Species } from '@/features/atlas/types';
 import { radius, spacing, useTheme } from '@/theme';
 
-import { EdibilityBadge } from './EdibilityBadge';
+import { EdibilityStamp } from './EdibilityStamp';
 
 type SpeciesCardProps = {
   species: Species;
-  width: number;
 };
 
-export function SpeciesCard({ species, width }: SpeciesCardProps) {
+// A big card shrinks less than a chip, or the press would feel heavy.
+const CARD_PRESSED_SCALE = 0.97;
+
+/** A specimen sheet: the photo mounted on paper, a catalogue number and both names. */
+export function SpeciesCard({ species }: SpeciesCardProps) {
   const { colors } = useTheme();
 
   return (
-    <Pressable
+    <PressableScale
       accessibilityRole="button"
       accessibilityLabel={species.namePl}
+      pressedScale={CARD_PRESSED_SCALE}
       onPress={() => router.push({ pathname: '/species/[id]', params: { id: species.id } })}
-      style={({ pressed }) => [
-        styles.card,
-        {
-          width,
-          backgroundColor: colors.surface,
-          borderColor: colors.border,
-          opacity: pressed ? 0.8 : 1,
-        },
-      ]}
+      style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
     >
       <View>
         <Image
           source={SPECIES_PHOTOS[species.id].source}
           style={[styles.photo, { backgroundColor: colors.surfaceMuted }]}
           contentFit="cover"
-          transition={200}
+          transition={300}
         />
-        <View style={styles.badge}>
-          <EdibilityBadge edibility={species.edibility} />
+        <View style={styles.stamp}>
+          <EdibilityStamp edibility={species.edibility} />
         </View>
       </View>
       <View style={styles.names}>
-        <AppText variant="bodyStrong" numberOfLines={2}>
+        <AppText variant="label" color="textMuted">
+          {getCatalogNumber(species.id)}
+        </AppText>
+        <AppText variant="heading" numberOfLines={2}>
           {species.namePl}
         </AppText>
-        <AppText variant="latin" color="textMuted" numberOfLines={1}>
+        <AppText variant="latinSmall" color="textMuted" numberOfLines={1}>
           {species.nameLatin}
         </AppText>
       </View>
-    </Pressable>
+    </PressableScale>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: radius.lg,
+    flex: 1,
+    borderRadius: radius.md,
     borderWidth: StyleSheet.hairlineWidth,
-    overflow: 'hidden',
+    padding: spacing.sm,
+    gap: spacing.sm,
   },
   photo: {
     width: '100%',
     aspectRatio: 1,
+    borderRadius: radius.sm,
   },
-  badge: {
+  stamp: {
     position: 'absolute',
-    top: spacing.sm,
     left: spacing.sm,
+    bottom: spacing.sm,
   },
   names: {
-    padding: spacing.md,
     gap: spacing.xs,
+    paddingHorizontal: spacing.xs,
+    paddingBottom: spacing.xs,
   },
 });

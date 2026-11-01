@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated, { FadeInDown, FadeOutUp, LinearTransition } from 'react-native-reanimated';
 
 import { AppText } from '@/components/AppText';
-import { CategoryChips } from '@/components/atlas/CategoryChips';
+import { CategoryTabs } from '@/components/atlas/CategoryTabs';
+import { EmptyResults } from '@/components/atlas/EmptyResults';
 import { FeatureFilterPanel } from '@/components/atlas/FeatureFilterPanel';
+import { FilterToggle } from '@/components/atlas/FilterToggle';
 import { SpeciesGrid } from '@/components/atlas/SpeciesGrid';
-import { Button } from '@/components/Button';
-import { Card } from '@/components/Card';
-import { Chip } from '@/components/Chip';
 import { Screen } from '@/components/Screen';
 import { SearchField } from '@/components/SearchField';
 import { SPECIES } from '@/data/species';
@@ -18,53 +18,60 @@ import {
   type SpeciesFilter,
 } from '@/features/atlas/filterSpecies';
 import { getCurrentMonth } from '@/features/atlas/season';
-import { spacing } from '@/theme';
+import { durations } from '@/theme';
 
 export default function AtlasScreen() {
   const [filter, setFilter] = useState<SpeciesFilter>(EMPTY_FILTER);
   const [isPanelOpen, setPanelOpen] = useState(false);
 
   const currentMonth = getCurrentMonth();
-  const results = filterSpecies(SPECIES, filter, currentMonth);
-  const featureCount = countFeatureFilters(filter);
+  // The category tabs count species that match everything else, so filter in two steps.
+  const matchingAnyCategory = filterSpecies(SPECIES, { ...filter, edibility: null }, currentMonth);
+  const results = matchingAnyCategory.filter(
+    (species) => filter.edibility === null || species.edibility === filter.edibility,
+  );
 
   return (
-    <Screen title="Atlas" subtitle="Poznaj gatunki i odblokuj je swoimi zdjęciami">
+    <Screen
+      eyebrow={`Zielnik · ${SPECIES.length} gatunków`}
+      title="Atlas"
+      subtitle="Poznaj gatunki i odblokuj je zdjęciami swoich znalezisk."
+    >
       <SearchField
         value={filter.query}
         onChangeText={(query) => setFilter({ ...filter, query })}
         placeholder="Szukaj, np. kurka albo boletus"
       />
-      <CategoryChips
+      <CategoryTabs
+        species={matchingAnyCategory}
         selected={filter.edibility}
         onChange={(edibility) => setFilter({ ...filter, edibility })}
       />
       <View style={styles.resultsRow}>
-        <AppText variant="caption" color="textMuted">
-          Gatunków: {results.length} z {SPECIES.length}
+        <AppText variant="label" color="textMuted">
+          Okazy: {results.length} / {SPECIES.length}
         </AppText>
-        <Chip
-          label={featureCount > 0 ? `Filtr cech · ${featureCount}` : 'Filtr cech'}
-          selected={isPanelOpen || featureCount > 0}
+        <FilterToggle
+          isOpen={isPanelOpen}
+          activeCount={countFeatureFilters(filter)}
           onPress={() => setPanelOpen(!isPanelOpen)}
         />
       </View>
       {isPanelOpen ? (
-        <FeatureFilterPanel filter={filter} currentMonth={currentMonth} onChange={setFilter} />
+        <Animated.View
+          entering={FadeInDown.duration(durations.base)}
+          exiting={FadeOutUp.duration(durations.fast)}
+        >
+          <FeatureFilterPanel filter={filter} currentMonth={currentMonth} onChange={setFilter} />
+        </Animated.View>
       ) : null}
-      {results.length > 0 ? (
-        <SpeciesGrid species={results} />
-      ) : (
-        <Card style={styles.empty}>
-          <AppText variant="heading">Nic nie pasuje</AppText>
-          <AppText color="textMuted">Żaden gatunek w atlasie nie ma wszystkich tych cech.</AppText>
-          <Button
-            label="Wyczyść filtry"
-            variant="secondary"
-            onPress={() => setFilter(EMPTY_FILTER)}
-          />
-        </Card>
-      )}
+      <Animated.View layout={LinearTransition.duration(durations.base)}>
+        {results.length > 0 ? (
+          <SpeciesGrid species={results} />
+        ) : (
+          <EmptyResults onClear={() => setFilter(EMPTY_FILTER)} />
+        )}
+      </Animated.View>
     </Screen>
   );
 }
@@ -74,9 +81,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  empty: {
-    alignItems: 'center',
-    gap: spacing.md,
   },
 });

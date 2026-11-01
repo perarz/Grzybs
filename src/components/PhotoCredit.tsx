@@ -1,9 +1,9 @@
 import * as Linking from 'expo-linking';
-import { Pressable } from 'react-native';
 
 import type { SpeciesPhoto } from '@/features/atlas/types';
 
 import { AppText } from './AppText';
+import { PressableScale } from './PressableScale';
 
 type PhotoCreditProps = {
   photo: SpeciesPhoto;
@@ -17,10 +17,10 @@ export function PhotoCredit({ photo }: PhotoCreditProps) {
   }
 
   return (
-    <Pressable accessibilityRole="link" onPress={openSource}>
-      <AppText variant="caption" color="textMuted" numberOfLines={2}>
-        Fot. {photo.author} · {photo.license} · Wikimedia Commons
+    <PressableScale haptic="none" accessibilityRole="link" onPress={openSource}>
+      <AppText variant="caption" color="textMuted">
+        Fot. {photo.author} · {photo.license} · Wikimedia Commons ↗
       </AppText>
-    </Pressable>
+    </PressableScale>
   );
 }

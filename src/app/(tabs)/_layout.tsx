@@ -1,20 +1,18 @@
 import { Tabs } from 'expo-router';
 
 import { AtlasIcon, LearnIcon, MapIcon } from '@/components/icons/TabIcons';
+import { TabBar } from '@/components/TabBar';
 import { TabBarIcon } from '@/components/TabBarIcon';
-import { typography, useTheme } from '@/theme';
+import { useTheme } from '@/theme';
 
 export default function TabsLayout() {
   const { colors } = useTheme();
 
   return (
     <Tabs
+      tabBar={(props) => <TabBar {...props} />}
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.textMuted,
-        tabBarLabelStyle: typography.label,
-        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border },
         sceneStyle: { backgroundColor: colors.background },
       }}
     >

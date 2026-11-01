@@ -20,7 +20,7 @@ export function NameTag({ label, side }: NameTagProps) {
         { backgroundColor: colors.surface },
       ]}
     >
-      <AppText variant="label" numberOfLines={1}>
+      <AppText variant="label" numberOfLines={2}>
         {label}
       </AppText>
     </View>

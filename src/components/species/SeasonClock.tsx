@@ -41,7 +41,7 @@ export function SeasonClock({ months, currentMonth }: SeasonClockProps) {
           <G key={month}>
             <Path
               d={ringSegmentPath(CENTER, OUTER_RADIUS, INNER_RADIUS, startAngle, endAngle)}
-              fill={inSeason ? colors.primary : colors.surfaceMuted}
+              fill={inSeason ? colors.season : colors.surfaceMuted}
               stroke={isNow ? colors.accent : 'none'}
               strokeWidth={isNow ? HAND_WIDTH : 0}
             />
@@ -50,7 +50,7 @@ export function SeasonClock({ months, currentMonth }: SeasonClockProps) {
               y={label.y}
               fill={inSeason ? colors.onPrimary : colors.textMuted}
               fontSize={typography.label.fontSize}
-              fontWeight={typography.label.fontWeight}
+              fontFamily={typography.label.fontFamily}
               textAnchor="middle"
               alignmentBaseline="central"
             >

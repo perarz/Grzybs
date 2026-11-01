@@ -1,42 +1,44 @@
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
-import { Card } from '@/components/Card';
-import { radius, spacing, useTheme } from '@/theme';
+import { SectionHeader } from '@/components/SectionHeader';
+import { spacing } from '@/theme';
 
 type KeyFeaturesProps = {
   features: string[];
 };
 
-const BULLET_SIZE = 6;
+const NUMBER_WIDTH = 24;
 
+/** Numbered like the identification key in a field guide: 01, 02, 03… */
 export function KeyFeatures({ features }: KeyFeaturesProps) {
-  const { colors } = useTheme();
-
   return (
-    <Card>
-      <AppText variant="heading">Jak rozpoznać</AppText>
-      {features.map((feature) => (
+    <View style={styles.section}>
+      <SectionHeader title="Jak rozpoznać" />
+      {features.map((feature, index) => (
         <View key={feature} style={styles.row}>
-          <View style={[styles.bullet, { backgroundColor: colors.primary }]} />
+          <AppText variant="label" color="accent" style={styles.number}>
+            {String(index + 1).padStart(2, '0')}
+          </AppText>
           <AppText style={styles.text}>{feature}</AppText>
         </View>
       ))}
-    </Card>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  section: {
+    gap: spacing.md,
+  },
   row: {
     flexDirection: 'row',
     gap: spacing.md,
   },
-  bullet: {
-    width: BULLET_SIZE,
-    height: BULLET_SIZE,
-    borderRadius: radius.pill,
-    // Body text has a 22 px line height – this puts the dot in the middle of the first line.
-    marginTop: spacing.sm,
+  number: {
+    width: NUMBER_WIDTH,
+    // Body text has a 24 px line height and labels 14 px – this lines the number up with the first line.
+    marginTop: spacing.xs + 1,
   },
   text: {
     flex: 1,

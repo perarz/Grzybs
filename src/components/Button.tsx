@@ -1,8 +1,9 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { radius, spacing, useTheme } from '@/theme';
 
 import { AppText } from './AppText';
+import { PressableScale } from './PressableScale';
 
 type ButtonProps = {
   label: string;
@@ -16,29 +17,28 @@ export function Button({ label, onPress, variant = 'primary' }: ButtonProps) {
   const isPrimary = variant === 'primary';
 
   return (
-    <Pressable
-      accessibilityRole="button"
-      onPress={onPress}
-      style={({ pressed }) => [
-        styles.button,
-        {
-          backgroundColor: isPrimary ? colors.primary : colors.surface,
-          borderColor: isPrimary ? colors.primary : colors.border,
-          opacity: pressed ? 0.8 : 1,
-        },
-      ]}
-    >
-      <AppText variant="bodyStrong" color={isPrimary ? 'onPrimary' : 'primary'}>
-        {label}
-      </AppText>
-    </Pressable>
+    <PressableScale accessibilityRole="button" onPress={onPress}>
+      <View
+        style={[
+          styles.button,
+          {
+            backgroundColor: isPrimary ? colors.primary : 'transparent',
+            borderColor: colors.primary,
+          },
+        ]}
+      >
+        <AppText variant="button" color={isPrimary ? 'onPrimary' : 'primary'}>
+          {label}
+        </AppText>
+      </View>
+    </PressableScale>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
-    borderRadius: radius.pill,
+    borderRadius: radius.sm,
     borderWidth: 1,
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.md,

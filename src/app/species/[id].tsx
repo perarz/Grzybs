@@ -1,70 +1,104 @@
 import { useLocalSearchParams } from 'expo-router';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import Animated, {
+  useAnimatedReaction,
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { scheduleOnRN } from 'react-native-worklets';
 
 import { AppText } from '@/components/AppText';
-import { EdibilityBadge } from '@/components/atlas/EdibilityBadge';
+import { BackButton } from '@/components/BackButton';
+import { CollapsingTopBar, TOP_BAR_HEIGHT } from '@/components/CollapsingTopBar';
 import { NotFound } from '@/components/NotFound';
+import { PhotoCredit } from '@/components/PhotoCredit';
+import { SectionHeader } from '@/components/SectionHeader';
 import { FeatureSummary } from '@/components/species/FeatureSummary';
 import { KeyFeatures } from '@/components/species/KeyFeatures';
 import { LookalikeList } from '@/components/species/LookalikeList';
 import { SeasonCard } from '@/components/species/SeasonCard';
-import { SpeciesHero } from '@/components/species/SpeciesHero';
+import { HERO_ASPECT, SpeciesHero } from '@/components/species/SpeciesHero';
+import { SpeciesTitle } from '@/components/species/SpeciesTitle';
 import { SpeciesWarnings } from '@/components/species/SpeciesWarnings';
 import { findSpecies } from '@/data/species';
+import { SPECIES_PHOTOS } from '@/data/speciesPhotos';
 import { findLookalikes } from '@/features/atlas/findLookalikes';
-import { spacing, useTheme } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 
 export default function SpeciesScreen() {
   const { id } = useLocalSearchParams<'/species/[id]'>();
-  const { colors } = useTheme();
-  const species = findSpecies(id);
+  const { colors, isDark } = useTheme();
+  const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
+  const scrollY = useSharedValue(0);
+  const [isBarSolid, setBarSolid] = useState(false);
 
+  // The top bar turns solid once the photo has scrolled away under it.
+  const revealAt = width * HERO_ASPECT - insets.top - TOP_BAR_HEIGHT;
+  const handleScroll = useAnimatedScrollHandler((event) => {
+    scrollY.set(event.contentOffset.y);
+  });
+  // Light status bar icons over the photo, theme-coloured ones over the paper bar.
+  useAnimatedReaction(
+    () => scrollY.get() > revealAt,
+    (isSolid, wasSolid) => {
+      if (isSolid !== wasSolid) scheduleOnRN(setBarSolid, isSolid);
+    },
+  );
+
+  const species = findSpecies(id);
   if (!species) {
     return <NotFound message="Tego gatunku nie ma w atlasie." />;
   }
-
   const lookalikes = findLookalikes(species.id);
 
   return (
-    <ScrollView
-      style={{ backgroundColor: colors.background }}
-      contentContainerStyle={styles.content}
-    >
-      <SpeciesHero species={species} />
-      <View style={styles.body}>
-        <View style={styles.names}>
-          <EdibilityBadge edibility={species.edibility} />
-          <AppText variant="display">{species.namePl}</AppText>
-          <AppText variant="latin" color="textMuted">
-            {species.nameLatin}
-          </AppText>
-          {species.otherNames.length > 0 ? (
-            <AppText variant="caption" color="textMuted">
-              Inne nazwy: {species.otherNames.join(', ')}
-            </AppText>
-          ) : null}
+    <View style={[styles.screen, { backgroundColor: colors.background }]}>
+      <StatusBar style={isBarSolid && !isDark ? 'dark' : 'light'} />
+      <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
+        <SpeciesHero species={species} scrollY={scrollY} />
+        {/* A sheet of paper laid over the photo – it slides up over it when scrolling. */}
+        <View style={[styles.sheet, { backgroundColor: colors.background }]}>
+          <SpeciesTitle species={species} />
+          <SpeciesWarnings species={species} lookalikes={lookalikes} />
+          <AppText>{species.description}</AppText>
+          <KeyFeatures features={species.keyFeatures} />
+          <SeasonCard months={species.months} />
+          <FeatureSummary species={species} />
+          {lookalikes.length > 0 ? <LookalikeList lookalikes={lookalikes} /> : null}
+          <View style={styles.source}>
+            <SectionHeader title="Źródło zdjęcia" />
+            <PhotoCredit photo={SPECIES_PHOTOS[species.id]} />
+          </View>
         </View>
-        <SpeciesWarnings species={species} lookalikes={lookalikes} />
-        <AppText>{species.description}</AppText>
-        <SeasonCard months={species.months} />
-        <KeyFeatures features={species.keyFeatures} />
-        <FeatureSummary species={species} />
-        {lookalikes.length > 0 ? <LookalikeList lookalikes={lookalikes} /> : null}
-      </View>
-    </ScrollView>
+      </Animated.ScrollView>
+      <CollapsingTopBar
+        scrollY={scrollY}
+        title={species.namePl}
+        revealAt={revealAt}
+        left={<BackButton />}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  content: {
-    paddingBottom: spacing.xxl,
+  screen: {
+    flex: 1,
   },
-  body: {
+  sheet: {
+    marginTop: -radius.lg,
+    borderTopLeftRadius: radius.lg,
+    borderTopRightRadius: radius.lg,
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
-    gap: spacing.lg,
+    paddingTop: spacing.xl,
+    paddingBottom: spacing.xxl * 2,
+    gap: spacing.xl,
   },
-  names: {
-    gap: spacing.xs,
+  source: {
+    gap: spacing.sm,
   },
 });

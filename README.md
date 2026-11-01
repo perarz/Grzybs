@@ -14,11 +14,11 @@ Uniwersalna aplikacja grzybiarza w trzech częściach: **Atlas** gatunków z ost
 
 ## Funkcje
 
-| Moduł | Opis                                                                                                                                     | Status    |
-| ----- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| Moduł | Opis                                                                                                                                     | Status                                        |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
 | Atlas | 26 gatunków z Polski ze zdjęciami, filtrowanie po cechach, sobowtóry z alertami, sezonowość; odblokowywanie gatunków zdjęciem znaleziska | przeglądanie gotowe, odblokowywanie w budowie |
-| Nauka | Grzyb dnia, gra „Sobowtór”, quiz o cechach gatunków                                                                                      | planowane |
-| Mapa  | Prywatne miejscówki, „Zaparkowałem tutaj”, powrót do auta z kompasem, alarm zmroku                                                       | planowane |
+| Nauka | Grzyb dnia, gra „Sobowtór”, quiz o cechach gatunków                                                                                      | planowane                                     |
+| Mapa  | Prywatne miejscówki, „Zaparkowałem tutaj”, powrót do auta z kompasem, alarm zmroku                                                       | planowane                                     |
 
 ## Uruchomienie
 
@@ -61,6 +61,8 @@ src/theme/       kolory (jasny/ciemny), typografia, odstępy
 - **Offline-first:** dane użytkownika w SQLite z wersjonowanymi migracjami (`PRAGMA user_version`); aplikacja nie potrzebuje sieci (poza kafelkami mapy).
 - **Expo Go:** wyłącznie biblioteki dostępne w Expo Go – aplikację da się uruchomić bez budowania natywnego.
 - **Odporność na błędy:** globalny `ErrorBoundary` z przyciskiem „Spróbuj ponownie” zamiast crasha.
+- **Wygląd „zielnik”:** papier, tusz i jeden rdzawy akcent zamiast szablonowej palety. Nazwy szeryfowym Fraunces, łacina kursywą, etykiety maszynowym IBM Plex Mono, jadalność jako pieczątka, karty jak arkusze zielnika z numerem okazu.
+- **Ruch i dotyk:** każdy klikalny element ugina się na sprężynie i odpowiada haptyką (`expo-haptics`), duże tytuły zwijają się w pasek jak w iOS, karty płynnie przestawiają się przy filtrowaniu (Reanimated – layout animations i CSS transitions).
 - TODO: uzupełniać w kolejnych etapach.
 
 ## Źródła i licencje
@@ -104,6 +106,11 @@ Niepewne fakty są oznaczone w kodzie jako `TODO: verify`.
 | [Muchomor jadowity](<https://commons.wikimedia.org/wiki/File:Amanita_virosa_a1_(7).JPG>)                              | Jerzy Opioła                        | CC BY-SA 4.0    |
 | [Hełmówka jadowita](https://commons.wikimedia.org/wiki/File:Galerina_marginata_61108.jpg)                             | Dan Molter (Mushroom Observer)      | CC BY-SA 3.0    |
 | [Piestrzenica kasztanowata](https://commons.wikimedia.org/wiki/File:Gyromitra_esculenta_BPN1.jpg)                     | Jerzy Opioła                        | CC BY-SA 4.0    |
+
+**Fonty** (licencja [SIL Open Font License 1.1](https://openfontlicense.org), pliki licencji w `assets/fonts/`):
+
+- [Fraunces](https://github.com/undercasetype/Fraunces) – The Fraunces Project Authors,
+- [IBM Plex Mono](https://github.com/IBM/plex) – IBM Corp.
 
 ## Zastrzeżenie
 

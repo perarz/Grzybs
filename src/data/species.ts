@@ -673,6 +673,11 @@ export function getSpecies(id: SpeciesId): Species {
 
 export const SPECIES: Species[] = SPECIES_IDS.map(getSpecies);
 
+/** The species' fixed place in the atlas, like the number on a herbarium sheet: "№ 07". */
+export function getCatalogNumber(id: SpeciesId): string {
+  return `№ ${String(SPECIES_IDS.indexOf(id) + 1).padStart(2, '0')}`;
+}
+
 /** For ids from outside the code, e.g. a URL – returns undefined for an unknown id. */
 export function findSpecies(id: string): Species | undefined {
   return SPECIES.find((species) => species.id === id);
