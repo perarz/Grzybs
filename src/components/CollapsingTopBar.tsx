@@ -54,7 +54,7 @@ export function CollapsingTopBar({ scrollY, title, revealAt, left }: CollapsingT
       <Animated.View
         style={[
           StyleSheet.absoluteFill,
-          { backgroundColor: colors.background, borderBottomColor: colors.border },
+          { backgroundColor: colors.sky, borderBottomColor: colors.border },
           styles.background,
           backgroundStyle,
         ]}

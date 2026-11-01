@@ -11,6 +11,8 @@ export const springs = {
   press: { damping: 20, stiffness: 400, mass: 0.6 },
   /** Soft settle – indicators and things sliding into place. */
   settle: { damping: 18, stiffness: 180 },
+  /** A bottom sheet rising: fast, with the faintest overshoot. */
+  sheet: { damping: 22, stiffness: 220, mass: 0.9 },
 } satisfies Record<string, WithSpringConfig>;
 
 /** How far a pressed control shrinks – just enough to feel physical. */

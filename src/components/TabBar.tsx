@@ -13,7 +13,7 @@ const ICON_SIZE = 24;
 const INDICATOR_WIDTH = 28;
 const INDICATOR_HEIGHT = 3;
 
-/** Paper tab bar with typewritten labels and a rust marker that slides to the open tab. */
+/** The forest floor: a dark green bar with typewritten labels and an amber marker that slides to the open tab. */
 export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: BottomTabBarProps) {
   const { colors } = useTheme();
   const [barWidth, setBarWidth] = useState(0);
@@ -40,8 +40,7 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
       style={[
         styles.bar,
         {
-          backgroundColor: colors.background,
-          borderTopColor: colors.border,
+          backgroundColor: colors.treeNear,
           paddingBottom: insets.bottom + spacing.xs,
         },
       ]}
@@ -54,7 +53,7 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const focused = index === state.index;
-        const color = focused ? colors.text : colors.textMuted;
+        const color = focused ? colors.onForest : colors.onForestMuted;
         const label = options.title ?? route.name;
 
         function openTab() {
@@ -94,7 +93,6 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
 const styles = StyleSheet.create({
   bar: {
     flexDirection: 'row',
-    borderTopWidth: StyleSheet.hairlineWidth,
     paddingTop: spacing.sm,
   },
   indicator: {
