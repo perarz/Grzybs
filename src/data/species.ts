@@ -672,3 +672,8 @@ export function getSpecies(id: SpeciesId): Species {
 }
 
 export const SPECIES: Species[] = SPECIES_IDS.map(getSpecies);
+
+/** For ids from outside the code, e.g. a URL – returns undefined for an unknown id. */
+export function findSpecies(id: string): Species | undefined {
+  return SPECIES.find((species) => species.id === id);
+}
