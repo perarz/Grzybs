@@ -21,6 +21,7 @@ export default function RootLayout() {
         <ThemeProvider value={getNavigationTheme(colors, isDark)}>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="compare" options={{ headerShown: true, title: 'Porównanie' }} />
           </Stack>
           <StatusBar style={isDark ? 'light' : 'dark'} />
         </ThemeProvider>
