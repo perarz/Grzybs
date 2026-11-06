@@ -1,3 +1,5 @@
+Project rules, current status and how to run the app on this machine are in `CLAUDE.md` – read it first, whichever agent you are.
+
 This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
 
 ## Expo has changed — do not trust your training data

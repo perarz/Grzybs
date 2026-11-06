@@ -14,11 +14,11 @@ Uniwersalna aplikacja grzybiarza w trzech częściach: **Atlas** gatunków z ost
 
 ## Funkcje
 
-| Moduł | Opis                                                                                                                                     | Status                                        |
-| ----- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| Atlas | 26 gatunków z Polski ze zdjęciami, filtrowanie po cechach, sobowtóry z alertami, sezonowość; odblokowywanie gatunków zdjęciem znaleziska | przeglądanie gotowe, odblokowywanie w budowie |
-| Nauka | Grzyb dnia, gra „Sobowtór”, quiz o cechach gatunków                                                                                      | planowane                                     |
-| Mapa  | Prywatne miejscówki, „Zaparkowałem tutaj”, powrót do auta z kompasem, alarm zmroku                                                       | planowane                                     |
+| Moduł | Opis                                                                                                                                                | Status                                        |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| Atlas | 26 gatunków z Polski ze zdjęciami, klucz do oznaczania krok po kroku, sobowtóry z alertami, sezonowość; odblokowywanie gatunków zdjęciem znaleziska | przeglądanie gotowe, odblokowywanie w budowie |
+| Nauka | Grzyb dnia, gra „Sobowtór”, quiz o cechach gatunków                                                                                                 | planowane                                     |
+| Mapa  | Prywatne miejscówki, „Zaparkowałem tutaj”, powrót do auta z kompasem, alarm zmroku                                                                  | planowane                                     |
 
 ## Uruchomienie
 
@@ -43,17 +43,17 @@ npx expo start
 
 ## Stack
 
-Expo SDK 58 · React Native 0.88 · TypeScript (strict) · expo-router · Reanimated · Gesture Handler · react-native-svg · react-native-maps · expo-location · expo-sensors · expo-image-picker · expo-sqlite · zustand · suncalc
+Expo SDK 58 · React Native 0.88 · TypeScript (strict) · expo-router · Reanimated · Gesture Handler · react-native-svg · expo-haptics · react-native-maps · expo-location · expo-sensors · expo-image-picker · expo-sqlite · zustand · suncalc
 
 ## Struktura
 
 ```
 src/app/         ekrany (expo-router), zakładki w (tabs)/
 src/components/  współdzielone komponenty UI
-src/features/    logika funkcji (atlas, collection, learn, spots, navigation, safety)
+src/features/    logika funkcji (atlas, collection, learn, spots, navigation, safety, feedback)
 src/db/          SQLite: połączenie i migracje
 src/data/        statyczne dane gatunków
-src/theme/       kolory (jasny/ciemny), typografia, odstępy
+src/theme/       kolory (jasny/ciemny), typografia, odstępy, ruch
 ```
 
 ## Decyzje techniczne
@@ -61,7 +61,7 @@ src/theme/       kolory (jasny/ciemny), typografia, odstępy
 - **Offline-first:** dane użytkownika w SQLite z wersjonowanymi migracjami (`PRAGMA user_version`); aplikacja nie potrzebuje sieci (poza kafelkami mapy).
 - **Expo Go:** wyłącznie biblioteki dostępne w Expo Go – aplikację da się uruchomić bez budowania natywnego.
 - **Odporność na błędy:** globalny `ErrorBoundary` z przyciskiem „Spróbuj ponownie” zamiast crasha.
-- **Wygląd „las”:** paleta mchu i świerka z akcentem koloru kurki, nagłówek z trzema warstwami świerków rysowanymi w SVG (przesuwają się z różną prędkością przy przewijaniu), słońce w dzień i księżyc w nocy. Nazwy szeryfowym Fraunces, łacina kursywą, etykiety maszynowym IBM Plex Mono, jadalność jako pieczątka, karty jak arkusze zielnika z numerem okazu.
+- **Wygląd „las”:** ciemna paleta mchu i świerka z akcentem koloru kurki, nagłówek z trzema warstwami świerków rysowanymi w SVG (przesuwają się z różną prędkością przy przewijaniu), słońce w dzień i księżyc w nocy. Nazwy szeryfowym Fraunces, łacina kursywą, etykiety maszynowym IBM Plex Mono, jadalność jako pieczątka, karty jak arkusze zielnika z numerem okazu.
 - **Klucz do oznaczania:** zamiast panelu filtrów – pytania krok po kroku w wysuwanym arkuszu (spód kapelusza, kolor, pierścień, pochwa, zmiana barwy, siedlisko). Każda odpowiedź ma ilustrację i liczbę gatunków, które zostaną; odpowiedzi prowadzące donikąd są wyszarzone.
 - **Ruch i dotyk:** każdy klikalny element ugina się na sprężynie i odpowiada haptyką (`expo-haptics`), duże tytuły zwijają się w pasek jak w iOS, karty płynnie przestawiają się przy filtrowaniu (Reanimated – layout animations i CSS transitions).
 - TODO: uzupełniać w kolejnych etapach.
