@@ -1,16 +1,18 @@
 import type { ReactNode } from 'react';
-import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
+
+import { durations } from '@/theme';
 
 type TabBarIconProps = {
   focused: boolean;
   children: ReactNode;
 };
 
-const FOCUSED_SCALE = 1.15;
+const FOCUSED_SCALE = 1.06;
 
 export function TabBarIcon({ focused, children }: TabBarIconProps) {
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: withSpring(focused ? FOCUSED_SCALE : 1, { damping: 12 }) }],
+    transform: [{ scale: withTiming(focused ? FOCUSED_SCALE : 1, { duration: durations.base }) }],
   }));
 
   return <Animated.View style={animatedStyle}>{children}</Animated.View>;

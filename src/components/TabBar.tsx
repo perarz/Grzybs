@@ -1,10 +1,10 @@
 import type { BottomTabBarProps } from 'expo-router/tabs';
 import { useState } from 'react';
 import { StyleSheet, View, type LayoutChangeEvent } from 'react-native';
-import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 import { selectionHaptic } from '@/features/feedback/haptics';
-import { radius, spacing, springs, useTheme } from '@/theme';
+import { durations, radius, spacing, useTheme } from '@/theme';
 
 import { AppText } from './AppText';
 import { PressableScale } from './PressableScale';
@@ -12,6 +12,8 @@ import { PressableScale } from './PressableScale';
 const ICON_SIZE = 24;
 const INDICATOR_WIDTH = 28;
 const INDICATOR_HEIGHT = 3;
+// The bar is always on screen, so its motion stays calm: no springs, no press bounce.
+const NO_PRESS_SCALE = 1;
 
 /** The forest floor: a dark green bar with typewritten labels and an amber marker that slides to the open tab. */
 export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: BottomTabBarProps) {
@@ -22,10 +24,9 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
   const indicatorStyle = useAnimatedStyle(() => ({
     transform: [
       {
-        translateX: withSpring(
-          state.index * tabWidth + (tabWidth - INDICATOR_WIDTH) / 2,
-          springs.settle,
-        ),
+        translateX: withTiming(state.index * tabWidth + (tabWidth - INDICATOR_WIDTH) / 2, {
+          duration: durations.base,
+        }),
       },
     ],
   }));
@@ -47,7 +48,7 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
     >
       {barWidth > 0 ? (
         <Animated.View
-          style={[styles.indicator, { backgroundColor: colors.accent }, indicatorStyle]}
+          style={[styles.indicator, { backgroundColor: colors.glow }, indicatorStyle]}
         />
       ) : null}
       {state.routes.map((route, index) => {
@@ -73,6 +74,7 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
           <PressableScale
             key={route.key}
             haptic="none"
+            pressedScale={NO_PRESS_SCALE}
             accessibilityRole="tab"
             accessibilityState={{ selected: focused }}
             accessibilityLabel={label}

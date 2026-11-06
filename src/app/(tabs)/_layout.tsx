@@ -16,18 +16,7 @@ export default function TabsLayout() {
         sceneStyle: { backgroundColor: colors.background },
       }}
     >
-      <Tabs.Screen
-        name="map"
-        options={{
-          title: 'Mapa',
-          tabBarIcon: ({ color, size, focused }) => (
-            <TabBarIcon focused={focused}>
-              <MapIcon color={color} size={size} />
-            </TabBarIcon>
-          ),
-        }}
-      />
-      {/* Atlas is the index route, so the app opens on it – in the middle of the tab bar. */}
+      {/* Atlas is the index route, so the app opens on it – on the left of the tab bar. */}
       <Tabs.Screen
         name="index"
         options={{
@@ -35,6 +24,17 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, size, focused }) => (
             <TabBarIcon focused={focused}>
               <AtlasIcon color={color} size={size} />
+            </TabBarIcon>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="map"
+        options={{
+          title: 'Mapa',
+          tabBarIcon: ({ color, size, focused }) => (
+            <TabBarIcon focused={focused}>
+              <MapIcon color={color} size={size} />
             </TabBarIcon>
           ),
         }}
