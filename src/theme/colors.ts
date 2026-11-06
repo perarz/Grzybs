@@ -1,5 +1,7 @@
-// "Las" – moss and spruce greens with a chanterelle accent, deep rather than pastel.
+// "Las" – moss and spruce greens with a chanterelle accent.
 // Colour carries meaning only where it matters: season (moss) and edibility.
+
+// Not shown at the moment: useTheme always picks the dark palette below.
 const light = {
   background: '#C5CFB8',
   surface: '#DCE2D0',
@@ -38,37 +40,38 @@ const light = {
 
 export type ThemeColors = typeof light;
 
-// The same forest at night – the moon replaces the sun, the accent glows like a lantern.
+// The default look: a deep green forest at dusk. The moon replaces the sun,
+// the accent glows like a lantern.
 const dark: ThemeColors = {
-  background: '#0A120E',
-  surface: '#111C16',
-  surfaceMuted: '#19271F',
-  border: '#263A2D',
-  text: '#E3ECE1',
-  textMuted: '#95AA9A',
-  primary: '#A8C79B',
-  primaryMuted: '#1A2C20',
-  onPrimary: '#0A120E',
-  accent: '#E8963F',
-  glow: '#E8963F',
-  onGlow: '#0A120E',
-  season: '#76A35E',
-  danger: '#E8604D',
-  dangerMuted: '#351B17',
-  warningMuted: '#322811',
-  edible: '#76A35E',
-  inedible: '#98A08F',
-  poisonous: '#DFA136',
-  deadly: '#E8604D',
-  sky: '#060D0A',
-  skyHorizon: '#0A120E',
-  sun: '#DAD4BA',
-  treeFar: '#1E3527',
-  treeMid: '#13261A',
-  treeNear: '#050C08',
-  onForest: '#E3ECE1',
-  onForestMuted: '#7F9886',
-  backdrop: 'rgba(0, 0, 0, 0.65)',
+  background: '#12261B',
+  surface: '#1A3225',
+  surfaceMuted: '#244032',
+  border: '#31503D',
+  text: '#E8F0E4',
+  textMuted: '#A6BCAB',
+  primary: '#B5D3A6',
+  primaryMuted: '#20392A',
+  onPrimary: '#0E1F15',
+  accent: '#EFA24F',
+  glow: '#EFA24F',
+  onGlow: '#0E1F15',
+  season: '#8ABA70',
+  danger: '#F27A66',
+  dangerMuted: '#43241E',
+  warningMuted: '#3E3319',
+  edible: '#8ABA70',
+  inedible: '#AAB2A0',
+  poisonous: '#E8AC42',
+  deadly: '#F27A66',
+  sky: '#0C1D14',
+  skyHorizon: '#12261B',
+  sun: '#E6DFC2',
+  treeFar: '#2C4D39',
+  treeMid: '#1C3727',
+  treeNear: '#0A1710',
+  onForest: '#E8F0E4',
+  onForestMuted: '#8FA995',
+  backdrop: 'rgba(0, 0, 0, 0.55)',
 };
 
 export const palette = { light, dark };

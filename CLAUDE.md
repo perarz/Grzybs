@@ -18,8 +18,8 @@ Autor uczy się Reacta w trakcie projektu – kod ma być **prosty, czytelny i s
 - Czytelne nazwy zamiast komentarzy; komentarz tylko, gdy wyjaśnia „dlaczego”.
 - TypeScript strict, zero `any`.
 - Style tylko przez tokeny z `src/theme` (kolory, odstępy, typografia, promienie, ruch) – żadnych „magicznych” wartości w komponentach.
-- Wygląd „las”: ciemna paleta mchu i świerka, akcent w kolorze kurki; nagłówek z warstwami świerków (paralaksa), ciemnozielony pasek zakładek; Fraunces (nazwy, tytuły), kursywa Fraunces (łacina), IBM Plex Mono (etykiety), małe promienie. Unikaj szablonowego wyglądu (pigułki, duże promienie, generyczne palety). Wybór z wielu opcji – krok po kroku w `BottomSheet`, nie wielkie panele.
-- Kolory: `accent` tylko na tekst i cienkie linie na tle strony, `glow` + `onGlow` na wypełnienia i elementy na ciemnych powierzchniach. Kontrast w obu motywach: min. 4,5:1 dla tekstu, 3:1 dla grafiki.
+- Wygląd „las”: domyślnie ciemna zieleń na każdym telefonie, niezależnie od jego ustawień (`useTheme` zwraca `palette.dark`, `app.json`: `dark`), akcent w kolorze kurki; nagłówek z warstwami świerków (paralaksa), ciemnozielony pasek zakładek; Fraunces (nazwy, tytuły), kursywa Fraunces (łacina), IBM Plex Mono (etykiety), małe promienie. Unikaj szablonowego wyglądu (pigułki, duże promienie, generyczne palety). Wybór z wielu opcji – krok po kroku w `BottomSheet`, nie wielkie panele.
+- Kolory: `accent` tylko na tekst i cienkie linie na tle strony, `glow` + `onGlow` na wypełnienia i elementy na ciemnych powierzchniach. Kontrast: min. 4,5:1 dla tekstu, 3:1 dla grafiki. Jasna paleta w `colors.ts` jest teraz nieużywana – to zapas na ewentualny przełącznik.
 - Wszystko klikalne przez `PressableScale` (sprężyna + haptyka); zmiany stanu animowane (Reanimated), nie skokowe. Wyjątek: pasek zakładek jest stale na ekranie, więc rusza się spokojnie – `withTiming`, bez sprężyn i bez uginania (sprężyny były tam dla autora zbyt rozbujane).
 - Wszystko, co może zawieść (lokalizacja, czujniki, sieć, baza, uprawnienia), ma obsługę błędu i stan zastępczy – aplikacja nigdy się nie crashuje.
 - Offline-first: dane użytkownika w SQLite (`src/db`); wszystko działa bez sieci (poza kafelkami mapy).
@@ -53,7 +53,7 @@ Import przez alias `@/` → `src/`.
 
 - Małe kroki. Po każdym: `npm run lint` + `npm run typecheck` + commit (`feat:` / `fix:` / `chore:` / `refactor:`).
 - Po każdym ETAPIE stop: podsumowanie, jak przetestować (Expo Go na telefonie + emulator Androida), wyjaśnienie kluczowego kodu prostym językiem, 3 krótkie pytania sprawdzające. Czekaj na „dalej”.
-- Z autorem rozmawiaj po polsku, krótko i prostym językiem. Pisze bezpośrednio i ocenia wygląd po efekcie, więc zmiany UI sprawdź zrzutem z emulatora w obu motywach, zanim powiesz, że są gotowe.
+- Z autorem rozmawiaj po polsku, krótko i prostym językiem. Pisze bezpośrednio i ocenia wygląd po efekcie, więc zmiany UI sprawdź zrzutem z emulatora, zanim powiesz, że są gotowe.
 
 ## Plan etapów
 
@@ -99,7 +99,7 @@ Otwarte sprawy:
 - `ANDROID_HOME` jest w `~/.zshrc`, więc w nowym terminalu `a` w `npx expo start` sam włącza emulator (AVD `Medium_Phone_API_37.0`). Serwer uruchomiony przed tą zmianą tego nie umie.
 - Powłoka agenta może nie wczytać `~/.zshrc`: wtedy `source ~/.nvm/nvm.sh` przed `npx`/`npm` i pełna ścieżka `~/Library/Android/sdk/platform-tools/adb`.
 - Otwieranie apki przez adb: `adb shell am force-stop host.exp.exponent`, potem `adb shell am start -a android.intent.action.VIEW -d "<adres exp:// z terminala>"`. Konkretny ekran: `<adres>/--/species/amanita-phalloides`.
-- Zrzut ekranu: `adb exec-out screencap -p > plik.png`. Tryb ciemny: `adb shell cmd uimode night yes` (po teście wróć na `no`).
+- Zrzut ekranu: `adb exec-out screencap -p > plik.png`. Po otwarciu apki poczekaj na załadowanie (kilkanaście sekund po przeładowaniu), zanim wyślesz kliknięcia lub zrobisz zrzut – inaczej klawisz wstecz wychodzi z apki, a zdjęcia są jeszcze puste.
 
 Pułapki:
 
