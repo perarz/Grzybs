@@ -60,7 +60,7 @@ export function KeyOptions<T>({ options, selected, countFor, onSelect }: KeyOpti
                   />
                 </View>
               ) : Illustration ? (
-                <Illustration color={colors.text} accent={colors.accent} />
+                <Illustration color={colors.text} accent={colors.glow} />
               ) : null
             }
           />

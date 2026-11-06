@@ -16,7 +16,7 @@ const ICON_CIRCLE_SIZE = 48;
 const CHEVRON_SIZE = 20;
 const BUTTON_PRESSED_SCALE = 0.98;
 
-/** The way into the identification key – a dark green card, the main action of the atlas. */
+/** The way into the identification key – a dark forest card, the main action of the atlas. */
 export function IdentifyKeyButton({ answeredCount, onPress }: IdentifyKeyButtonProps) {
   const { colors } = useTheme();
 
@@ -26,22 +26,22 @@ export function IdentifyKeyButton({ answeredCount, onPress }: IdentifyKeyButtonP
       accessibilityLabel="Klucz do oznaczania"
       pressedScale={BUTTON_PRESSED_SCALE}
       onPress={onPress}
-      style={[styles.button, { backgroundColor: colors.primary }]}
+      style={[styles.button, { backgroundColor: colors.treeNear, borderColor: colors.border }]}
     >
-      <View style={[styles.iconCircle, { backgroundColor: colors.accent }]}>
-        <IdentifyIcon color={colors.onPrimary} size={ICON_SIZE} />
+      <View style={[styles.iconCircle, { backgroundColor: colors.glow }]}>
+        <IdentifyIcon color={colors.onGlow} size={ICON_SIZE} />
       </View>
       <View style={styles.text}>
-        <AppText variant="heading" color="onPrimary">
+        <AppText variant="heading" color="onForest">
           Klucz do oznaczania
         </AppText>
-        <AppText variant="caption" color="onPrimary" style={styles.caption}>
+        <AppText variant="caption" color="onForestMuted">
           {answeredCount > 0
             ? `Odpowiedzi: ${answeredCount} z ${KEY_STEPS.length} – dotknij, by zmienić`
             : 'Znalazłeś grzyba? Odpowiedz na kilka pytań'}
         </AppText>
       </View>
-      <ChevronRightIcon color={colors.onPrimary} size={CHEVRON_SIZE} />
+      <ChevronRightIcon color={colors.onForest} size={CHEVRON_SIZE} />
     </PressableScale>
   );
 }
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.md,
     borderRadius: radius.md,
+    borderWidth: StyleSheet.hairlineWidth,
     padding: spacing.md,
   },
   iconCircle: {
@@ -64,8 +65,5 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
     gap: spacing.xs / 2,
-  },
-  caption: {
-    opacity: 0.8,
   },
 });
