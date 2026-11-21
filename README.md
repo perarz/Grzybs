@@ -58,7 +58,7 @@ npx expo start
 
 ## Stack
 
-Expo SDK 58 · React Native 0.88 · TypeScript (strict) · expo-router · Reanimated · Gesture Handler · react-native-svg · expo-haptics · react-native-maps · expo-location · expo-sensors · expo-image-picker · expo-sqlite · zustand · suncalc
+Expo SDK 58 · React Native 0.88 · TypeScript (strict) · expo-router · Reanimated · Gesture Handler · react-native-svg · expo-haptics · react-native-maps · expo-location · expo-image-picker · expo-sqlite · suncalc
 
 ## Struktura
 

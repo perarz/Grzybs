@@ -109,7 +109,7 @@ npm test                # testy jednostkowe czystych funkcji (gdy dojdą)
 - Następny krok: natywna weryfikacja dotychczasowych funkcji, pozostałe TODO treści i ewentualne bonusy, gdy podstawy zostaną ocenione wizualnie. Użytkownik daje swobodę pracy z maksymalnie dwoma subagentami i nie chce zadań ani odpytywania.
 - Test wizualny 2026-11-21 (emulator, ADB działa): pierwszy start, ekran Start, ekran awaryjny startu. Pozostałe ekrany po przebudowie 2026-11-15 nadal czekają na przegląd na urządzeniu.
 - Pod Etap 4 są już: tabela `finds` (`src/db/migrations.ts`), wielokrotnego użytku `BottomSheet`, zainstalowane `expo-image-picker` i `expo-file-system`.
-- Zainstalowane, ale jeszcze nieużywane: `zustand`, `expo-sensors`. Kompas korzysta z `expo-location.watchHeadingAsync`, bez nowej biblioteki.
+- Kompas korzysta z `expo-location.watchHeadingAsync`; nieużywane `zustand`, `expo-sensors` i `@types/suncalc` usunięto 2026-11-21.
 
 Otwarte sprawy:
 
