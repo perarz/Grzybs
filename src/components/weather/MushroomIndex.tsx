@@ -79,11 +79,7 @@ export function MushroomIndex({
           hitSlop={{ top: 4, bottom: 4, right: 4 }}
           style={styles.helpButton}
         >
-          <View style={styles.question}>
-            <AppText variant="caption" color="text">
-              ?
-            </AppText>
-          </View>
+          <FieldIcon name="help" size={layout.icon} color={ink.muted} />
         </PressableScale>
       </View>
       <Modal
@@ -194,15 +190,6 @@ const styles = StyleSheet.create({
   iconButton: {
     width: layout.touchTarget,
     height: layout.touchTarget,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  question: {
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    borderColor: ink.muted,
-    width: 18,
-    height: 18,
     alignItems: 'center',
     justifyContent: 'center',
   },

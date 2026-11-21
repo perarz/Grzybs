@@ -3,10 +3,12 @@ import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import { layout, radius, spacing, useTheme } from '@/theme';
 
 import { AppText } from './AppText';
+import { FieldIcon, type FieldIconName } from './icons/FieldIcon';
 import { PressableScale } from './PressableScale';
 
 type ButtonProps = {
   label: string;
+  icon?: FieldIconName;
   disabled?: boolean;
   onPress: () => void;
   /** Secondary is an outlined button for less important actions. */
@@ -16,6 +18,7 @@ type ButtonProps = {
 
 export function Button({
   label,
+  icon,
   onPress,
   variant = 'primary',
   style,
@@ -45,7 +48,18 @@ export function Button({
           },
         ]}
       >
-        <AppText variant="button" color={disabled ? 'textMuted' : isPrimary ? 'onGlow' : 'text'}>
+        {icon && (
+          <FieldIcon
+            name={icon}
+            size={spacing.lg}
+            color={disabled ? colors.textMuted : isPrimary ? colors.onGlow : colors.text}
+          />
+        )}
+        <AppText
+          style={styles.label}
+          variant="button"
+          color={disabled ? 'textMuted' : isPrimary ? 'onGlow' : 'text'}
+        >
           {label}
         </AppText>
       </View>
@@ -54,7 +68,10 @@ export function Button({
 }
 
 const styles = StyleSheet.create({
+  label: { flexShrink: 1, textAlign: 'center' },
   button: {
+    flexDirection: 'row',
+    gap: spacing.sm,
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: layout.touchTarget,

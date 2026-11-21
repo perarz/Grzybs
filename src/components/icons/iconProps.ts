@@ -5,4 +5,5 @@ export type IconProps = {
   size: number;
 };
 
-export const ICON_STROKE_WIDTH = 1.8;
+/** Rounded, bold outline in the shared 24 × 24 coordinate system. */
+export const ICON_STROKE_WIDTH = 2.6;

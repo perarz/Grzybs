@@ -8,7 +8,7 @@ import {
   type Experience,
   type OnboardingQuestion,
 } from '@/features/onboarding/questions';
-import { useTheme } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 import { QuestionAnswers } from './QuestionAnswers';
 import { styles as s } from './styles';
 type Props = {
@@ -60,9 +60,11 @@ export function OnboardingChoices({
                     {item.subtitle}
                   </AppText>
                 </View>
-                <AppText color={level === item.id ? 'glow' : 'textMuted'}>
-                  {level === item.id ? '●' : '○'}
-                </AppText>
+                <FieldIcon
+                  name={level === item.id ? 'selected' : 'circle'}
+                  size={spacing.xl}
+                  color={level === item.id ? colors.glow : colors.textMuted}
+                />
               </PressableScale>
             ))
           : !done && (

@@ -67,9 +67,11 @@ export function ExperienceSheet({ onClose }: { onClose: () => void }) {
                   {item.subtitle}
                 </AppText>
               </View>
-              <AppText color={selected === item.id ? 'glow' : 'textMuted'}>
-                {selected === item.id ? '●' : '○'}
-              </AppText>
+              <FieldIcon
+                name={selected === item.id ? 'selected' : 'circle'}
+                size={spacing.xl}
+                color={selected === item.id ? colors.glow : colors.textMuted}
+              />
             </PressableScale>
           ))}
           {error && (

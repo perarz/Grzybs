@@ -26,7 +26,13 @@ export function KeyFooter({
     <View style={[styles.footer, { borderTopColor: colors.border }]}>
       <View style={styles.row}>
         {canGoBack ? (
-          <Button label="← Wstecz" variant="secondary" onPress={onBack} style={styles.half} />
+          <Button
+            label="Wstecz"
+            icon="back"
+            variant="secondary"
+            onPress={onBack}
+            style={styles.half}
+          />
         ) : null}
         <Button label="Nie wiem" variant="secondary" onPress={onSkip} style={styles.half} />
       </View>

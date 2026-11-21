@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Image } from 'expo-image';
 import { StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
+import { FieldIcon } from '@/components/icons/FieldIcon';
 import { PhotoCredit } from '@/components/PhotoCredit';
 import { PressableScale } from '@/components/PressableScale';
 import { SPECIES_PHOTOS } from '@/data/speciesPhotos';
@@ -69,19 +70,19 @@ export function QuestionAnswers({ question, selected, onSelect }: Props) {
               )}
               <View style={visual ? styles.photoLabel : styles.answerLabel}>
                 {binary && (
-                  <AppText variant="title" color="glow">
-                    {index === 0 ? '✓' : '×'}
-                  </AppText>
+                  <FieldIcon
+                    name={index === 0 ? 'check' : 'close'}
+                    size={spacing.xl}
+                    color={colors.glow}
+                  />
                 )}
                 {!visual && !binary && (
                   <AppText variant="label" color="textMuted">
                     {String.fromCharCode(65 + index)}
                   </AppText>
                 )}
-                <AppText style={!visual && !binary ? s.choiceText : undefined}>
-                  {answer}
-                  {correct ? ' ✓' : ''}
-                </AppText>
+                <AppText style={!visual && !binary ? s.choiceText : undefined}>{answer}</AppText>
+                {correct && <FieldIcon name="check" size={spacing.lg} color={colors.glow} />}
               </View>
             </PressableScale>
             {photo && <PhotoCredit photo={photo} />}
