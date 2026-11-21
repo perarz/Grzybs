@@ -112,10 +112,18 @@ function reviewExercises(
         ? situation(ruleQueue.shift()!, random)
         : pick(makers, random)(pick(speciesIds, random));
     if (!exercise || used.has(exercise.key)) continue;
+    if (exercise.key.startsWith('where:') && whereCount(result) >= MAX_WHERE) continue;
     used.add(exercise.key);
     result.push(exercise);
   }
   return result;
+}
+
+// Habitat questions are useful but samey – at most two per lesson.
+const MAX_WHERE = 2;
+
+function whereCount(items: Exercise[]) {
+  return items.filter((item) => item.key.startsWith('where:')).length;
 }
 
 function teachSpecies(speciesId: SpeciesId): Exercise {
@@ -164,6 +172,13 @@ function photoFromName(speciesId: SpeciesId, random: Random): Exercise {
   };
 }
 
+const VERDICT: Record<Species['edibility'], string> = {
+  edible: 'jadalny',
+  inedible: 'niejadalny',
+  poisonous: 'trujący',
+  deadly: 'śmiertelnie trujący',
+};
+
 function basket(speciesId: SpeciesId): Exercise {
   const species = getSpecies(speciesId);
   const edible = species.edibility === 'edible';
@@ -179,8 +194,8 @@ function basket(speciesId: SpeciesId): Exercise {
     ],
     correctId: edible ? 'take' : 'leave',
     explanation: edible
-      ? `${nameOf(species)}: jadalny. ${species.edibilityNote ?? 'Zbieraj tylko, gdy nie masz żadnych wątpliwości.'}`
-      : `${nameOf(species)}: ${species.edibility === 'inedible' ? 'niejadalny' : species.edibility === 'deadly' ? 'śmiertelnie trujący' : 'trujący'}. ${firstSentence(species.poisoning ?? species.edibilityNote ?? species.description)}`,
+      ? `${nameOf(species)} – gatunek jadalny. ${species.edibilityNote ?? 'Zbieraj tylko, gdy nie masz żadnych wątpliwości.'}`
+      : `${nameOf(species)} – gatunek ${VERDICT[species.edibility]}. ${firstSentence(species.poisoning ?? species.edibilityNote ?? species.description)}`,
   };
 }
 
@@ -209,11 +224,15 @@ function lookalike(pair: [SpeciesId, SpeciesId], random: Random): Exercise {
 
 function whereToLook(speciesId: SpeciesId, random: Random): Exercise | null {
   const species = getSpecies(speciesId);
+  const correct = species.habitats[0];
+  // Birches and oaks grow in pine woods too, so the other forest type is never a wrong answer.
+  const forests: Habitat[] = ['deciduous', 'coniferous'];
   const others = (Object.keys(HABITAT_LABELS) as Habitat[]).filter(
-    (habitat) => !species.habitats.includes(habitat),
+    (habitat) =>
+      !species.habitats.includes(habitat) &&
+      !(forests.includes(correct) && forests.includes(habitat)),
   );
   if (others.length < 2) return null;
-  const correct = species.habitats[0];
   return {
     kind: 'choice',
     key: `where:${speciesId}`,

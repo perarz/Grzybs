@@ -100,3 +100,19 @@ test('every field rule cites an official source and has a correct answer', () =>
     assert.ok(rule.situation.options.some((option) => option.id === rule.situation.correctId));
   }
 });
+
+test('habitat questions are capped and never offer the other forest type as a wrong answer', () => {
+  const forests = ['deciduous', 'coniferous'];
+  for (let id = 0; id < COURSE_LENGTH; id++) {
+    for (let seed = 1; seed <= 20; seed++) {
+      const items = lessonExercises(courseLesson(id), seeded(seed));
+      const where = items.filter((item) => item.key.startsWith('where:'));
+      assert.ok(where.length <= 2, `lesson ${id} has ${where.length} habitat questions`);
+      for (const item of where) {
+        if (!forests.includes(item.correctId)) continue;
+        const ids = item.options.map((option) => option.id);
+        assert.equal(ids.filter((habitat) => forests.includes(habitat)).length, 1, item.key);
+      }
+    }
+  }
+});
