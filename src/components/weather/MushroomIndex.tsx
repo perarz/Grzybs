@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
-import { checkMushroomAlert, updateAlertLocation } from '@/features/weather/mushroomAlerts';
+import { checkMushroomAlert, updateAlertLocation } from '@/features/weather/alerts';
 import { MushroomAlertControl } from './MushroomAlertControl';
 import { MushroomGauge } from './MushroomGauge';
 import { FieldIcon } from '@/components/icons/FieldIcon';

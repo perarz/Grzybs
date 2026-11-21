@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { OnboardingProvider } from '@/features/onboarding/OnboardingProvider';
-import { MushroomAlertsLifecycle } from '@/features/weather/MushroomAlertsLifecycle';
+import { MushroomAlertsLifecycle } from '@/features/weather/alerts';
 import { ErrorFallback } from '@/components/ErrorFallback';
 import { CollectionProvider } from '@/features/collection/CollectionProvider';
 import { DATABASE_NAME, initDatabase } from '@/db/initDatabase';
@@ -50,7 +50,7 @@ export default function RootLayout() {
               <Stack screenOptions={{ headerShown: false, animation: 'ios_from_right' }}>
                 <Stack.Screen name="(tabs)" />
               </Stack>
-              <MushroomAlertsLifecycle />
+              {MushroomAlertsLifecycle ? <MushroomAlertsLifecycle /> : null}
             </ThemeProvider>
           </OnboardingProvider>
         </CollectionProvider>

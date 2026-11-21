@@ -5,7 +5,7 @@ import {
   checkMushroomAlert,
   readAlertSettings,
   setMushroomAlerts,
-} from '@/features/weather/mushroomAlerts';
+} from '@/features/weather/alerts';
 import type { WeatherForecast } from '@/features/weather/types';
 import { spacing, useTheme } from '@/theme';
 
