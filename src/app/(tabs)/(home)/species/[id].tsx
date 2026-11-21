@@ -30,7 +30,9 @@ import { findLookalikes } from '@/features/atlas/findLookalikes';
 import { radius, spacing, useTheme } from '@/theme';
 
 export default function SpeciesScreen() {
-  const { id } = useLocalSearchParams<'/species/[id]'>();
+  // An explicit type instead of the generated '/species/[id]': those types exist only while
+  // the dev server runs, so a fresh clone (and CI) could not typecheck this screen.
+  const { id = '' } = useLocalSearchParams<{ id?: string }>();
   const { colors, isDark } = useTheme();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();

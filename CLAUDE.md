@@ -133,7 +133,7 @@ Pułapki:
 
 - Expo Go 58 (Android) daje moduły v2 (`expo-sqlite`, `expo-haptics`, `expo-application`) tylko pierwszemu silnikowi JS w procesie. Apka sama to naprawia przy starcie (jedno przeładowanie, potem ekran „Expo Go potrzebuje restartu”). Nie importuj niczego z aplikacji w `index.ts` przed `hasNativeModules()`.
 - Otwarcie apki w chwili startu emulatora zostawia Expo Go na kółku ładowania, bez żądania do Metro. Poczekaj na sieć i otwórz ponownie.
-- Typy tras (`typedRoutes`) generuje działający serwer – po dodaniu trasy musi być uruchomiony, zanim odpalisz `typecheck`.
+- Typy tras (`typedRoutes`) generuje działający serwer, a w czystym klonie i w CI ich nie ma – kod nie może od nich zależeć (np. `useLocalSearchParams<{ id?: string }>()` zamiast `<'/species/[id]'>`). Sprawdzone 2026-11-21 na świeżym klonie: `npm ci`, lint, typecheck, testy, `expo-doctor` i eksport Androida przechodzą.
 
 ## Uwagi techniczne (sprawdzone na tym SDK)
 
