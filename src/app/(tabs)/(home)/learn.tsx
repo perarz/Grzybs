@@ -6,6 +6,7 @@ import { FieldIcon } from '@/components/icons/FieldIcon';
 import { CoursePath } from '@/components/learn/CoursePath';
 import { useCourseProgress } from '@/features/learn/useCourseProgress';
 import { useLearningJourney } from '@/features/learn/useLearningJourney';
+import { LESSONS_PER_STAGE } from '@/features/learn/course';
 import { LEVELS } from '@/features/learn/journey';
 import { spacing, useTheme } from '@/theme';
 
@@ -13,7 +14,8 @@ export default function LearnScreen() {
   const course = useCourseProgress();
   const { journey, error: streakError, retry } = useLearningJourney(false);
   const { colors } = useTheme();
-  const rank = LEVELS[Math.min(5, Math.floor((course.completed?.length ?? 0) / 10))];
+  // Every finished stage (four lessons and its test) earns the next rank.
+  const rank = LEVELS[Math.min(5, Math.floor((course.completed?.length ?? 0) / LESSONS_PER_STAGE))];
   return (
     <Screen title="Nauka" eyebrow="Krok po kroku" showBack>
       <View style={styles.summary}>
@@ -21,6 +23,10 @@ export default function LearnScreen() {
           <FieldIcon name="flame" size={spacing.xl} color={colors.glow} />
           <AppText variant="heading">{streakError ? '—' : (journey?.streak ?? '…')}</AppText>
           <AppText color="textMuted">{journey?.streak === 1 ? 'dzień passy' : 'dni passy'}</AppText>
+        </View>
+        <View style={styles.stat}>
+          <FieldIcon name="mushrooms" size={spacing.lg} color={colors.glow} />
+          <AppText variant="bodyStrong">{course.completed ? `${course.xp} XP` : '…'}</AppText>
         </View>
         <View style={styles.stat}>
           <FieldIcon name="trophy" size={spacing.lg} color={colors.glow} />

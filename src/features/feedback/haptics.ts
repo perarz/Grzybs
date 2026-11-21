@@ -31,3 +31,11 @@ export function warningHaptic() {
     : Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
   feedback.catch(ignoreFailure);
 }
+
+/** A short confirm – a correct answer. */
+export function successHaptic() {
+  const feedback = isAndroid
+    ? Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Confirm)
+    : Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  feedback.catch(ignoreFailure);
+}

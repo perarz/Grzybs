@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { readCourseSteps } from './courseStorage';
+import { courseXP, readCourseSteps } from './courseStorage';
 
 export function useCourseProgress() {
   const db = useSQLiteContext();
   const [completed, setCompleted] = useState<number[] | null>(null);
+  const [xp, setXP] = useState(0);
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
   useFocusEffect(
@@ -15,6 +16,7 @@ export function useCourseProgress() {
         .then((rows) => {
           if (active) {
             setCompleted(rows.map((row) => row.step_id));
+            setXP(courseXP(rows));
             setError(false);
           }
         })
@@ -28,5 +30,5 @@ export function useCourseProgress() {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [db, attempt]),
   );
-  return { completed, error, retry: () => setAttempt((value) => value + 1) };
+  return { completed, xp, error, retry: () => setAttempt((value) => value + 1) };
 }

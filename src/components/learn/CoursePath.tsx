@@ -3,15 +3,14 @@ import { StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
 import { FieldIcon } from '@/components/icons/FieldIcon';
-import { COURSE_STAGES, COURSE_LENGTH, STEPS_PER_STAGE } from '@/features/learn/course';
-import { LEVELS } from '@/features/learn/journey';
+import { COURSE_STAGES, COURSE_LENGTH, LESSONS_PER_STAGE } from '@/features/learn/course';
 import { layout, radius, spacing, useTheme } from '@/theme';
 import { CourseTrail } from './CourseTrail';
 
 export function CoursePath({ completed }: { completed: number[] }) {
   const { colors } = useTheme();
   const next = completed.length;
-  const currentStage = Math.min(COURSE_STAGES.length - 1, Math.floor(next / STEPS_PER_STAGE));
+  const currentStage = Math.min(COURSE_STAGES.length - 1, Math.floor(next / LESSONS_PER_STAGE));
   const [selected, setSelected] = useState<number | null>(null);
   const shown = selected ?? currentStage;
   return (
@@ -20,14 +19,14 @@ export function CoursePath({ completed }: { completed: number[] }) {
         <View style={styles.achievement}>
           <FieldIcon name="trophy" size={spacing.xxl} color={colors.glow} />
           <AppText variant="heading" color="accent">
-            Cała ścieżka ukończona!
+            Egzamin zdany – jesteś grzybiarzem!
           </AppText>
         </View>
       )}
       {COURSE_STAGES.map((stage, index) => {
         const expanded = shown === index;
         const locked = index > currentStage;
-        const count = Math.min(STEPS_PER_STAGE, Math.max(0, next - index * STEPS_PER_STAGE));
+        const count = Math.min(LESSONS_PER_STAGE, Math.max(0, next - index * LESSONS_PER_STAGE));
         return (
           <View key={stage.title} style={styles.content}>
             <PressableScale
@@ -63,20 +62,20 @@ export function CoursePath({ completed }: { completed: number[] }) {
                     {stage.title}
                   </AppText>
                   <AppText variant="caption" color="textMuted">
-                    {expanded ? `Cel: ${LEVELS[index + 1].name}` : LEVELS[index + 1].name}
+                    {stage.subtitle}
                   </AppText>
                 </View>
                 <AppText variant="label" color={expanded ? 'accent' : 'textMuted'}>
-                  {count}/10
+                  {count}/{LESSONS_PER_STAGE}
                 </AppText>
               </View>
               {expanded && (
                 <View
                   style={styles.progress}
                   accessibilityRole="progressbar"
-                  accessibilityValue={{ min: 0, max: STEPS_PER_STAGE, now: count }}
+                  accessibilityValue={{ min: 0, max: LESSONS_PER_STAGE, now: count }}
                 >
-                  {Array.from({ length: STEPS_PER_STAGE }, (_, step) => (
+                  {Array.from({ length: LESSONS_PER_STAGE }, (_, step) => (
                     <View
                       key={step}
                       style={[

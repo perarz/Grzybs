@@ -49,6 +49,11 @@ export default function RootLayout() {
               {/* ios_from_right gives Android the iOS push: the old screen slides a little and dims. */}
               <Stack screenOptions={{ headerShown: false, animation: 'ios_from_right' }}>
                 <Stack.Screen name="(tabs)" />
+                {/* A lesson covers the tab bar and rises from below; a swipe must not drop the progress. */}
+                <Stack.Screen
+                  name="lesson/[id]"
+                  options={{ animation: 'slide_from_bottom', gestureEnabled: false }}
+                />
               </Stack>
               {MushroomAlertsLifecycle ? <MushroomAlertsLifecycle /> : null}
             </ThemeProvider>

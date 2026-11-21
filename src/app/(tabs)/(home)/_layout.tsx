@@ -16,7 +16,6 @@ export default function HomeLayout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="atlas" />
       <Stack.Screen name="learn" />
-      <Stack.Screen name="lesson/[id]" />
       <Stack.Screen name="collection" />
       <Stack.Screen name="settings" />
       <Stack.Screen name="species/[id]" />

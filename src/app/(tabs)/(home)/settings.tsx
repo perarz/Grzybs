@@ -7,6 +7,7 @@ import { FieldIcon } from '@/components/icons/FieldIcon';
 import { AboutAtlasSheet } from '@/components/about/AboutAtlasSheet';
 import { ExperienceSheet } from '@/components/settings/ExperienceSheet';
 import { SettingsNotifications } from '@/components/settings/SettingsNotifications';
+import { SettingsSounds } from '@/components/settings/SettingsSounds';
 import { useOnboarding } from '@/features/onboarding/OnboardingProvider';
 import { EXPERIENCES } from '@/features/onboarding/questions';
 import { layout, radius, spacing, useTheme } from '@/theme';
@@ -38,6 +39,9 @@ export default function SettingsScreen() {
         </View>
         <FieldIcon name="chevron" size={spacing.lg} color={colors.textMuted} />
       </PressableScale>
+      <View style={card}>
+        <SettingsSounds />
+      </View>
       <AppText variant="label" color="accent">
         Powiadomienia
       </AppText>

@@ -10,18 +10,26 @@ class TestDate extends Date {
     return clock;
   }
 }
-function load(path) {
+const nodePath = require('node:path');
+function load(file) {
   const exports = {};
   vm.runInNewContext(
-    ts.transpileModule(readFileSync(path, 'utf8'), {
+    ts.transpileModule(readFileSync(file, 'utf8'), {
       compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
     }).outputText,
-    { exports, Date: TestDate },
+    {
+      exports,
+      Date: TestDate,
+      // Storage reads lesson metadata from the course; relative imports load the same way.
+      require: (name) => load(nodePath.resolve(nodePath.dirname(file), `${name}.ts`)),
+    },
   );
   return exports;
 }
 const { MIGRATIONS } = load('src/db/migrations.ts');
-const { readCourseSteps, completeCourseStep } = load('src/features/learn/courseStorage.ts');
+const { readCourseSteps, completeCourseStep, courseXP } = load(
+  'src/features/learn/courseStorage.ts',
+);
 function setup(t, migrate = true) {
   const sqlite = new DatabaseSync(':memory:');
   t.after(() => sqlite.close());
@@ -54,6 +62,7 @@ test('course migration preserves old results, profile and observations without g
     INSERT INTO finds (species_id, found_at, created_at) VALUES ('boletus-edulis', 123, 123);
   `);
   for (const migration of MIGRATIONS.slice(6)) sqlite.exec(migration);
+  assert.equal(sqlite.prepare('SELECT COUNT(*) AS count FROM course_activity').get().count, 0);
   assert.equal(sqlite.prepare('SELECT score FROM learning_sessions').get().score, 4);
   assert.equal(sqlite.prepare('SELECT experience FROM user_profile').get().experience, 'expert');
   assert.equal(sqlite.prepare('SELECT COUNT(*) AS count FROM finds').get().count, 1);
@@ -64,19 +73,16 @@ test('course refuses skipping the first or an intermediate step', async (t) => {
   await assert.rejects(completeCourseStep(db, 1), /wcześniejsze/);
   await completeCourseStep(db, 0);
   await assert.rejects(completeCourseStep(db, 2), /wcześniejsze/);
-  assert.deepEqual(
-    (await readCourseSteps(db)).map((row) => row.step_id),
-    [0],
-  );
+  assert.equal((await readCourseSteps(db)).map((row) => row.step_id).join(), '0');
 });
-test('all 50 steps can be completed sequentially without recording free practice results', async (t) => {
+test('all 25 lessons can be completed sequentially without recording free practice results', async (t) => {
   const { sqlite, db } = setup(t);
-  for (let step = 0; step < 50; step++) await completeCourseStep(db, step);
+  for (let step = 0; step < 25; step++) await completeCourseStep(db, step);
   const steps = await readCourseSteps(db);
-  assert.equal(steps.length, 50);
-  assert.deepEqual(
-    steps.map((row) => row.step_id),
-    Array.from({ length: 50 }, (_, i) => i),
+  assert.equal(steps.length, 25);
+  assert.equal(
+    steps.map((row) => row.step_id).join(),
+    Array.from({ length: 25 }, (_, i) => i).join(),
   );
   assert.ok(steps.every((row) => Number.isInteger(row.completed_at) && row.completed_at > 0));
   assert.equal(sqlite.prepare('SELECT COUNT(*) AS count FROM learning_sessions').get().count, 0);
@@ -93,7 +99,7 @@ test('retry preserves the original completion date, including after later steps'
 });
 test('invalid step IDs cannot reach storage and schema rejects out-of-range writes', async (t) => {
   const { sqlite, db } = setup(t);
-  for (const step of [-1, 50, 1.5, NaN, Infinity, '0', null]) {
+  for (const step of [-1, 25, 50, 1.5, NaN, Infinity, '0', null]) {
     await assert.rejects(completeCourseStep(db, step), /Nieprawidłowy/);
   }
   assert.throws(() => sqlite.exec('INSERT INTO course_steps VALUES (50, 123)'));
@@ -139,4 +145,28 @@ test('daily activity write failure rolls back progression as one transaction', a
   };
   await assert.rejects(completeCourseStep(db, 0), /activity write failed/);
   assert.equal((await readCourseSteps(db)).length, 0);
+});
+
+test('the rebuilt course starts over but keeps the daily streak history', async (t) => {
+  const { sqlite } = setup(t, false);
+  for (const migration of MIGRATIONS.slice(0, 8)) sqlite.exec(migration);
+  sqlite.exec(`
+    INSERT INTO course_steps VALUES (0, 123), (1, 124);
+    INSERT INTO course_activity VALUES ('2026-11-20', 124);
+  `);
+  for (const migration of MIGRATIONS.slice(8)) sqlite.exec(migration);
+  assert.equal(sqlite.prepare('SELECT COUNT(*) AS count FROM course_steps').get().count, 0);
+  assert.equal(sqlite.prepare('SELECT COUNT(*) AS count FROM course_activity').get().count, 1);
+});
+
+test('a replay keeps the best result and XP rewards tests and lessons without mistakes', async (t) => {
+  const { db } = setup(t);
+  await completeCourseStep(db, 0, 2);
+  await completeCourseStep(db, 0, 0);
+  await completeCourseStep(db, 0, 3);
+  for (let step = 1; step <= 4; step++) await completeCourseStep(db, step, 1);
+  const rows = await readCourseSteps(db);
+  assert.equal(rows[0].mistakes, 0);
+  // Lesson 0 without mistakes 15, lessons 1–3 with mistakes 10 each, test 4 with a mistake 20.
+  assert.equal(courseXP(rows), 15 + 30 + 20);
 });

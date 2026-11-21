@@ -3,10 +3,10 @@ import { StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
 import { FieldIcon } from '@/components/icons/FieldIcon';
-import type { CourseStep } from '@/features/learn/course';
+import type { CourseLesson } from '@/features/learn/course';
 import { layout, radius, spacing, useTheme } from '@/theme';
 
-type Props = { step: CourseStep; done: boolean; active: boolean; width: number };
+type Props = { step: CourseLesson; done: boolean; active: boolean; width: number };
 
 export function CourseTrailNode({ step, done, active, width }: Props) {
   const { colors } = useTheme();
@@ -75,7 +75,7 @@ export function CourseTrailNode({ step, done, active, width }: Props) {
             style={styles.action}
           >
             <AppText variant="label" color="accent">
-              Ucz się
+              {step.isTest ? 'Rozpocznij test' : 'Ucz się'}
             </AppText>
             <FieldIcon name="arrowRight" size={spacing.lg} color={colors.glow} />
           </PressableScale>

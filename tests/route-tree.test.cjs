@@ -6,7 +6,7 @@ const { requireContext } = require('expo-router/internal/testing');
 
 // Use Expo's route discovery on the actual files, without loading native components.
 for (const platform of ['android', 'ios']) {
-  test(`${platform}: two tabs contain all guide screens, preserving public URLs`, () => {
+  test(`${platform}: two tabs contain all guide screens and lessons open above them`, () => {
     const tree = getRoutes(requireContext(path.resolve('src/app'), true, /\.[jt]sx?$/), {
       platform,
       importMode: 'async',
@@ -14,11 +14,9 @@ for (const platform of ['android', 'ios']) {
       ignoreRequireErrors: true,
       skipGenerated: true,
     });
-    assert.deepEqual(
-      tree.children.map((route) => route.route),
-      ['(tabs)'],
-    );
-    const tabs = tree.children[0];
+    // A lesson is full-screen above the tabs, so it sits next to them, not inside Start.
+    assert.deepEqual(tree.children.map((route) => route.route).sort(), ['(tabs)', 'lesson/[id]']);
+    const tabs = tree.children.find((route) => route.route === '(tabs)');
     assert.deepEqual(tabs.children.map((route) => route.route).sort(), ['(home)', 'map']);
     const home = tabs.children.find((route) => route.route === '(home)');
     assert.deepEqual(home.children.map((route) => route.route).sort(), [
@@ -27,7 +25,6 @@ for (const platform of ['android', 'ios']) {
       'compare',
       'index',
       'learn',
-      'lesson/[id]',
       'settings',
       'species/[id]',
     ]);

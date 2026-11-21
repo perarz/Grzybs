@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { courseStep, STEPS_PER_STAGE } from '@/features/learn/course';
+import { courseLesson, LESSONS_PER_STAGE } from '@/features/learn/course';
 import { layout, spacing, useTheme } from '@/theme';
 import { CourseTrailNode } from './CourseTrailNode';
 
-const bends = [0, 1, 0.6, -0.7, -1, 0, 1, 0.6, -0.6, 0];
+const bends = [0, 0.8, -0.2, -0.9, 0];
 const nodeFrame = layout.courseNode + spacing.lg;
 
 export function CourseTrail({ stage, next }: { stage: number; next: number }) {
@@ -35,7 +35,7 @@ export function CourseTrail({ stage, next }: { stage: number; next: number }) {
         <View style={{ height }}>
           <Svg width={width} height={height} style={StyleSheet.absoluteFill} accessible={false}>
             {segments.map((path, index) => {
-              const reached = stage * STEPS_PER_STAGE + index < next;
+              const reached = stage * LESSONS_PER_STAGE + index < next;
               return (
                 <Path
                   key={index}
@@ -50,7 +50,7 @@ export function CourseTrail({ stage, next }: { stage: number; next: number }) {
             })}
           </Svg>
           {points.map((point, position) => {
-            const step = courseStep(stage * STEPS_PER_STAGE + position)!;
+            const step = courseLesson(stage * LESSONS_PER_STAGE + position)!;
             return (
               <View
                 key={step.id}

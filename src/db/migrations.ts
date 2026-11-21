@@ -88,4 +88,14 @@ export const MIGRATIONS: string[] = [
     completed_at INTEGER NOT NULL
   );
   `,
+  `
+  -- The course was rebuilt into 25 lessons: old step numbers now mean other lessons,
+  -- so course progress starts over. The daily activity (streak) and profile stay.
+  DELETE FROM course_steps;
+  ALTER TABLE course_steps ADD COLUMN mistakes INTEGER NOT NULL DEFAULT 0 CHECK (mistakes >= 0);
+  CREATE TABLE app_settings (
+    key TEXT PRIMARY KEY NOT NULL,
+    value TEXT NOT NULL
+  );
+  `,
 ];
