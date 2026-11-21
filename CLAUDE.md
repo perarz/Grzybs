@@ -10,6 +10,15 @@ Autor uczy się Reacta w trakcie projektu – kod ma być **prosty, czytelny i s
 
 @AGENTS.md
 
+## Wymagania zadania (Software Mansion) – nadrzędne
+
+Treść zadania jest najważniejszym punktem odniesienia przy każdej decyzji.
+
+- React Native + Expo. Ocena odbywa się **głównie na emulatorze Androida** – pierwszy start przez `npx expo start` + `a` musi działać bez błędów i ostrzeżeń.
+- Oddanie: **publiczne repozytorium na GitHubie**; README.md z krótkim opisem funkcji, instrukcją uruchomienia oraz nagraniem (GIF / MP4) lub zrzutami działającej aplikacji. README musi podać główny system (Android) i czy aplikację testowano na fizycznym urządzeniu (tylko zgodnie z prawdą – potwierdza autor).
+- Kryteria: jakość, czytelność i organizacja kodu; funkcjonalność i intuicyjność (UX); estetyka (UI) i płynność; nakład pracy i poziom techniczny.
+- Dodatkowo punktowane: przemyślany UI/UX, płynne mikroanimacje i detale, nieszablonowe podejście (np. filtrowanie cech grzyba, alerty o gatunkach trujących), zapis offline, czytelna struktura i kultura pracy z kodem.
+
 ## Projektowanie UI — preferencja autora
 
 - Przy każdym zadaniu dotyczącym UI/UX korzystaj ze skilla `design-mobile-apps` wskazanego przez autora: https://github.com/designed-by-ai/skills (folder `skills/design-mobile-apps`). Przeczytaj jego `SKILL.md` przed projektowaniem.

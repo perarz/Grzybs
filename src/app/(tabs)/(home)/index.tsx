@@ -9,7 +9,7 @@ export default function HomeScreen() {
     <Screen
       title="Bliżej lasu."
       eyebrow="Grzybnik / Twój przewodnik"
-      headerRight={<SettingsButton />}
+      titleAccessory={<SettingsButton />}
     >
       <HomeDestinations />
       <DailyDiscovery />

@@ -1,4 +1,3 @@
-import { SettingsButton } from '@/components/settings/SettingsButton';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -56,13 +55,7 @@ export default function AtlasScreen() {
 
   return (
     <>
-      <Screen
-        headerRight={<SettingsButton />}
-        title="Atlas"
-        header={<AtlasMasthead />}
-        showBack
-        backToTop
-      >
+      <Screen title="Atlas" header={<AtlasMasthead />} showBack backToTop>
         <SearchField
           value={filter.query}
           onChangeText={(query) => setFilter({ ...filter, query })}

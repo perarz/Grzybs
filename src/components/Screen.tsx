@@ -28,7 +28,8 @@ type ScreenProps = {
   header?: ReactNode;
   children?: ReactNode;
   backToTop?: boolean;
-  headerRight?: ReactNode;
+  /** Shown to the right of the large title – it scrolls away with it. */
+  titleAccessory?: ReactNode;
   /** Return to the question heading when a lesson advances. */
   resetScrollKey?: number;
 };
@@ -45,7 +46,7 @@ export function Screen({
   header,
   children,
   backToTop = false,
-  headerRight,
+  titleAccessory,
   resetScrollKey,
 }: ScreenProps) {
   const { colors, isDark } = useTheme();
@@ -109,7 +110,13 @@ export function Screen({
         {header ? (
           header
         ) : (
-          <PageMasthead eyebrow={eyebrow} title={title} subtitle={subtitle} showBack={showBack} />
+          <PageMasthead
+            eyebrow={eyebrow}
+            title={title}
+            subtitle={subtitle}
+            showBack={showBack}
+            accessory={titleAccessory}
+          />
         )}
         <View style={styles.body}>{children}</View>
       </Animated.ScrollView>
@@ -136,7 +143,6 @@ export function Screen({
         scrollY={scrollY}
         title={title}
         revealAt={TITLE_REVEAL_AT}
-        right={headerRight}
         left={showBack ? <BackButton /> : undefined}
       />
     </KeyboardAvoidingView>

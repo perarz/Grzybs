@@ -12,6 +12,8 @@ type Props = {
   subtitle?: string;
   showBack?: boolean;
   onTitlePress?: () => void;
+  /** Shown to the right of the large title, e.g. the settings button. */
+  accessory?: ReactNode;
   children?: ReactNode;
 };
 export function PageMasthead({
@@ -20,6 +22,7 @@ export function PageMasthead({
   subtitle,
   showBack,
   onTitlePress,
+  accessory,
   children,
 }: Props) {
   const { top } = useSafeAreaInsets();
@@ -41,13 +44,21 @@ export function PageMasthead({
           {eyebrow}
         </AppText>
       )}
-      {onTitlePress ? (
-        <PressableScale onPress={onTitlePress} pressedScale={1} haptic="none" style={styles.title}>
-          {label}
-        </PressableScale>
-      ) : (
-        label
-      )}
+      <View style={styles.titleRow}>
+        {onTitlePress ? (
+          <PressableScale
+            onPress={onTitlePress}
+            pressedScale={1}
+            haptic="none"
+            style={styles.title}
+          >
+            {label}
+          </PressableScale>
+        ) : (
+          label
+        )}
+        {accessory}
+      </View>
       {subtitle && (
         <AppText variant="caption" color="textMuted">
           {subtitle}
@@ -67,6 +78,13 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
+  // Leaves the top-right corner free: Expo Go puts its own floating Tools button there.
   eyebrow: { paddingRight: layout.touchTarget + spacing.sm },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing.md,
+  },
   title: { alignSelf: 'flex-start' },
 });
