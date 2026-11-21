@@ -118,9 +118,9 @@ Otwarte sprawy:
 - `src/data/species.ts`: miesiące krowiaka mają `TODO: verify`.
 - Panel źródeł jest dostępny w Atlasie. Metadane zdjęć są kompletne; testy danych nie stanowią merytorycznej weryfikacji całego atlasu.
 - Haptyka nie jest potwierdzona na fizycznym telefonie, a emulator jej nie odda.
-- README: zrzuty ekranu i wpis o testach na fizycznym urządzeniu mają `TODO`.
+- README przepisane 2026-11-21 ze zrzutami (`docs/screenshots`); wpis o fizycznym urządzeniu ma `TODO` – potwierdza autor.
 - 2026-11-19 autor podał, że ma 3 dni do oddania. Priorytet: stabilność, dopracowanie istniejących funkcji i natywna weryfikacja.
-- `npm test`: 123 testy (2026-11-21) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
+- `npm test`: 124 testy (2026-11-21) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
 
 ## Uruchamianie (Mac autora)
 
