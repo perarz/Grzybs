@@ -5,7 +5,7 @@ import { AddFindSheet } from '@/components/collection/AddFindSheet';
 import type { SpeciesId } from '@/features/atlas/types';
 
 import { CollectionContext } from './CollectionContext';
-import { readFinds, saveFind, type Find } from './storage';
+import { deleteFind, readFinds, saveFind, type Find } from './storage';
 import { useRecoveredPhoto } from './useRecoveredPhoto';
 
 export { useCollection } from './CollectionContext';
@@ -71,9 +71,20 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  async function remove(find: Find) {
+    if (saving.current) throw new Error('Kolekcja zapisuje zmiany. Spróbuj za chwilę.');
+    saving.current = true;
+    try {
+      await deleteFind(db, find);
+      setFinds((previous) => previous.filter((item) => item.id !== find.id));
+    } finally {
+      saving.current = false;
+    }
+  }
+
   return (
     <CollectionContext.Provider
-      value={{ finds, loading: loading || recovery.checking, error, reload, add }}
+      value={{ finds, loading: loading || recovery.checking, error, reload, add, remove }}
     >
       {children}
       {recovery.pending && !loading ? (

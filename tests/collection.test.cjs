@@ -82,3 +82,14 @@ test('multiple observations retain separate photos', async () => {
   const second = await context.api.saveFind(context.db, 'boletus-edulis', 'cache/photo.heic');
   assert.notEqual(first.photo_uri, second.photo_uri);
 });
+
+test('deleting a find removes its row first and never fails on a missing photo', async () => {
+  const context = setup();
+  await context.api.deleteFind(context.db, {
+    id: 7,
+    species_id: 'boletus-edulis',
+    photo_uri: 'documents/finds/gone.heic',
+    found_at: 1,
+  });
+  assert.deepEqual(context.parameters(), ['DELETE FROM finds WHERE id = ?', 7]);
+});

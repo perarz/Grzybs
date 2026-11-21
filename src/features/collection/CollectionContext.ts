@@ -10,6 +10,7 @@ export type Collection = {
   error: string | null;
   reload: () => Promise<void>;
   add: (speciesId: SpeciesId, uri: string) => Promise<void>;
+  remove: (find: Find) => Promise<void>;
 };
 export const CollectionContext = createContext<Collection | null>(null);
 
