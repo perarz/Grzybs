@@ -2,7 +2,7 @@
 
 Uniwersalna aplikacja grzybiarza (zadanie rekrutacyjne Software Mansion) z dwiema zakładkami:
 **Start** (Atlas, Nauka, kolekcja zdjęć i ustawienia) oraz **Mapa** (miejscówki, pogoda, powrót do auta).
-Atlas obejmuje gatunki i sobowtóry; Nauka — ścieżkę 50 kolejnych kroków, krótkie lekcje przed ćwiczeniami, tematyczne etapy i dzienną passę.
+Atlas obejmuje gatunki i sobowtóry; Nauka — 5 etapów po 4 lekcje + test etapu (25 lekcji), lekcje w stylu Duolingo z powtórką błędów, XP i dzienną passą.
 React Native + Expo (SDK 58) + TypeScript + expo-router. Główny cel: emulator Androida i Expo Go.
 Interfejs po polsku, kod, nazwy plików i commity po angielsku.
 
@@ -79,7 +79,7 @@ Wejście aplikacji: `index.ts` (sprawdza moduły natywne, potem `expo-router/ent
 - Etap 2 – Dane 26 gatunków (cechy, sezony, sobowtóry, zdjęcia na wolnej licencji) ✅
 - Etap 3 – Atlas: karty, kategorie, wyszukiwarka, klucz do oznaczania; ekran gatunku (zegar sezonu, sobowtóry z alertem, suwak porównania) ✅
 - Etap 4 – Odblokowywanie zdjęciem: zaimplementowane; oczekuje testu w Expo Go i oceny wyglądu
-- Etap 5 – Nauka: grzyb dnia, gra „Sobowtór”, quiz, zapis wyników — zaimplementowane; oczekuje testu UI w Expo Go
+- Etap 5 – Nauka: przebudowana 2026-11-21 na lekcje w stylu Duolingo; lekcje 1–3 sprawdzone na emulatorze, test etapu jeszcze nie
 - Etap 6 – Mapa: miejscówki, parkowanie, kierunek/odległość do auta, ostrzeżenie o zachodzie, obsługa GPS — zaimplementowane; bez natywnego testu UI
 - Etap 7 – Źródła i szlif: panel źródeł, przegląd błędów i testy regresji zaimplementowane; weryfikacja treści i testy natywne nadal otwarte
 - Etap 8 – Indeks grzybowy 1–10 i pogoda: prognoza na 3 dni z pamięcią offline zaimplementowana; test natywnego UI otwarty
@@ -100,7 +100,8 @@ npm test                # testy jednostkowe czystych funkcji (gdy dojdą)
 - Gotowe: etapy 0–8 i przebudowa wyglądu, wszystko w commitach na `main` (etapy 4–8 zacommitowane 2026-11-21 jako jeden commit). Repo nie ma zdalnego – GitHub tylko na prośbę autora.
 - Start w Expo Go: błąd `Cannot find native module 'ExpoSQLite'` przy pierwszym `npx expo start` + `a` naprawiony 2026-11-21 (`index.ts` + `src/features/startup`, opis w `docs/expo-startup-investigation.md`). Pierwszy start nie wypisuje już ostrzeżeń routera ani `expo-notifications`.
 - Etap 4: aparat/galeria, ręczny wybór, kontrola cech groźnych sobowtórów, zapis zdjęć w dokumentach aplikacji i SQLite, licznik unikalnych gatunków, oznaczenia kart, zdjęcia na stronie gatunku.
-- Etap 5: codzienny gatunek, quiz cech/nazw łacińskich, sobowtóry, losowane rundy po 5 pytań z wyjaśnieniami, najlepszy wynik i liczba rund w SQLite. Migracja 2 dodaje `learning_sessions`, nie zmienia tabel znalezisk. Identyfikator rundy chroni przed podwójnym naliczaniem po ponowieniu zapisu.
+- Nauka (2026-11-21): `src/features/learn/course.ts` (5 etapów × 4 lekcje + test), `exercises.ts` (karty i pytania; tylko o tym, co już było), `lessonSession.ts` (czysty reducer: błędne pytanie wraca na koniec z przestawionymi odpowiedziami), `useLesson.ts` (dźwięki, haptyka, zapis). Zasady grzybiarza z GIS i Lasów Państwowych w `src/data/fieldRules.ts`. Ekran lekcji `src/app/lesson/[id].tsx` leży poza zakładkami (bez paska). Migracja 9 czyści stary postęp kursu, dodaje `mistakes` i `app_settings` (przełącznik dźwięków). Dźwięki z `scripts/generate-sounds.py`. Test zaliczony przy ≤20% błędów za pierwszym razem.
+- Etap 5 (stara wersja, zastąpiona): codzienny gatunek, quiz cech/nazw łacińskich, sobowtóry, losowane rundy po 5 pytań z wyjaśnieniami, najlepszy wynik i liczba rund w SQLite. Migracja 2 dodaje `learning_sessions`, nie zmienia tabel znalezisk. Identyfikator rundy chroni przed podwójnym naliczaniem po ponowieniu zapisu.
 - Etap 6: mapa Google/Apple w Expo Go, dodawanie/edycja/usuwanie miejscówek, zapis auta z potwierdzeniem zastąpienia, współrzędne offline, odległość/azymut oraz true-heading kompas z fallbackiem. GPS automatycznie po otwarciu mapy za zgodą użytkownika; timeout, odmowa zgody, błędy i restart śledzenia obsłużone. Zapis GPS wymaga <=60 s i dokładności <=100 m. Ostrzeżenie o zachodzie z SunCalc działa tylko przy otwartej mapie, bez powiadomień w tle.
 - UI: mapa jako notatnik terenowy, ciemna mapa, tarcza kompasu, lista punktów, panel dodawania. Atlas ma filtr „Moje odkrycia”, mocniejsze wyróżnienie odkrytych kart i licznik obserwacji.
 - Etap 7: panel „O atlasie” z materiałami, 26 autorami/licencjami zdjęć i fontami; poprawki opóźnionych odczytów GPS, wygasania kompasu, kolejkowanych kliknięć quizu, odzyskiwania zdjęcia i niedostępnego pliku. README odpowiada aktualnym funkcjom.
@@ -120,7 +121,7 @@ Otwarte sprawy:
 - Haptyka nie jest potwierdzona na fizycznym telefonie, a emulator jej nie odda.
 - README przepisane 2026-11-21 ze zrzutami (`docs/screenshots`); wpis o fizycznym urządzeniu ma `TODO` – potwierdza autor.
 - 2026-11-19 autor podał, że ma 3 dni do oddania. Priorytet: stabilność, dopracowanie istniejących funkcji i natywna weryfikacja.
-- `npm test`: 124 testy (2026-11-21) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
+- `npm test`: 118 testów (2026-11-21, po przebudowie Nauki) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
 
 ## Uruchamianie (Mac autora)
 

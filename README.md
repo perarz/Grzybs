@@ -60,7 +60,7 @@ Mapa Google na Androidzie poza Expo Go wymaga klucza „Maps SDK for Android” 
 
 **Rejestr znalezisk** – zdjęcie z aparatu lub galerii → ręczny wybór gatunku → przy gatunkach z groźnymi sobowtórami potwierdzenie każdej cechy odróżniającej → zapis. Zdjęcie jest dowodem znaleziska, nie jest rozpoznawane automatycznie, a zapis nie potwierdza jadalności. Zdjęcia zostają w pamięci telefonu i można je usunąć.
 
-**Nauka** – grzyb dnia oraz ścieżka 50 kroków w etapach tematycznych: krótka lekcja, potem pytania tylko z tego, co już było. Rangi, dzienna passa i krótki onboarding z wyborem poziomu.
+**Nauka** – 5 etapów po 4 lekcje i test etapu na końcu (ostatni to egzamin z całości). Lekcja ma około 7 kart: nowy gatunek albo zasada grzybiarza (np. koszyk zamiast reklamówki, wykręcanie zamiast odcinania, co robić przy podejrzeniu zatrucia), potem różne typy pytań – zdjęcie → nazwa, nazwa → zdjęcie, „do koszyka czy zostawiam”, para sobowtórów, sytuacje z lasu. Pytania dotyczą tylko tego, co już było. Bez „żyć”: błędna odpowiedź pokazuje wyjaśnienie i wraca na końcu lekcji. Pasek postępu, seria poprawnych odpowiedzi, XP, rangi, dzienna passa, dźwięki (do wyłączenia w ustawieniach) i haptyka.
 
 **Mapa** – prywatne miejscówki (z GPS albo przytrzymaniem mapy) z notatkami, zapis miejsca parkowania i powrót do auta: odległość i kierunek z kompasem, ostrzeżenie przed zachodem słońca. Prognoza na 3 dni (Open-Meteo) z pamięcią offline i orientacyjny „indeks grzybowy” 1–10 liczony z opadów i temperatur ostatniego tygodnia.
 
@@ -75,7 +75,7 @@ Mapa Google na Androidzie poza Expo Go wymaga klucza „Maps SDK for Android” 
 
 ## Stack
 
-Expo SDK 58 · React Native 0.88 · TypeScript (strict) · expo-router · Reanimated 4 · Gesture Handler 3 · react-native-svg · react-native-maps · expo-location · expo-image-picker · expo-file-system · expo-sqlite · expo-haptics · suncalc
+Expo SDK 58 · React Native 0.88 · TypeScript (strict) · expo-router · Reanimated 4 · Gesture Handler 3 · react-native-svg · react-native-maps · expo-location · expo-image-picker · expo-file-system · expo-sqlite · expo-haptics · expo-audio · suncalc
 
 ## Struktura
 
@@ -117,6 +117,7 @@ CI (GitHub Actions) uruchamia lint, typecheck i testy przy każdym pushu.
 - [Medycyna Praktyczna – zatrucie piestrzenicą kasztanowatą](https://www.mp.pl/pacjent/pierwsza_pomoc/441487,zatrucie-piestrzenica-kasztanowata),
 - poradnika Lasów Państwowych [„Bezpieczne grzybobranie”](https://www.lasy.gov.pl/pl/informacje/aktualnosci/wystawa-o-grzybach-juz-otwarta/BEZPIECZNE-GRZYBOBRANIE.pdf/@@download/file/BEZPIECZNE-GRZYBOBRANIE.pdf),
 - kalendarzy grzybiarza stacji sanitarno-epidemiologicznych ([gov.pl](https://www.gov.pl/web/psse-wabrzezno/w-lesie-grzybow-coraz-wiecej)).
+- zasady grzybiarza w lekcjach: Główny Inspektorat Sanitarny – [„Bezpieczne grzybobranie”](https://www.gov.pl/web/gis/bezpieczne-grzybobranie) i [poradnik dla miłośników zbierania grzybów](https://www.gov.pl/web/gis/dla-milosnikow-zbierania-grzybow2); Lasy Państwowe – [zakazy wstępu do lasu](https://www.lasy.gov.pl/pl/informacje/zakazy-wstepu-do-lasow).
 
 Niepewne fakty są oznaczone w kodzie jako `TODO: verify`.
 
@@ -157,6 +158,8 @@ Niepewne fakty są oznaczone w kodzie jako `TODO: verify`.
 - [Source Sans Pro](https://github.com/adobe-fonts/source-sans) – Adobe,
 - [Fraunces](https://github.com/undercasetype/Fraunces) – The Fraunces Project Authors,
 - [IBM Plex Mono](https://github.com/IBM/plex) – IBM Corp.
+
+Dźwięki lekcji (`assets/sounds/`) są własne – generuje je skrypt `scripts/generate-sounds.py` z czystych tonów.
 
 Prognoza pogody: [Open-Meteo](https://open-meteo.com/), dane na licencji [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); bezpłatne API do zastosowań niekomercyjnych.
 
