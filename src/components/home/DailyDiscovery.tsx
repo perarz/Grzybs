@@ -18,7 +18,7 @@ export function DailyDiscovery() {
       </AppText>
       <PressableScale
         accessibilityRole="button"
-        accessibilityLabel={`Poznaj ${species.nameCommon ?? species.namePl}`}
+        accessibilityLabel={`Grzyb dnia: ${species.namePl}`}
         onPress={() => router.push({ pathname: '/species/[id]', params: { id: species.id } })}
         style={[styles.card, { borderColor: colors.border }]}
       >

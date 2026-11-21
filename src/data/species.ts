@@ -567,7 +567,7 @@ const SPECIES_DATA: Record<SpeciesId, Omit<Species, 'id'>> = {
       colorChange: true,
     },
     habitats: ['deciduous', 'coniferous'],
-    // TODO: verify – the sources only say "summer and autumn".
+    // Polish Wikipedia says "summer and autumn"; First Nature gives July–October and English Wikipedia "late summer and autumn".
     months: [7, 8, 9, 10],
     rarity: 'common',
   },
