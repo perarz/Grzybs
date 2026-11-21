@@ -145,6 +145,6 @@ Pułapki:
 - Własny `TabBar` używa `emitter` i `navigateToTab`; typ `BottomTabBarProps` jest w `expo-router/tabs`.
 
 - SunCalc jest w wersji **2.1.1**, ma własne typy; stare `@types/suncalc` opisują inny interfejs. V2 zwraca kąty w stopniach, brak zdarzeń jako `null` oraz `alwaysUp/alwaysDown`; offset dnia to minuty na wschód od UTC.
-- Natywny build Androida poza Expo Go wymaga klucza Google Maps; nie skonfigurowano go.
+- Natywny build Androida poza Expo Go wymaga klucza Google Maps: `app.config.ts` czyta `GOOGLE_MAPS_API_KEY` ze środowiska EAS (`preview`, APK w `eas.json`) i ustawia `extra.googleMapsReady`; bez klucza `FieldMap` pokazuje komunikat zamiast mapy (`src/features/spots/mapAvailability.ts`). Pakiet Androida: `com.grzybnik.app`. Builda EAS jeszcze nie uruchomiono – autor loguje się sam.
 - `expo-notifications`, zadania w tle i `MushroomAlertsLifecycle` wczytuj tylko przez `src/features/weather/alerts.ts` – w Expo Go ten moduł ich nie ładuje (inaczej ostrzeżenia przy każdym starcie).
 - Expo Router 58: `unstable_settings.anchor` zamiast `initialRouteName`; zakładki z kotwicą potrzebują `backBehavior="initialRoute"`.

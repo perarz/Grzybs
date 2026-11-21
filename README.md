@@ -38,6 +38,18 @@ npx expo start
 
 Aplikacja działa w Expo Go bez własnego buildu. Jedyna funkcja, której Expo Go nie obsługuje, to alerty pogodowe w tle (wymagają development buildu) – aplikacja mówi o tym przy próbie włączenia.
 
+### Własny plik APK (opcjonalnie)
+
+Do oceny wystarczy Expo Go. Samodzielny APK buduje się w chmurze przez [EAS Build](https://docs.expo.dev/build/introduction/) (profil `preview` w `eas.json`):
+
+```bash
+npx eas-cli@latest login
+npx eas-cli@latest env:set --name GOOGLE_MAPS_API_KEY --value <klucz> --environment preview --visibility sensitive
+npx eas-cli@latest build -p android --profile preview
+```
+
+Mapa Google na Androidzie poza Expo Go wymaga klucza „Maps SDK for Android” z Google Cloud. Klucz nie trafia do repozytorium – `app.config.ts` czyta go ze zmiennej EAS. Build bez klucza też działa: zamiast mapy pokazuje komunikat, a miejsca, kompas i powrót do auta działają dalej.
+
 ## Funkcje
 
 **Atlas** – 26 gatunków podzielonych na jadalne, niejadalne, trujące i śmiertelnie trujące; zdjęcia na wolnych licencjach, wyszukiwarka bez polskich znaków („kozlarz” znajdzie koźlarza), filtry „Rośnie teraz” i „Moje odkrycia”.
