@@ -4,7 +4,9 @@ import type { LocationFix } from '@/features/navigation/geo';
 
 import type { Coordinate, Spot, SpotInput } from './storage';
 
-export type SpotDraft = { point: Coordinate; spot?: Spot; fix?: LocationFix };
+// The point is fixed when the form opens: a spot is where the user stood when they tapped "add",
+// however long typing its name takes.
+export type SpotDraft = { point: Coordinate; spot?: Spot };
 
 export function isFreshFix(fix: LocationFix | null, now = Date.now()): fix is LocationFix {
   if (!fix) return false;
@@ -32,12 +34,6 @@ export function useSpotEditor(
   const lock = useRef(false);
   async function save() {
     if (lock.current) return;
-    if (draft.fix && !isFreshFix(draft.fix)) {
-      setError(
-        'Pozycja GPS jest już nieaktualna. Zamknij panel i dodaj miejsce ponownie z aktualnej pozycji.',
-      );
-      return;
-    }
     if (!name.trim()) {
       setError('Nadaj temu miejscu nazwę.');
       return;

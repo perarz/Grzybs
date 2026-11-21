@@ -51,7 +51,7 @@ export function useMapNotebook(active: boolean) {
       );
       return;
     }
-    setDraft({ point: location.position, fix: location.position });
+    setDraft({ point: location.position });
   }
   function park() {
     setError(null);

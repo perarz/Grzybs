@@ -87,7 +87,9 @@ export function createLocationTracker(update: (patch: Partial<FieldLocationState
         {
           accuracy: Location.Accuracy.High,
           timeInterval: 3000,
-          distanceInterval: 2,
+          // No distance threshold: a picker standing still (by the car, or an emulator with a fixed
+          // location) must keep getting fresh fixes, or the position would count as stale after a minute.
+          distanceInterval: 0,
           mayShowUserSettingsDialog: false,
         },
         ({ coords, timestamp }) => {
