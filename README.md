@@ -10,8 +10,8 @@ Aplikacja grzybiarza z dwiema zakładkami: **Start** i **Mapa**. Start otwiera a
 
 - **Przygotowana głównie pod:** Android
 - **Testowana na fizycznym urządzeniu:** TODO (uzupełnić przed oddaniem)
-- **Emulator:** Android Studio, Medium Phone (API 37); nowe moduły nie zostały jeszcze sprawdzone wizualnie.
-- **Kontrole automatyczne:** lint, TypeScript i 97 testów przechodzą (2026-11-19). Eksport Android/Hermes i iOS/Hermes również potwierdzony 2026-11-19.
+- **Emulator:** Android Studio, Medium Phone (API 37), Expo Go 58.0.5. Pierwszy start i ekran Start sprawdzone 2026-11-21; pozostałe ekrany czekają na przegląd na urządzeniu.
+- **Kontrole automatyczne:** lint, TypeScript i 123 testy przechodzą (2026-11-21). Eksport Android/Hermes i iOS/Hermes potwierdzony 2026-11-19.
 
 ## Nawigacja i wygląd
 
@@ -19,7 +19,7 @@ Aplikacja grzybiarza z dwiema zakładkami: **Start** i **Mapa**. Start otwiera a
 - **Atlas i Nauka:** osobne ekrany w stosie Startu. Strzałka wraca do poprzedniego ekranu; naciśnięcie aktywnej zakładki Start wraca na początek.
 - **Twoje odkrycia:** własna galeria z dodawaniem zdjęć i przejściem do gatunku.
 - **Mapa:** pogoda i ostrzeżenie o zachodzie u góry, dodawanie po lewej, zapisane miejsca i GPS po prawej.
-- Kierunek i kontrola jakości: `docs/ui-direction.md`. Redesign z 2026-11-15 wymaga jeszcze sprawdzenia wizualnego na urządzeniu (ADB niedostępne w sesji).
+- Kierunek i kontrola jakości: `docs/ui-direction.md`. Redesign z 2026-11-15 wymaga jeszcze sprawdzenia wizualnego na urządzeniu.
 
 ## Funkcje
 
@@ -44,6 +44,7 @@ npx expo start
 
 - **Emulator Androida:** uruchom emulator w Android Studio, potem w terminalu z `expo start` naciśnij `a` (Expo CLI sam zainstaluje Expo Go).
 - **Telefon:** zainstaluj Expo Go ze sklepu i zeskanuj kod QR z terminala.
+- **Gdy Expo Go ma już otwarty inny projekt** (albo tę apkę spod innego adresu, np. po szybkim rozruchu emulatora), Expo Go 58 na Androidzie nie daje jej bazy SQLite. Apka wykrywa to przy starcie i raz sama się przeładowuje; jeśli to nie pomoże, pokazuje ekran z prośbą o zamknięcie Expo Go. Szczegóły: `docs/expo-startup-investigation.md`.
 
 ## Skrypty
 
@@ -64,7 +65,7 @@ Expo SDK 58 · React Native 0.88 · TypeScript (strict) · expo-router · Reanim
 ```
 src/app/         ekrany (expo-router), zakładki w (tabs)/
 src/components/  współdzielone komponenty UI
-src/features/    logika funkcji (atlas, collection, learn, spots, navigation, safety, feedback, weather)
+src/features/    logika funkcji (atlas, collection, learn, spots, navigation, safety, feedback, weather, onboarding, startup)
 src/db/          SQLite: połączenie i migracje
 src/data/        statyczne dane gatunków
 src/theme/       kolory (jasny/ciemny), typografia, odstępy, ruch
@@ -74,7 +75,7 @@ src/theme/       kolory (jasny/ciemny), typografia, odstępy, ruch
 
 - **Offline-first:** dane użytkownika w SQLite z wersjonowanymi migracjami (`PRAGMA user_version`); sieci wymagają kafelki mapy, pobieranie nowej pogody i otwierane źródła.
 - **Expo Go:** wyłącznie biblioteki dostępne w Expo Go – aplikację da się uruchomić bez budowania natywnego.
-- **Odporność na błędy:** globalny `ErrorBoundary` z przyciskiem „Spróbuj ponownie” zamiast crasha.
+- **Odporność na błędy:** globalny `ErrorBoundary` z przyciskiem „Spróbuj ponownie” zamiast crasha. Wejście `index.ts` sprawdza moduły natywne, zanim wczyta router i bazę – obejście znanego błędu Expo Go 58 bez czerwonego ekranu.
 - **Wygląd „las”:** domyślnie ciemna zieleń z akcentem koloru kurki, niezależnie od ustawień telefonu, proste, wspólne nagłówki i duże zdjęcia gatunków na ekranie Start. Nagłówki i nazwy krojem Oswald, tekst krojem Source Sans Pro, łacina kursywą Fraunces, etykiety maszynowym IBM Plex Mono, jadalność jako pieczątka, krótkie opisy i karty z fotografiami.
 - **Klucz do oznaczania:** zamiast panelu filtrów – pytania krok po kroku w wysuwanym arkuszu (spód kapelusza, kolor, pierścień, pochwa, zmiana barwy, siedlisko). Każda odpowiedź ma ilustrację i liczbę gatunków, które zostaną; odpowiedzi prowadzące donikąd są wyszarzone.
 - **Ruch i dotyk:** każdy klikalny element ugina się na sprężynie i odpowiada haptyką (`expo-haptics`), duże tytuły zwijają się w pasek jak w iOS, karty płynnie przestawiają się przy filtrowaniu (Reanimated – layout animations i CSS transitions).
@@ -232,7 +233,7 @@ zatrzymuje zadanie. Bez zgody na powiadomienia alerty nie są wysyłane.
 
 Pełne działanie wymaga własnego development/release buildu. Expo Go na Androidzie
 nie udostępnia TaskManager, a na iOS nie obsługuje jego pracy w tle; UI informuje o
-niedostępności przy próbie włączenia. System może opóźnić lub pominąć zadanie,
+niedostępności przy próbie włączenia. W Expo Go moduł powiadomień nie jest nawet wczytywany, więc start nie wypisuje jego ostrzeżeń. System może opóźnić lub pominąć zadanie,
 szczególnie po wymuszonym zamknięciu aplikacji. Nie planujemy powtarzanego alertu
 na stałą godzinę ze starymi warunkami. Dostarczenie w tle wymaga testu na fizycznym
 telefonie w samodzielnym buildzie.

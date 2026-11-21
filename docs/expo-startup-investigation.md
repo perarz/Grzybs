@@ -1,64 +1,75 @@
-# Diagnostyka startu Androida — 2026-11-19
+# Błąd `Cannot find native module 'ExpoSQLite'` przy starcie w Expo Go
 
-Status: przyczyna odtworzona, trwała naprawa nie została wdrożona.
+Status: **naprawione w aplikacji 2026-11-21**. Przyczyna leży w Expo Go, ale apka sama ją
+obsługuje: przy pierwszym starcie z `npx expo start` + `a` nie pokazuje już czerwonego błędu.
 
-## Środowisko
+## Przyczyna
 
-- Expo Go Android 58.0.5 (versionCode 465).
-- Expo 58.0.22, expo-modules-core 58.0.29, expo-sqlite 58.0.15.
-- React Native 0.88.1.
-- Kontrola zgodności z lokalnym bundledNativeModules przechodzi; kontrola online
-  zakończyła się błędem HTTP Proxy timed out.
+Expo Go 58 na Androidzie (58.0.5, versionCode 465 – najnowsza wersja dla SDK 58 według
+`https://exp.host/--/api/v2/versions`) daje moduły Expo nowego typu („v2”) tylko jednemu
+silnikowi JS w procesie. W projekcie są to `expo-sqlite`, `expo-haptics`, `expo-application`
+i część `expo` (log: „installed 4 module(s)”).
 
-## Reprodukcja
+`expo-modules-core/android/.../v2/ExpoModulesV2Host.kt` trzyma jedno pole `runtime`:
 
-1. Otworzyć projekt przez `exp://127.0.0.1:8081` w nowym procesie Expo Go.
-2. Otworzyć ten sam projekt przez adres LAN bez zakończenia procesu Expo Go.
-3. Drugi runtime zgłasza `Cannot find native module 'ExpoSQLite'`.
+- `install(reactContext)` kończy się od razu, jeśli `runtime != null` – także dla innego
+  silnika („⚠️ Expo Modules v2 was already installed”),
+- `uninstall()` (wołane przy niszczeniu dowolnego `AppContext`) zamyka i zeruje to pole.
 
-Powtórzono też z tymczasowym wejściem aplikacji zawierającym wyłącznie:
+Ten sam kod jest w `expo-modules-core` 58.0.29, 58.0.30 i 58.1.0 – poprawki nie ma.
 
-```js
-import React from 'react';
-import { registerRootComponent } from 'expo';
-import { Text } from 'react-native';
-import { openDatabaseSync } from 'expo-sqlite';
-const db = openDatabaseSync('repro.db');
-const value = db.getFirstSync('SELECT 1 AS value').value;
-function App() {
-  return <Text>SQLite ready: {value}</Text>;
-}
-registerRootComponent(App);
-```
+Drugi silnik JS w procesie Expo Go powstaje, gdy Expo Go trzyma już otwarty projekt:
 
-To samo zachowanie bez Routera, providerów, migracji i ekranów Grzybnika.
-Tymczasowe wejście usunięto; main ponownie wskazuje `expo-router/entry`.
-Danych użytkownika nie czyszczono.
+- emulator wstaje z zapisanego stanu (szybki rozruch) razem z Expo Go i apką z poprzedniej
+  sesji – tak było 2026-11-21: stara kopia pod `127.0.0.1:8081`, a `a` otwiera adres LAN,
+- apka jest otwarta pod dwoma adresami (`127.0.0.1` i LAN, albo zmieniony adres IP sieci),
+- działają dwa serwery Expo (8081 i 8082),
+- w Expo Go jest otwarty inny projekt (np. u osoby sprawdzającej kilka zadań).
 
-## Dowody z urządzenia
+Wtedy `import 'expo-sqlite'` w `src/app/_layout.tsx` rzuca wyjątek przy wczytywaniu modułu,
+cały układ tras traci eksport domyślny i Expo Go pokazuje czerwony ekran.
 
-Minimalny przykład, jeden proces 22896, dwa wątki JS:
+## Naprawa
 
-```text
-21:52:14.347 22896 22975 I ExpoModulesCore: Expo Modules v2 installed 4 module(s) on globalThis.expo.modules
-21:52:28.529 22896 23041 W ExpoModulesCore: Expo Modules v2 was already installed
-21:52:29.024 22896 23041 E ReactNativeJS: [runtime not ready]: Error: Cannot find native module 'ExpoSQLite'
-```
+1. `package.json` → `"main": "index.ts"`. `index.ts` najpierw sprawdza
+   (`src/features/startup/nativeModules.ts`, `requireOptionalNativeModule('ExpoSQLite')`),
+   czy silnik ma moduły, a dopiero potem wczytuje `expo-router/entry`. Nic przed tym
+   sprawdzeniem nie importuje modułów v2.
+2. Bez modułów rejestruje `StartupRecovery`, który raz przeładowuje własny silnik JS
+   (`DevSettings.reload`). Zniszczenie silnika woła `uninstall()`, więc nowy silnik dostaje
+   moduły. Log z emulatora:
+   ```text
+   10:51:17.733 W ExpoModulesCore: ⚠️ Expo Modules v2 was already installed
+   10:51:26.990 I ExpoModulesCore: ✅ AppContext was destroyed
+   10:51:52.420 I ExpoModulesCore: ✅ Expo Modules v2 installed 4 module(s) on globalThis.expo.modules
+   ```
+3. Próba jest zapisywana w pliku w pamięci podręcznej (`expo-file-system` to moduł starego
+   typu, działa w niepełnym silniku). Druga awaria w ciągu 30 s nie przeładowuje już
+   automatycznie – zostaje czytelny ekran „Expo Go potrzebuje restartu” z przyciskiem.
+   Bez dostępu do pliku apka też nie przeładowuje się sama, więc nie ma pętli.
 
-Zainstalowany `expo-modules-core/.../v2/ExpoModulesV2Host.kt` przechowuje jeden
-`private var runtime: ReactRuntime?` w singletonie `object ExpoModulesV2Host`.
-`install(reactContext)` kończy się, gdy runtime istnieje, nawet dla innego kontekstu.
-SQLite używa Modules v2. Log urządzenia odpowiada tej ścieżce: drugi runtime
-nie otrzymuje modułów v2. Naprawa powinna przypisywać rejestrację i zwalnianie
-modułów do właściwego kontekstu/runtime, a nie do całego procesu.
+Przeładowanie odbiera moduły staremu silnikowi w tle. To ta sama kopia, której użytkownik
+już nie ogląda; przy powrocie do niej przejdzie ona przez tę samą ścieżkę.
 
-Zmiana JS, migracji lub skryptu startowego nie naprawia natywnego rejestratora
-w już zainstalowanym Expo Go. Wymagana jest oficjalna poprawka natywnego hosta
-oraz ponowny test na wersji zawierającej tę poprawkę. Nie potwierdzono dostępności
-takiego wydania. Nie modyfikowano node_modules ani nie dodawano automatycznych restartów.
+## Weryfikacja (emulator Medium Phone API 37, Expo Go 58.0.5)
 
-## Wycofane obejścia
+- Stara kopia z poprzedniej sesji + `npx expo start --android` (to samo co `a`): ekran
+  Start bez błędu, naprawa w ok. 2,5 s (przy wolnym pobieraniu paczki dłużej).
+- Druga kopia pod innym adresem przy działającej pierwszej: to samo.
+- Wymuszony ekran awaryjny: czytelny, w kolorach aplikacji, przycisk przeładowuje.
+- `tests/startup-recovery.test.cjs`: jedno automatyczne przeładowanie, brak pętli,
+  brak przeładowania bez pamięci podręcznej, wejście bez statycznych importów aplikacji.
 
-Przywrócono `npm run android` → `expo start --android`.
-Usunięto skrypty start/reopen i instrukcje przedstawiające restart jako naprawę.
-Projekt nie jest uznany za wolny od tego problemu.
+## Inne ostrzeżenia pierwszego startu (usunięte)
+
+- `unstable_settings.initialRouteName` → `anchor`; zakładki mają `backBehavior="initialRoute"`,
+  więc „wstecz” z Mapy dalej wraca na Start.
+- `expo-notifications` wypisuje dwa ostrzeżenia już przy imporcie w Expo Go. Alertów w tle
+  i tak nie da się tam włączyć, więc `src/features/weather/alerts.ts` wczytuje moduł z
+  powiadomieniami tylko poza Expo Go (tam też rejestruje zadanie w tle przy starcie).
+
+## Dalej otwarte
+
+- Pierwszy start w Expo Go na iOS i na fizycznym Androidzie nie był sprawdzony.
+- `npx expo start` sugeruje aktualizację `expo` 58.0.22 → 58.0.26 i 11 innych pakietów
+  (`npx expo install --check`). Natywnego błędu to nie naprawi – siedzi w Expo Go.

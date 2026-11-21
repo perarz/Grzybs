@@ -49,13 +49,13 @@ Autor uczy się Reacta w trakcie projektu – kod ma być **prosty, czytelny i s
 ```
 src/app/            ekrany i layouty (expo-router); (tabs)/ = (home) (Start i stos ekranów), map (Mapa); (home)/atlas, learn, collection, settings, species/[id], compare
 src/components/     współdzielone komponenty UI; podfoldery: atlas, species, compare, key, forest, icons
-src/features/       logika per funkcja: atlas, collection, learn, spots, navigation, safety, feedback (haptyka)
+src/features/       logika per funkcja: atlas, collection, learn, spots, navigation, safety, weather, onboarding, feedback (haptyka), startup
 src/db/             SQLite: połączenie, migracje
 src/data/           statyczne dane (gatunki, sobowtóry, zdjęcia)
 src/theme/          kolory (jasny/ciemny), typografia i fonty, odstępy, promienie, ruch, próbki kolorów
 ```
 
-Import przez alias `@/` → `src/`.
+Wejście aplikacji: `index.ts` (sprawdza moduły natywne, potem `expo-router/entry`). Import przez alias `@/` → `src/`.
 
 ## Workflow
 
@@ -86,9 +86,10 @@ npm run format          # Prettier – formatowanie wszystkich plików
 npm test                # testy jednostkowe czystych funkcji (gdy dojdą)
 ```
 
-## Stan projektu (2026-11-06)
+## Stan projektu (2026-11-21)
 
-- Gotowe: etapy 0–3 oraz przebudowa wyglądu (las, haptyka, ruch, klucz do oznaczania zamiast panelu filtrów). Wszystko w commitach na `main`. Repo nie ma zdalnego – GitHub tylko na prośbę autora.
+- Gotowe: etapy 0–8 i przebudowa wyglądu, wszystko w commitach na `main` (etapy 4–8 zacommitowane 2026-11-21 jako jeden commit). Repo nie ma zdalnego – GitHub tylko na prośbę autora.
+- Start w Expo Go: błąd `Cannot find native module 'ExpoSQLite'` przy pierwszym `npx expo start` + `a` naprawiony 2026-11-21 (`index.ts` + `src/features/startup`, opis w `docs/expo-startup-investigation.md`). Pierwszy start nie wypisuje już ostrzeżeń routera ani `expo-notifications`.
 - Etap 4: aparat/galeria, ręczny wybór, kontrola cech groźnych sobowtórów, zapis zdjęć w dokumentach aplikacji i SQLite, licznik unikalnych gatunków, oznaczenia kart, zdjęcia na stronie gatunku.
 - Etap 5: codzienny gatunek, quiz cech/nazw łacińskich, sobowtóry, losowane rundy po 5 pytań z wyjaśnieniami, najlepszy wynik i liczba rund w SQLite. Migracja 2 dodaje `learning_sessions`, nie zmienia tabel znalezisk. Identyfikator rundy chroni przed podwójnym naliczaniem po ponowieniu zapisu.
 - Etap 6: mapa Google/Apple w Expo Go, dodawanie/edycja/usuwanie miejscówek, zapis auta z potwierdzeniem zastąpienia, współrzędne offline, odległość/azymut oraz true-heading kompas z fallbackiem. GPS automatycznie po otwarciu mapy za zgodą użytkownika; timeout, odmowa zgody, błędy i restart śledzenia obsłużone. Zapis GPS wymaga <=60 s i dokładności <=100 m. Ostrzeżenie o zachodzie z SunCalc działa tylko przy otwartej mapie, bez powiadomień w tle.
@@ -97,8 +98,7 @@ npm test                # testy jednostkowe czystych funkcji (gdy dojdą)
 - Etap 8: Open-Meteo, prognoza 3 dni (temperatura, opady, prawdopodobieństwo, wiatr), automatyczne pobieranie na mapie i ręczne odświeżanie ikoną; współrzędne zaokrąglone do 2 miejsc. Migracja 3 dodaje weather_cache (10 obszarów), starsze niż 6 h lub poprzedni dzień dane oznaczone jako nieaktualne. Timeout, anulowanie, błędy sieci/zapisu oraz zmiana miejsca obsłużone. Orientacyjny indeks 1–10 ocenia warunki na podstawie poprzednich 7 dni. Bezpłatne API niekomercyjne; warunki opisane w README.
 - Szlif UI: kompaktowy nagłówek lasu, uproszczona góra Atlasu, zdjęcia do krawędzi kart, siatka 1–3 kolumn zależna od szerokości i skali fontu; treść maks. 720 px, spokojniejsze przyciski pomocnicze i cele dotykowe 48 px. Nauka, pogoda i powrót do auta mają ujednoliconą hierarchię. Zmiany wymagają wizualnej weryfikacji na urządzeniu.
 - Następny krok: natywna weryfikacja dotychczasowych funkcji, pozostałe TODO treści i ewentualne bonusy, gdy podstawy zostaną ocenione wizualnie. Użytkownik daje swobodę pracy z maksymalnie dwoma subagentami i nie chce zadań ani odpytywania.
-- Brak testu wizualnego: emulator nie jest uruchomiony; ADB blokowany przez środowisko (`Operation not permitted`). Eksporty Android/Hermes i iOS/Hermes przeszły, ale nie zastępują testu natywnego.
-- Zmiany Etapów 4–8 są lokalnie bez commita: środowisko blokuje zapis `.git/index.lock`. Nie publikowano repozytorium.
+- Test wizualny 2026-11-21 (emulator, ADB działa): pierwszy start, ekran Start, ekran awaryjny startu. Pozostałe ekrany po przebudowie 2026-11-15 nadal czekają na przegląd na urządzeniu.
 - Pod Etap 4 są już: tabela `finds` (`src/db/migrations.ts`), wielokrotnego użytku `BottomSheet`, zainstalowane `expo-image-picker` i `expo-file-system`.
 - Zainstalowane, ale jeszcze nieużywane: `zustand`, `expo-sensors`. Kompas korzysta z `expo-location.watchHeadingAsync`, bez nowej biblioteki.
 
@@ -111,7 +111,7 @@ Otwarte sprawy:
 - Haptyka nie jest potwierdzona na fizycznym telefonie, a emulator jej nie odda.
 - README: zrzuty ekranu i wpis o testach na fizycznym urządzeniu mają `TODO`.
 - 2026-11-19 autor podał, że ma 3 dni do oddania. Priorytet: stabilność, dopracowanie istniejących funkcji i natywna weryfikacja.
-- `npm test`: 73 testy kolekcji, pytań, rotacji dziennej, migracji/statystyk, zapisu miejsc, geometrii, światła dziennego i cyklu GPS. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
+- `npm test`: 123 testy (2026-11-21) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
 
 ## Uruchamianie (Mac autora)
 
@@ -122,7 +122,7 @@ Otwarte sprawy:
 
 Pułapki:
 
-- Dwie kopie apki w Expo Go (`127.0.0.1` i adres LAN) dają `Cannot find native module 'ExpoSQLite'`. To nie błąd kodu – zamknij Expo Go i otwórz apkę raz, adresem z terminala.
+- Expo Go 58 (Android) daje moduły v2 (`expo-sqlite`, `expo-haptics`, `expo-application`) tylko pierwszemu silnikowi JS w procesie. Apka sama to naprawia przy starcie (jedno przeładowanie, potem ekran „Expo Go potrzebuje restartu”). Nie importuj niczego z aplikacji w `index.ts` przed `hasNativeModules()`.
 - Otwarcie apki w chwili startu emulatora zostawia Expo Go na kółku ładowania, bez żądania do Metro. Poczekaj na sieć i otwórz ponownie.
 - Typy tras (`typedRoutes`) generuje działający serwer – po dodaniu trasy musi być uruchomiony, zanim odpalisz `typecheck`.
 
@@ -137,3 +137,5 @@ Pułapki:
 
 - SunCalc jest w wersji **2.1.1**, ma własne typy; stare `@types/suncalc` opisują inny interfejs. V2 zwraca kąty w stopniach, brak zdarzeń jako `null` oraz `alwaysUp/alwaysDown`; offset dnia to minuty na wschód od UTC.
 - Natywny build Androida poza Expo Go wymaga klucza Google Maps; nie skonfigurowano go.
+- `expo-notifications`, zadania w tle i `MushroomAlertsLifecycle` wczytuj tylko przez `src/features/weather/alerts.ts` – w Expo Go ten moduł ich nie ładuje (inaczej ostrzeżenia przy każdym starcie).
+- Expo Router 58: `unstable_settings.anchor` zamiast `initialRouteName`; zakładki z kotwicą potrzebują `backBehavior="initialRoute"`.
