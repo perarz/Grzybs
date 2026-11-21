@@ -10,16 +10,17 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { AppText } from '@/components/AppText';
+import { AddSpeciesPhotoButton } from '@/components/collection/AddSpeciesPhotoButton';
+import { SpeciesFinds } from '@/components/collection/SpeciesFinds';
 import { BackButton } from '@/components/BackButton';
 import { CollapsingTopBar, TOP_BAR_HEIGHT } from '@/components/CollapsingTopBar';
 import { NotFound } from '@/components/NotFound';
 import { PhotoCredit } from '@/components/PhotoCredit';
 import { SectionHeader } from '@/components/SectionHeader';
-import { FeatureSummary } from '@/components/species/FeatureSummary';
+import { SpeciesQuickFacts } from '@/components/species/SpeciesQuickFacts';
+import { SpeciesDetails } from '@/components/species/SpeciesDetails';
 import { KeyFeatures } from '@/components/species/KeyFeatures';
 import { LookalikeList } from '@/components/species/LookalikeList';
-import { SeasonCard } from '@/components/species/SeasonCard';
 import { HERO_ASPECT, SpeciesHero } from '@/components/species/SpeciesHero';
 import { SpeciesTitle } from '@/components/species/SpeciesTitle';
 import { SpeciesWarnings } from '@/components/species/SpeciesWarnings';
@@ -63,12 +64,14 @@ export default function SpeciesScreen() {
         {/* A sheet of paper laid over the photo – it slides up over it when scrolling. */}
         <View style={[styles.sheet, { backgroundColor: colors.background }]}>
           <SpeciesTitle species={species} />
+          <AddSpeciesPhotoButton key={`photo-${species.id}`} species={species} />
           <SpeciesWarnings species={species} lookalikes={lookalikes} />
-          <AppText>{species.description}</AppText>
+          <SpeciesQuickFacts species={species} />
           <KeyFeatures features={species.keyFeatures} />
-          <SeasonCard months={species.months} />
-          <FeatureSummary species={species} />
+
           {lookalikes.length > 0 ? <LookalikeList lookalikes={lookalikes} /> : null}
+          <SpeciesDetails key={species.id} species={species} />
+          <SpeciesFinds species={species} />
           <View style={styles.source}>
             <SectionHeader title="Źródło zdjęcia" />
             <PhotoCredit photo={SPECIES_PHOTOS[species.id]} />
@@ -77,7 +80,7 @@ export default function SpeciesScreen() {
       </Animated.ScrollView>
       <CollapsingTopBar
         scrollY={scrollY}
-        title={species.namePl}
+        title={species.nameCommon ?? species.namePl}
         revealAt={revealAt}
         left={<BackButton />}
       />
@@ -94,9 +97,9 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: radius.lg,
     borderTopRightRadius: radius.lg,
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xl,
+    paddingTop: spacing.lg,
     paddingBottom: spacing.xxl * 2,
-    gap: spacing.xl,
+    gap: spacing.lg,
   },
   source: {
     gap: spacing.sm,

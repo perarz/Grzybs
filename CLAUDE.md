@@ -1,14 +1,22 @@
 # Grzybnik – zasady projektu
 
-Uniwersalna aplikacja grzybiarza (zadanie rekrutacyjne Software Mansion) w trzech częściach:
-**Atlas** (gatunki, sobowtóry, odblokowywanie gatunków zdjęciem znaleziska), **Nauka** (grzyb dnia,
-gra „Sobowtór”, quiz) i **Mapa** (spoty, powrót do auta).
+Uniwersalna aplikacja grzybiarza (zadanie rekrutacyjne Software Mansion) z dwiema zakładkami:
+**Start** (Atlas, Nauka, kolekcja zdjęć i ustawienia) oraz **Mapa** (miejscówki, pogoda, powrót do auta).
+Atlas obejmuje gatunki i sobowtóry; Nauka — ścieżkę 50 kolejnych kroków, krótkie lekcje przed ćwiczeniami, tematyczne etapy i dzienną passę.
 React Native + Expo (SDK 58) + TypeScript + expo-router. Główny cel: emulator Androida i Expo Go.
 Interfejs po polsku, kod, nazwy plików i commity po angielsku.
 
 Autor uczy się Reacta w trakcie projektu – kod ma być **prosty, czytelny i solidny**.
 
 @AGENTS.md
+
+## Projektowanie UI — preferencja autora
+
+- Przy każdym zadaniu dotyczącym UI/UX korzystaj ze skilla `design-mobile-apps` wskazanego przez autora: https://github.com/designed-by-ai/skills (folder `skills/design-mobile-apps`). Przeczytaj jego `SKILL.md` przed projektowaniem.
+- Instalacja wskazana przez autora: `npx skills add https://github.com/designed-by-ai/skills --skill design-mobile-apps`.
+- Stan na 2026-11-15: potwierdzono lokalną instalację i przeczytano `/Users/kacper/.agents/skills/design-mobile-apps/SKILL.md`. W tym samym katalogu są `designing.md`, `implementing.md`, `endpoints.md` i `styling/`. Czytaj te pliki zgodnie z zadaniem. Skill wymaga połączenia z usługą Sleek; w sesji sprawdzającej `SLEEK_API_KEY` nie był skonfigurowany. Sprawdź aktualny stan autoryzacji przed użyciem API; nie utożsamiaj instalacji skilla z połączeniem konta.
+- Autor zdecydował 2026-11-15, że nie podłącza konta Sleek. Stosuj lokalne wskazówki projektowania i wdrażania tego skilla bez API Sleek; nie ponawiaj autoryzacji. Nie zapisuj kluczy API w repozytorium.
+- Kierunek UI i przegląd względem skilla: `docs/ui-direction.md`. Dwie zakładki: Start i Mapa. Start zawiera stos Atlasu, Nauki, kolekcji, szczegółów i ustawień, z widocznym dolnym paskiem.
 
 ## Zasady kodu
 
@@ -18,11 +26,11 @@ Autor uczy się Reacta w trakcie projektu – kod ma być **prosty, czytelny i s
 - Czytelne nazwy zamiast komentarzy; komentarz tylko, gdy wyjaśnia „dlaczego”.
 - TypeScript strict, zero `any`.
 - Style tylko przez tokeny z `src/theme` (kolory, odstępy, typografia, promienie, ruch) – żadnych „magicznych” wartości w komponentach.
-- Wygląd „las”: domyślnie ciemna zieleń na każdym telefonie, niezależnie od jego ustawień (`useTheme` zwraca `palette.dark`, `app.json`: `dark`), akcent w kolorze kurki; nagłówek z warstwami świerków (paralaksa), ciemnozielony pasek zakładek; Fraunces (nazwy, tytuły), kursywa Fraunces (łacina), IBM Plex Mono (etykiety), małe promienie. Unikaj szablonowego wyglądu (pigułki, duże promienie, generyczne palety). Wybór z wielu opcji – krok po kroku w `BottomSheet`, nie wielkie panele.
+- Wygląd „las”: domyślnie ciemna zieleń na każdym telefonie, niezależnie od jego ustawień (`useTheme` zwraca `palette.dark`, `app.json`: `dark`), akcent w kolorze kurki; proste nagłówki i ciemnozielony pasek zakładek; Oswald (nagłówki), Source Sans Pro (treść), kursywa Fraunces (łacina), IBM Plex Mono (etykiety), umiarkowane promienie. Unikaj szablonowego wyglądu (pigułki, duże promienie, generyczne palety). Wybór z wielu opcji – krok po kroku w `BottomSheet`, nie wielkie panele.
 - Kolory: `accent` tylko na tekst i cienkie linie na tle strony, `glow` + `onGlow` na wypełnienia i elementy na ciemnych powierzchniach. Kontrast: min. 4,5:1 dla tekstu, 3:1 dla grafiki. Jasna paleta w `colors.ts` jest teraz nieużywana – to zapas na ewentualny przełącznik.
 - Wszystko klikalne przez `PressableScale` (sprężyna + haptyka); zmiany stanu animowane (Reanimated), nie skokowe. Wyjątek: pasek zakładek jest stale na ekranie, więc rusza się spokojnie – `withTiming`, bez sprężyn i bez uginania (sprężyny były tam dla autora zbyt rozbujane).
 - Wszystko, co może zawieść (lokalizacja, czujniki, sieć, baza, uprawnienia), ma obsługę błędu i stan zastępczy – aplikacja nigdy się nie crashuje.
-- Offline-first: dane użytkownika w SQLite (`src/db`); wszystko działa bez sieci (poza kafelkami mapy).
+- Offline-first: dane użytkownika w SQLite (`src/db`); lokalne funkcje działają bez sieci; wyjątki: kafelki mapy, pobieranie pogody i otwierane źródła.
 - Zdjęcie nie rozpoznaje grzyba automatycznie – jest „dowodem znaleziska”; gatunek wybiera użytkownik, a przy groźnym sobowtórze potwierdza cechy.
 
 ## Biblioteki
@@ -39,7 +47,7 @@ Autor uczy się Reacta w trakcie projektu – kod ma być **prosty, czytelny i s
 ## Struktura
 
 ```
-src/app/            ekrany i layouty (expo-router); (tabs)/ = index (Atlas, start, lewa), map (Mapa, środek), learn (Nauka, prawa); species/[id], compare
+src/app/            ekrany i layouty (expo-router); (tabs)/ = (home) (Start i stos ekranów), map (Mapa); (home)/atlas, learn, collection, settings, species/[id], compare
 src/components/     współdzielone komponenty UI; podfoldery: atlas, species, compare, key, forest, icons
 src/features/       logika per funkcja: atlas, collection, learn, spots, navigation, safety, feedback (haptyka)
 src/db/             SQLite: połączenie, migracje
@@ -52,7 +60,7 @@ Import przez alias `@/` → `src/`.
 ## Workflow
 
 - Małe kroki. Po każdym: `npm run lint` + `npm run typecheck` + commit (`feat:` / `fix:` / `chore:` / `refactor:`).
-- Po każdym ETAPIE stop: podsumowanie, jak przetestować (Expo Go na telefonie + emulator Androida), wyjaśnienie kluczowego kodu prostym językiem, 3 krótkie pytania sprawdzające. Czekaj na „dalej”.
+- Po etapie krótko podsumuj faktyczne zmiany i wyniki testów. Bez zadań domowych, odpytywania autora i pytań sprawdzających — autor wyraźnie z nich zrezygnował. Pracuj samodzielnie w zakresie bieżącego polecenia.
 - Z autorem rozmawiaj po polsku, krótko i prostym językiem. Pisze bezpośrednio i ocenia wygląd po efekcie, więc zmiany UI sprawdź zrzutem z emulatora, zanim powiesz, że są gotowe.
 
 ## Plan etapów
@@ -61,11 +69,11 @@ Import przez alias `@/` → `src/`.
 - Etap 1 – Test 3D ✅ → porzucony (proceduralne modele wyglądały zbyt słabo – zamiast nich zdjęcia)
 - Etap 2 – Dane 26 gatunków (cechy, sezony, sobowtóry, zdjęcia na wolnej licencji) ✅
 - Etap 3 – Atlas: karty, kategorie, wyszukiwarka, klucz do oznaczania; ekran gatunku (zegar sezonu, sobowtóry z alertem, suwak porównania) ✅
-- Etap 4 – Odblokowywanie zdjęciem: zdjęcie → wybór gatunku → kontrola sobowtórów → animacja odkrycia, postęp w atlasie
-- Etap 5 – Nauka: grzyb dnia, gra „Sobowtór”, quiz
-- Etap 6 – Mapa: spoty, „Zaparkowałem tutaj”, powrót do auta (kompas/mapa), alarm zmroku, obsługa GPS
-- Etap 7 – Bezpieczeństwo i szlif
-- Etap 8 – Bonus: prognoza grzybowa, kolejne tryby nauki
+- Etap 4 – Odblokowywanie zdjęciem: zaimplementowane; oczekuje testu w Expo Go i oceny wyglądu
+- Etap 5 – Nauka: grzyb dnia, gra „Sobowtór”, quiz, zapis wyników — zaimplementowane; oczekuje testu UI w Expo Go
+- Etap 6 – Mapa: miejscówki, parkowanie, kierunek/odległość do auta, ostrzeżenie o zachodzie, obsługa GPS — zaimplementowane; bez natywnego testu UI
+- Etap 7 – Źródła i szlif: panel źródeł, przegląd błędów i testy regresji zaimplementowane; weryfikacja treści i testy natywne nadal otwarte
+- Etap 8 – Indeks grzybowy 1–10 i pogoda: prognoza na 3 dni z pamięcią offline zaimplementowana; test natywnego UI otwarty
 - Etap 9 – README
 
 ## Komendy
@@ -81,18 +89,29 @@ npm test                # testy jednostkowe czystych funkcji (gdy dojdą)
 ## Stan projektu (2026-11-06)
 
 - Gotowe: etapy 0–3 oraz przebudowa wyglądu (las, haptyka, ruch, klucz do oznaczania zamiast panelu filtrów). Wszystko w commitach na `main`. Repo nie ma zdalnego – GitHub tylko na prośbę autora.
-- Następny krok: Etap 4, jeszcze nie zaczęty. Zacznij, gdy autor napisze „dalej”.
+- Etap 4: aparat/galeria, ręczny wybór, kontrola cech groźnych sobowtórów, zapis zdjęć w dokumentach aplikacji i SQLite, licznik unikalnych gatunków, oznaczenia kart, zdjęcia na stronie gatunku.
+- Etap 5: codzienny gatunek, quiz cech/nazw łacińskich, sobowtóry, losowane rundy po 5 pytań z wyjaśnieniami, najlepszy wynik i liczba rund w SQLite. Migracja 2 dodaje `learning_sessions`, nie zmienia tabel znalezisk. Identyfikator rundy chroni przed podwójnym naliczaniem po ponowieniu zapisu.
+- Etap 6: mapa Google/Apple w Expo Go, dodawanie/edycja/usuwanie miejscówek, zapis auta z potwierdzeniem zastąpienia, współrzędne offline, odległość/azymut oraz true-heading kompas z fallbackiem. GPS automatycznie po otwarciu mapy za zgodą użytkownika; timeout, odmowa zgody, błędy i restart śledzenia obsłużone. Zapis GPS wymaga <=60 s i dokładności <=100 m. Ostrzeżenie o zachodzie z SunCalc działa tylko przy otwartej mapie, bez powiadomień w tle.
+- UI: mapa jako notatnik terenowy, ciemna mapa, tarcza kompasu, lista punktów, panel dodawania. Atlas ma filtr „Moje odkrycia”, mocniejsze wyróżnienie odkrytych kart i licznik obserwacji.
+- Etap 7: panel „O atlasie” z materiałami, 26 autorami/licencjami zdjęć i fontami; poprawki opóźnionych odczytów GPS, wygasania kompasu, kolejkowanych kliknięć quizu, odzyskiwania zdjęcia i niedostępnego pliku. README odpowiada aktualnym funkcjom.
+- Etap 8: Open-Meteo, prognoza 3 dni (temperatura, opady, prawdopodobieństwo, wiatr), automatyczne pobieranie na mapie i ręczne odświeżanie ikoną; współrzędne zaokrąglone do 2 miejsc. Migracja 3 dodaje weather_cache (10 obszarów), starsze niż 6 h lub poprzedni dzień dane oznaczone jako nieaktualne. Timeout, anulowanie, błędy sieci/zapisu oraz zmiana miejsca obsłużone. Orientacyjny indeks 1–10 ocenia warunki na podstawie poprzednich 7 dni. Bezpłatne API niekomercyjne; warunki opisane w README.
+- Szlif UI: kompaktowy nagłówek lasu, uproszczona góra Atlasu, zdjęcia do krawędzi kart, siatka 1–3 kolumn zależna od szerokości i skali fontu; treść maks. 720 px, spokojniejsze przyciski pomocnicze i cele dotykowe 48 px. Nauka, pogoda i powrót do auta mają ujednoliconą hierarchię. Zmiany wymagają wizualnej weryfikacji na urządzeniu.
+- Następny krok: natywna weryfikacja dotychczasowych funkcji, pozostałe TODO treści i ewentualne bonusy, gdy podstawy zostaną ocenione wizualnie. Użytkownik daje swobodę pracy z maksymalnie dwoma subagentami i nie chce zadań ani odpytywania.
+- Brak testu wizualnego: emulator nie jest uruchomiony; ADB blokowany przez środowisko (`Operation not permitted`). Eksporty Android/Hermes i iOS/Hermes przeszły, ale nie zastępują testu natywnego.
+- Zmiany Etapów 4–8 są lokalnie bez commita: środowisko blokuje zapis `.git/index.lock`. Nie publikowano repozytorium.
 - Pod Etap 4 są już: tabela `finds` (`src/db/migrations.ts`), wielokrotnego użytku `BottomSheet`, zainstalowane `expo-image-picker` i `expo-file-system`.
-- Zainstalowane, ale jeszcze nieużywane: `zustand`, `suncalc`, `expo-sensors`, `expo-location`, `react-native-maps`, `expo-image-picker`, `expo-file-system`.
+- Zainstalowane, ale jeszcze nieużywane: `zustand`, `expo-sensors`. Kompas korzysta z `expo-location.watchHeadingAsync`, bez nowej biblioteki.
 
 Otwarte sprawy:
 
+- Odzyskiwanie zdjęcia po odtworzeniu aplikacji jest teraz automatyczne; przetestowano scenariusz na atrapach, bez fizycznego aparatu.
+
 - `src/data/species.ts`: miesiące krowiaka mają `TODO: verify`.
-- Ekran źródeł w aplikacji (Etap 7) – na razie podpis przy każdym zdjęciu i tabela w README.
+- Panel źródeł jest dostępny w Atlasie. Metadane zdjęć są kompletne; testy danych nie stanowią merytorycznej weryfikacji całego atlasu.
 - Haptyka nie jest potwierdzona na fizycznym telefonie, a emulator jej nie odda.
 - README: zrzuty ekranu i wpis o testach na fizycznym urządzeniu mają `TODO`.
-- Termin oddania zadania: nieznany, autor nie odpowiedział.
-- Brak `npm test` i biblioteki testowej (dodanie wymaga zapytania autora).
+- 2026-11-19 autor podał, że ma 3 dni do oddania. Priorytet: stabilność, dopracowanie istniejących funkcji i natywna weryfikacja.
+- `npm test`: 73 testy kolekcji, pytań, rotacji dziennej, migracji/statystyk, zapisu miejsc, geometrii, światła dziennego i cyklu GPS. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
 
 ## Uruchamianie (Mac autora)
 
@@ -115,3 +134,6 @@ Pułapki:
 - `Modal` na Androidzie potrzebuje własnego `GestureHandlerRootView` (jest już w `BottomSheet`).
 - Pasek statusu: wygrywa ostatni zamontowany, dlatego główny `StatusBar` w `_layout` stoi przed `Stack`. Ekran gatunku ustawia jasne ikony nad zdjęciem, a `Screen` przywraca kolor motywu.
 - Własny `TabBar` używa `emitter` i `navigateToTab`; typ `BottomTabBarProps` jest w `expo-router/tabs`.
+
+- SunCalc jest w wersji **2.1.1**, ma własne typy; stare `@types/suncalc` opisują inny interfejs. V2 zwraca kąty w stopniach, brak zdarzeń jako `null` oraz `alwaysUp/alwaysDown`; offset dnia to minuty na wschód od UTC.
+- Natywny build Androida poza Expo Go wymaga klucza Google Maps; nie skonfigurowano go.

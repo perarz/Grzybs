@@ -5,7 +5,7 @@ import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
 import { EDIBILITY_CATEGORY_LABELS, toOptions } from '@/features/atlas/labels';
 import type { Edibility, Species } from '@/features/atlas/types';
-import { durations, radius, spacing, useTheme } from '@/theme';
+import { durations, layout, radius, spacing, useTheme } from '@/theme';
 
 type CategoryTabsProps = {
   /** Species matching everything except the category – the tabs count them. */
@@ -86,6 +86,8 @@ const styles = StyleSheet.create({
     gap: spacing.lg,
   },
   tab: {
+    minHeight: layout.touchTarget,
+    justifyContent: 'space-between',
     gap: spacing.sm,
     paddingTop: spacing.sm,
   },

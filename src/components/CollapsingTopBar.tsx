@@ -17,6 +17,7 @@ type CollapsingTopBarProps = {
   /** Scroll distance at which the large title has gone and the small one takes over. */
   revealAt: number;
   left?: ReactNode;
+  right?: ReactNode;
 };
 
 export const TOP_BAR_HEIGHT = 52;
@@ -27,7 +28,7 @@ const TITLE_SLIDE = 8;
  * Invisible at the top of the screen. Once the large title scrolls away, a paper bar
  * with a small title fades in – it also keeps content from sliding under the status bar.
  */
-export function CollapsingTopBar({ scrollY, title, revealAt, left }: CollapsingTopBarProps) {
+export function CollapsingTopBar({ scrollY, title, revealAt, left, right }: CollapsingTopBarProps) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
 
@@ -52,6 +53,7 @@ export function CollapsingTopBar({ scrollY, title, revealAt, left }: CollapsingT
   return (
     <View style={[styles.bar, { height: insets.top + TOP_BAR_HEIGHT, paddingTop: insets.top }]}>
       <Animated.View
+        pointerEvents="none"
         style={[
           StyleSheet.absoluteFill,
           { backgroundColor: colors.sky, borderBottomColor: colors.border },
@@ -59,14 +61,21 @@ export function CollapsingTopBar({ scrollY, title, revealAt, left }: CollapsingT
           backgroundStyle,
         ]}
       />
-      <View style={styles.side}>{left}</View>
+      <View pointerEvents="box-none" style={styles.side}>
+        {left}
+      </View>
       <Animated.Text
+        accessible={false}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
         numberOfLines={1}
         style={[typography.heading, styles.title, { color: colors.text }, titleStyle]}
       >
         {title}
       </Animated.Text>
-      <View style={styles.side} />
+      <View pointerEvents="box-none" style={styles.right}>
+        {right}
+      </View>
     </View>
   );
 }
@@ -87,6 +96,7 @@ const styles = StyleSheet.create({
   background: {
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
+  right: { width: SIDE_WIDTH, alignItems: 'center' },
   side: {
     width: SIDE_WIDTH,
     paddingLeft: spacing.lg,

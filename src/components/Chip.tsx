@@ -1,7 +1,7 @@
 import { StyleSheet, type TextStyle } from 'react-native';
 import Animated, { type CSSTransitionProperties } from 'react-native-reanimated';
 
-import { durations, radius, spacing, typography, useTheme } from '@/theme';
+import { durations, layout, radius, spacing, typography, useTheme } from '@/theme';
 
 import { PressableScale } from './PressableScale';
 
@@ -60,6 +60,8 @@ export function Chip({ label, selected, onPress }: ChipProps) {
 
 const styles = StyleSheet.create({
   chip: {
+    minHeight: layout.touchTarget,
+    justifyContent: 'center',
     borderRadius: radius.sm,
     borderWidth: 1,
     paddingHorizontal: spacing.md,

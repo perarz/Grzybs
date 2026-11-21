@@ -10,6 +10,7 @@ const AMATOXIN_POISONING =
 const SPECIES_DATA: Record<SpeciesId, Omit<Species, 'id'>> = {
   'boletus-edulis': {
     namePl: 'Borowik szlachetny',
+    nameCommon: 'Prawdziwek',
     nameLatin: 'Boletus edulis',
     otherNames: ['prawdziwek'],
     edibility: 'edible',
@@ -34,6 +35,7 @@ const SPECIES_DATA: Record<SpeciesId, Omit<Species, 'id'>> = {
   },
   'imleria-badia': {
     namePl: 'Podgrzybek brunatny',
+    nameCommon: 'Podgrzybek',
     nameLatin: 'Imleria badia',
     otherNames: ['podgrzyb brunatny'],
     edibility: 'edible',
@@ -59,6 +61,7 @@ const SPECIES_DATA: Record<SpeciesId, Omit<Species, 'id'>> = {
   },
   'leccinum-scabrum': {
     namePl: 'Koźlarz babka',
+    nameCommon: 'Kozak',
     nameLatin: 'Leccinum scabrum',
     otherNames: ['kozak'],
     edibility: 'edible',
@@ -109,6 +112,7 @@ const SPECIES_DATA: Record<SpeciesId, Omit<Species, 'id'>> = {
   },
   'suillus-luteus': {
     namePl: 'Maślak zwyczajny',
+    nameCommon: 'Maślak',
     nameLatin: 'Suillus luteus',
     otherNames: ['maślak'],
     edibility: 'edible',
@@ -135,6 +139,7 @@ const SPECIES_DATA: Record<SpeciesId, Omit<Species, 'id'>> = {
   },
   'cantharellus-cibarius': {
     namePl: 'Pieprznik jadalny',
+    nameCommon: 'Kurka',
     nameLatin: 'Cantharellus cibarius',
     otherNames: ['kurka'],
     edibility: 'edible',
@@ -159,6 +164,7 @@ const SPECIES_DATA: Record<SpeciesId, Omit<Species, 'id'>> = {
   },
   'macrolepiota-procera': {
     namePl: 'Czubajka kania',
+    nameCommon: 'Kania',
     nameLatin: 'Macrolepiota procera',
     otherNames: ['kania'],
     edibility: 'edible',
@@ -233,6 +239,7 @@ const SPECIES_DATA: Record<SpeciesId, Omit<Species, 'id'>> = {
   },
   'armillaria-mellea': {
     namePl: 'Opieńka miodowa',
+    nameCommon: 'Opieńka',
     nameLatin: 'Armillaria mellea',
     otherNames: ['opieńka'],
     edibility: 'edible',
@@ -259,6 +266,7 @@ const SPECIES_DATA: Record<SpeciesId, Omit<Species, 'id'>> = {
   },
   'lactarius-deliciosus': {
     namePl: 'Mleczaj rydz',
+    nameCommon: 'Rydz',
     nameLatin: 'Lactarius deliciosus',
     otherNames: ['rydz'],
     edibility: 'edible',
@@ -359,6 +367,7 @@ const SPECIES_DATA: Record<SpeciesId, Omit<Species, 'id'>> = {
   },
   'hygrophoropsis-aurantiaca': {
     namePl: 'Lisówka pomarańczowa',
+    nameCommon: 'Fałszywa kurka',
     nameLatin: 'Hygrophoropsis aurantiaca',
     otherNames: ['fałszywa kurka'],
     edibility: 'inedible',
@@ -462,6 +471,7 @@ const SPECIES_DATA: Record<SpeciesId, Omit<Species, 'id'>> = {
   },
   'lactarius-torminosus': {
     namePl: 'Mleczaj wełnianka',
+    nameCommon: 'Wełnianka',
     nameLatin: 'Lactarius torminosus',
     otherNames: ['wełnianka'],
     edibility: 'poisonous',

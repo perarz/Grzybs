@@ -4,53 +4,61 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
-import { getCatalogNumber } from '@/data/species';
 import { SPECIES_PHOTOS } from '@/data/speciesPhotos';
+import { EDIBILITY_LABELS } from '@/features/atlas/labels';
 import type { Species } from '@/features/atlas/types';
-import { radius, spacing, useTheme } from '@/theme';
+import { useCollection } from '@/features/collection/CollectionProvider';
+import { durations, layout, radius, spacing, useTheme } from '@/theme';
 
 import { EdibilityStamp } from './EdibilityStamp';
 
 type SpeciesCardProps = {
   species: Species;
+  lead: boolean;
 };
 
 // A big card shrinks less than a chip, or the press would feel heavy.
-const CARD_PRESSED_SCALE = 0.97;
+const CARD_PRESSED_SCALE = 0.985;
 
-/** A specimen sheet: the photo mounted on paper, a catalogue number and both names. */
-export function SpeciesCard({ species }: SpeciesCardProps) {
+/** Familiar name first, with the formal Polish name beneath it. */
+export function SpeciesCard({ species, lead }: SpeciesCardProps) {
   const { colors } = useTheme();
+  const { finds } = useCollection();
+  const discovered = finds.some((find) => find.species_id === species.id);
 
   return (
     <PressableScale
       accessibilityRole="button"
-      accessibilityLabel={species.namePl}
+      accessibilityLabel={`${species.nameCommon ? species.nameCommon + ', ' : ''}${species.namePl}, ${EDIBILITY_LABELS[species.edibility]}${discovered ? ', w Twojej kolekcji' : ''}`}
       pressedScale={CARD_PRESSED_SCALE}
       onPress={() => router.push({ pathname: '/species/[id]', params: { id: species.id } })}
-      style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
+      style={styles.card}
     >
       <View>
         <Image
           source={SPECIES_PHOTOS[species.id].source}
-          style={[styles.photo, { backgroundColor: colors.surfaceMuted }]}
+          style={[styles.photo, lead && styles.cover, { backgroundColor: colors.surfaceMuted }]}
           contentFit="cover"
-          transition={300}
+          transition={durations.base}
         />
         <View style={styles.stamp}>
           <EdibilityStamp edibility={species.edibility} />
         </View>
       </View>
       <View style={styles.names}>
-        <AppText variant="label" color="textMuted">
-          {getCatalogNumber(species.id)}
+        <AppText variant={lead ? 'title' : 'heading'}>
+          {species.nameCommon ?? species.namePl}
         </AppText>
-        <AppText variant="heading" numberOfLines={2}>
-          {species.namePl}
-        </AppText>
-        <AppText variant="latinSmall" color="textMuted" numberOfLines={1}>
-          {species.nameLatin}
-        </AppText>
+        {species.nameCommon && (
+          <AppText variant="caption" color="textMuted">
+            {species.namePl}
+          </AppText>
+        )}
+        {discovered ? (
+          <AppText variant="caption" color="accent">
+            W kolekcji
+          </AppText>
+        ) : null}
       </View>
     </PressableScale>
   );
@@ -59,16 +67,13 @@ export function SpeciesCard({ species }: SpeciesCardProps) {
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    borderRadius: radius.md,
-    borderWidth: StyleSheet.hairlineWidth,
-    padding: spacing.sm,
-    gap: spacing.sm,
   },
   photo: {
+    borderRadius: radius.md,
     width: '100%',
-    aspectRatio: 1,
-    borderRadius: radius.sm,
+    aspectRatio: layout.speciesPhotoAspect,
   },
+  cover: { aspectRatio: 2.15 },
   stamp: {
     position: 'absolute',
     left: spacing.sm,
@@ -76,7 +81,6 @@ const styles = StyleSheet.create({
   },
   names: {
     gap: spacing.xs,
-    paddingHorizontal: spacing.xs,
-    paddingBottom: spacing.xs,
+    paddingVertical: spacing.sm,
   },
 });

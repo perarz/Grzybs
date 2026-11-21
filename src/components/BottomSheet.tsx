@@ -18,6 +18,7 @@ import { scheduleOnRN } from 'react-native-worklets';
 import { durations, radius, spacing, springs, useTheme } from '@/theme';
 
 type BottomSheetProps = {
+  dismissible?: boolean;
   /** Called after the sheet has slid away – the parent then stops rendering it. */
   onClose: () => void;
   /** Rendered in the draggable top part. Gets `close`, which slides the sheet away first. */
@@ -34,7 +35,7 @@ const HANDLE_WIDTH = 40;
 const HANDLE_HEIGHT = 5;
 
 /** A sheet rising from the bottom, closed by dragging it down or tapping the dimmed backdrop. */
-export function BottomSheet({ onClose, header, children }: BottomSheetProps) {
+export function BottomSheet({ onClose, header, children, dismissible = true }: BottomSheetProps) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
@@ -48,6 +49,7 @@ export function BottomSheet({ onClose, header, children }: BottomSheetProps) {
   // Runs both from a button (JS thread) and from the drag gesture (UI thread).
   function slideAway() {
     'worklet';
+    if (!dismissible) return;
     offset.set(
       withTiming(height, { duration: durations.base }, (finished) => {
         if (finished) scheduleOnRN(onClose);
@@ -58,6 +60,7 @@ export function BottomSheet({ onClose, header, children }: BottomSheetProps) {
   const drag = usePanGesture({
     // Only a downward drag grabs the sheet.
     activeOffsetY: 10,
+    enabled: dismissible,
     onUpdate: (event) => {
       offset.set(Math.max(0, event.translationY));
     },

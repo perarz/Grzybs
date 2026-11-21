@@ -1,45 +1,44 @@
 import { StyleSheet, useWindowDimensions } from 'react-native';
-import Animated, { FadeInDown, FadeOut, LinearTransition } from 'react-native-reanimated';
+import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
 
 import type { Species } from '@/features/atlas/types';
-import { durations, spacing, springs } from '@/theme';
+import { durations, layout, spacing } from '@/theme';
 
 import { SpeciesCard } from './SpeciesCard';
 
 type SpeciesGridProps = {
   species: Species[];
+  lead: boolean;
 };
 
-const COLUMNS = 2;
 const COLUMN_GAP = spacing.md;
-// Cards arrive one after another, but the cascade stops early so the list is never slow.
-const STAGGER_MS = 45;
-const MAX_STAGGERED_CARDS = 8;
+const appear = FadeIn.duration(durations.fast).reduceMotion(ReduceMotion.System);
 
-const cardLayout = LinearTransition.springify()
-  .damping(springs.settle.damping)
-  .stiffness(springs.settle.stiffness);
-
-export function SpeciesGrid({ species }: SpeciesGridProps) {
-  const { width } = useWindowDimensions();
+export function SpeciesGrid({ species, lead }: SpeciesGridProps) {
+  const { width, fontScale } = useWindowDimensions();
   // Screen width minus the side padding of <Screen> and the gaps between columns.
   // Rounded down, so two cards always fit in one row.
-  const cardWidth = Math.floor((width - spacing.lg * 2 - COLUMN_GAP * (COLUMNS - 1)) / COLUMNS);
+  const availableWidth = Math.min(width, layout.contentMaxWidth) - spacing.lg * 2;
+  const columns = Math.max(
+    1,
+    Math.min(
+      3,
+      Math.floor(
+        (availableWidth + COLUMN_GAP) / (layout.minimumCardWidth * fontScale + COLUMN_GAP),
+      ),
+    ),
+  );
+  const cardWidth = Math.floor((availableWidth - COLUMN_GAP * (columns - 1)) / columns);
 
   return (
-    <Animated.View layout={cardLayout} style={styles.grid}>
+    <Animated.View style={styles.grid}>
       {species.map((item, index) => (
-        // Filtering doesn't redraw the list: leaving cards fade out, the rest glide into place.
         <Animated.View
           key={item.id}
-          entering={FadeInDown.delay(Math.min(index, MAX_STAGGERED_CARDS) * STAGGER_MS)
-            .springify()
-            .damping(springs.settle.damping)}
-          exiting={FadeOut.duration(durations.fast)}
-          layout={cardLayout}
-          style={{ width: cardWidth }}
+          entering={appear}
+          style={{ width: lead && index === 0 ? availableWidth : cardWidth }}
         >
-          <SpeciesCard species={item} />
+          <SpeciesCard species={item} lead={lead && index === 0} />
         </Animated.View>
       ))}
     </Animated.View>

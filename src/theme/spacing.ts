@@ -15,3 +15,17 @@ export const radius = {
   lg: 14,
   pill: 999,
 } as const;
+
+export const layout = {
+  contentMaxWidth: 720,
+  minimumCardWidth: 148,
+  touchTarget: 48,
+  speciesPhotoAspect: 1.12,
+  homeHeroHeight: 220,
+  thumbnail: 88,
+  collectionPreviewWidth: 116,
+  icon: 24,
+  mapControlGap: 12,
+  courseNode: 72,
+  courseStroke: 3,
+} as const;

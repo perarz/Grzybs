@@ -1,14 +1,17 @@
-// Fraunces – a soft old-style serif for names and titles, like a printed field guide.
-// IBM Plex Mono – typewriter labels, like the tags on herbarium sheets.
-// Body text stays in the system font, so long descriptions read natively.
 export const fonts = {
-  serif: 'Fraunces-SemiBold',
+  display: 'Oswald-Bold',
+  heading: 'Oswald-Regular',
+  body: 'SourceSansPro-Regular',
+  strong: 'SourceSansPro-Semibold',
   serifItalic: 'Fraunces-Italic',
   mono: 'PlexMono-Medium',
 } as const;
 
 export const FONT_FILES = {
-  [fonts.serif]: require('../../assets/fonts/Fraunces_600SemiBold.ttf'),
+  [fonts.display]: require('../../assets/fonts/Oswald-Bold.ttf'),
+  [fonts.heading]: require('../../assets/fonts/Oswald-Regular.ttf'),
+  [fonts.body]: require('../../assets/fonts/SourceSansPro-Regular.ttf'),
+  [fonts.strong]: require('../../assets/fonts/SourceSansPro-Semibold.ttf'),
   [fonts.serifItalic]: require('../../assets/fonts/Fraunces_400Regular_Italic.ttf'),
   [fonts.mono]: require('../../assets/fonts/IBMPlexMono_500Medium.ttf'),
 };

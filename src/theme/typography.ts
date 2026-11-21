@@ -5,12 +5,12 @@ import { fonts } from './fonts';
 // Custom fonts have one weight per file, so they don't set fontWeight –
 // Android would otherwise fake a bolder version.
 export const typography = {
-  display: { fontFamily: fonts.serif, fontSize: 38, lineHeight: 42, letterSpacing: -0.8 },
-  title: { fontFamily: fonts.serif, fontSize: 26, lineHeight: 31, letterSpacing: -0.4 },
-  heading: { fontFamily: fonts.serif, fontSize: 19, lineHeight: 24, letterSpacing: -0.2 },
-  body: { fontSize: 16, lineHeight: 24, fontWeight: '400' },
-  bodyStrong: { fontSize: 16, lineHeight: 24, fontWeight: '600' },
-  caption: { fontSize: 13, lineHeight: 18, fontWeight: '400' },
+  display: { fontFamily: fonts.display, fontSize: 40, lineHeight: 54, letterSpacing: -0.8 },
+  title: { fontFamily: fonts.heading, fontSize: 27, lineHeight: 38, letterSpacing: -0.4 },
+  heading: { fontFamily: fonts.heading, fontSize: 21, lineHeight: 30, letterSpacing: -0.2 },
+  body: { fontSize: 16, lineHeight: 24, fontFamily: fonts.body },
+  bodyStrong: { fontSize: 16, lineHeight: 24, fontFamily: fonts.strong },
+  caption: { fontSize: 13, lineHeight: 18, fontFamily: fonts.body },
   label: {
     fontFamily: fonts.mono,
     fontSize: 11,
@@ -19,11 +19,10 @@ export const typography = {
     textTransform: 'uppercase',
   },
   button: {
-    fontFamily: fonts.mono,
-    fontSize: 13,
-    lineHeight: 16,
-    letterSpacing: 1,
-    textTransform: 'uppercase',
+    fontSize: 14,
+    lineHeight: 20,
+    fontFamily: fonts.strong,
+    letterSpacing: 0.2,
   },
   latin: { fontFamily: fonts.serifItalic, fontSize: 16, lineHeight: 21 },
   latinSmall: { fontFamily: fonts.serifItalic, fontSize: 14, lineHeight: 18 },

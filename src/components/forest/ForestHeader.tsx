@@ -22,7 +22,7 @@ type ForestHeaderProps = {
   topPadding: number;
 };
 
-const TREELINE_HEIGHT = 84;
+const TREELINE_HEIGHT = 64;
 // The sun (or the moon at night): a soft disc with a halo fading into the sky.
 const SUN_GLOW_RADIUS = 64;
 const SUN_OFFSET = 36;
@@ -35,13 +35,13 @@ const LAYERS: { name: string; color: keyof ThemeColors; parallax: number; layer:
     name: 'far',
     color: 'treeFar',
     parallax: 0.45,
-    layer: { groundY: 62, minTreeHeight: 22, maxTreeHeight: 44, spacing: 14, seed: 7 },
+    layer: { groundY: 44, minTreeHeight: 22, maxTreeHeight: 44, spacing: 14, seed: 7 },
   },
   {
     name: 'mid',
     color: 'treeMid',
     parallax: 0.22,
-    layer: { groundY: 74, minTreeHeight: 28, maxTreeHeight: 54, spacing: 21, seed: 23 },
+    layer: { groundY: 56, minTreeHeight: 28, maxTreeHeight: 54, spacing: 21, seed: 23 },
   },
   {
     name: 'near',
@@ -50,7 +50,7 @@ const LAYERS: { name: string; color: keyof ThemeColors; parallax: number; layer:
     layer: {
       groundY: TREELINE_HEIGHT,
       minTreeHeight: 32,
-      maxTreeHeight: 68,
+      maxTreeHeight: 52,
       spacing: 30,
       seed: 51,
     },
@@ -111,7 +111,11 @@ export function ForestHeader({ scrollY, title, eyebrow, subtitle, topPadding }: 
         >
           {title}
         </Animated.Text>
-        {subtitle ? <AppText color="textMuted">{subtitle}</AppText> : null}
+        {subtitle ? (
+          <AppText variant="caption" color="textMuted">
+            {subtitle}
+          </AppText>
+        ) : null}
       </View>
       <View style={[styles.treeline, { height: TREELINE_HEIGHT }]}>
         {LAYERS.map(({ name, color, parallax, layer }) => (
@@ -132,7 +136,7 @@ export function ForestHeader({ scrollY, title, eyebrow, subtitle, topPadding }: 
 
 const styles = StyleSheet.create({
   text: {
-    gap: spacing.xs,
+    gap: spacing.sm,
     paddingHorizontal: spacing.lg,
   },
   title: {

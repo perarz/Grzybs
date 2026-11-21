@@ -38,7 +38,7 @@ export function IdentifyKeyButton({ answeredCount, onPress }: IdentifyKeyButtonP
         <AppText variant="caption" color="onForestMuted">
           {answeredCount > 0
             ? `Odpowiedzi: ${answeredCount} z ${KEY_STEPS.length} – dotknij, by zmienić`
-            : 'Znalazłeś grzyba? Odpowiedz na kilka pytań'}
+            : 'Porównaj cechy krok po kroku'}
         </AppText>
       </View>
       <ChevronRightIcon color={colors.onForest} size={CHEVRON_SIZE} />
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     height: ICON_CIRCLE_SIZE,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radius.pill,
+    borderRadius: radius.md,
   },
   text: {
     flex: 1,

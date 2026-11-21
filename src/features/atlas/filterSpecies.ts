@@ -88,7 +88,12 @@ export function normalizeForSearch(text: string): string {
 
 function matchesQuery(species: Species, normalizedQuery: string): boolean {
   if (normalizedQuery === '') return true;
-  const names = [species.namePl, species.nameLatin, ...species.otherNames];
+  const names = [
+    species.nameCommon ?? '',
+    species.namePl,
+    species.nameLatin,
+    ...species.otherNames,
+  ];
   return names.some((name) => normalizeForSearch(name).includes(normalizedQuery));
 }
 

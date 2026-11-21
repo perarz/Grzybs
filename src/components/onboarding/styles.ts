@@ -1,0 +1,41 @@
+import { StyleSheet } from 'react-native';
+import { layout, radius, spacing } from '@/theme';
+export const styles = StyleSheet.create({
+  safe: { flex: 1 },
+  scroll: {
+    flexGrow: 1,
+    padding: spacing.xl,
+    gap: spacing.xl,
+    width: '100%',
+    maxWidth: layout.contentMaxWidth,
+    alignSelf: 'center',
+  },
+  top: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  skip: { minHeight: layout.touchTarget, justifyContent: 'center', paddingHorizontal: spacing.sm },
+  content: { flex: 1, justifyContent: 'center', gap: spacing.xl },
+  hero: { gap: spacing.md },
+  emblem: {
+    width: layout.touchTarget * 2,
+    height: layout.touchTarget * 2,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.sm,
+  },
+  choices: { gap: spacing.md },
+  choice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.lg,
+    padding: spacing.lg,
+    minHeight: layout.touchTarget,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+  },
+  choiceText: { flex: 1, gap: spacing.xs },
+  footer: { gap: spacing.md },
+  progress: { flexDirection: 'row', gap: spacing.xs },
+  segment: { flex: 1, height: spacing.xs, borderRadius: radius.pill },
+  feedback: { gap: spacing.xs, padding: spacing.lg, borderRadius: radius.lg, borderWidth: 1 },
+});

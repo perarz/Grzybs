@@ -36,7 +36,7 @@ export function SpeciesWarnings({ species, lookalikes }: SpeciesWarningsProps) {
           tone={hasDeadlyLookalike ? 'danger' : 'warning'}
           title={dangerousLookalikes.length > 1 ? 'Groźne sobowtóry' : 'Groźny sobowtór'}
         >
-          Podobne trujące gatunki: {lookalikeNames}. Porównaj różnice niżej, zanim coś zbierzesz.
+          {lookalikeNames}. Porównaj przed zbiorem.
         </AlertBanner>
       ) : null}
       {species.edibilityNote ? (

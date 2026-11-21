@@ -8,11 +8,12 @@ import { durations, spacing, useTheme } from '@/theme';
 
 type EmptyResultsProps = {
   onClear: () => void;
+  collectionOnly?: boolean;
 };
 
 const ICON_SIZE = 44;
 
-export function EmptyResults({ onClear }: EmptyResultsProps) {
+export function EmptyResults({ onClear, collectionOnly = false }: EmptyResultsProps) {
   const { colors } = useTheme();
 
   return (
@@ -20,10 +21,12 @@ export function EmptyResults({ onClear }: EmptyResultsProps) {
       <AtlasIcon color={colors.textMuted} size={ICON_SIZE} />
       <View style={styles.text}>
         <AppText variant="title" style={styles.center}>
-          Nic tu nie rośnie
+          {collectionOnly ? 'Kolekcja czeka na odkrycia' : 'Nic tu nie rośnie'}
         </AppText>
         <AppText color="textMuted" style={styles.center}>
-          Żaden gatunek w atlasie nie ma wszystkich tych cech naraz.
+          {collectionOnly
+            ? 'Nie ma odkrytych gatunków pasujących do tych filtrów. Dodaj zdjęcie znaleziska lub pokaż cały atlas.'
+            : 'Żaden gatunek w atlasie nie ma wszystkich tych cech naraz.'}
         </AppText>
       </View>
       <Button label="Wyczyść filtry" variant="secondary" onPress={onClear} />

@@ -17,8 +17,8 @@ type SpeciesHeroProps = {
   scrollY: SharedValue<number>;
 };
 
-/** Photo height as a share of the screen width – a little taller than square. */
-export const HERO_ASPECT = 1.05;
+/** Photo height as a share of the screen width – leaves room for field information. */
+export const HERO_ASPECT = 0.62;
 const PARALLAX_SPEED = 0.45;
 const SCRIM_HEIGHT = 140;
 // Black on purpose in both themes – a scrim must darken any photo for the status bar.
@@ -61,8 +61,8 @@ export function SpeciesHero({ species, scrollY }: SpeciesHeroProps) {
       <Svg width={width} height={SCRIM_HEIGHT} style={styles.scrim}>
         <Defs>
           <LinearGradient id="scrim" x1="0" y1="0" x2="0" y2="1">
-            <Stop offset="0" stopColor="#000000" stopOpacity={SCRIM_OPACITY} />
-            <Stop offset="1" stopColor="#000000" stopOpacity={0} />
+            <Stop offset="0" stopColor={colors.treeNear} stopOpacity={SCRIM_OPACITY} />
+            <Stop offset="1" stopColor={colors.treeNear} stopOpacity={0} />
           </LinearGradient>
         </Defs>
         <Rect width={width} height={SCRIM_HEIGHT} fill="url(#scrim)" />

@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import type { BottomTabBarProps } from 'expo-router/tabs';
 import { useState } from 'react';
 import { StyleSheet, View, type LayoutChangeEvent } from 'react-native';
@@ -42,6 +43,7 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
         styles.bar,
         {
           backgroundColor: colors.treeNear,
+          borderTopColor: colors.border,
           paddingBottom: insets.bottom + spacing.xs,
         },
       ]}
@@ -54,7 +56,7 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const focused = index === state.index;
-        const color = focused ? colors.onForest : colors.onForestMuted;
+        const color = focused ? colors.glow : colors.onForestMuted;
         const label = options.title ?? route.name;
 
         function openTab() {
@@ -65,9 +67,9 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
             target: route.key,
             canPreventDefault: true,
           });
-          if (!focused && !event.defaultPrevented) {
-            navigateToTab(route.key);
-          }
+          if (event.defaultPrevented) return;
+          if (focused && route.name === '(home)') router.dismissTo('/');
+          else if (!focused) navigateToTab(route.key);
         }
 
         return (
@@ -95,6 +97,7 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
 const styles = StyleSheet.create({
   bar: {
     flexDirection: 'row',
+    borderTopWidth: StyleSheet.hairlineWidth,
     paddingTop: spacing.sm,
   },
   indicator: {
@@ -110,6 +113,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     gap: spacing.xs,
-    paddingVertical: spacing.xs,
+    paddingVertical: spacing.sm,
   },
 });

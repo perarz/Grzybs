@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useRef, useState, type ComponentRef } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import Animated, { FadeIn, FadeOut, type CSSTransitionProperties } from 'react-native-reanimated';
 
-import { durations, radius, spacing, typography, useTheme } from '@/theme';
+import { durations, layout, radius, spacing, typography, useTheme } from '@/theme';
 
 import { CloseIcon, SearchIcon } from './icons/UiIcons';
 import { PressableScale } from './PressableScale';
@@ -22,6 +22,7 @@ const BORDER_TRANSITION: CSSTransitionProperties = {
 export function SearchField({ value, onChangeText, placeholder }: SearchFieldProps) {
   const { colors } = useTheme();
   const [isFocused, setFocused] = useState(false);
+  const input = useRef<ComponentRef<typeof TextInput>>(null);
 
   return (
     <Animated.View
@@ -33,6 +34,7 @@ export function SearchField({ value, onChangeText, placeholder }: SearchFieldPro
     >
       <SearchIcon color={isFocused ? colors.text : colors.textMuted} size={ICON_SIZE} />
       <TextInput
+        ref={input}
         value={value}
         onChangeText={onChangeText}
         onFocus={() => setFocused(true)}
@@ -55,8 +57,11 @@ export function SearchField({ value, onChangeText, placeholder }: SearchFieldPro
             haptic="selection"
             accessibilityRole="button"
             accessibilityLabel="Wyczyść wyszukiwanie"
-            hitSlop={spacing.sm}
-            onPress={() => onChangeText('')}
+            style={styles.clear}
+            onPress={() => {
+              onChangeText('');
+              input.current?.focus();
+            }}
           >
             <CloseIcon color={colors.textMuted} size={ICON_SIZE} />
           </PressableScale>
@@ -68,6 +73,7 @@ export function SearchField({ value, onChangeText, placeholder }: SearchFieldPro
 
 const styles = StyleSheet.create({
   field: {
+    minHeight: layout.touchTarget,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
@@ -77,6 +83,14 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
+    minWidth: 0,
     paddingVertical: spacing.md,
+  },
+  clear: {
+    width: layout.touchTarget,
+    minHeight: layout.touchTarget,
+    marginRight: -spacing.md,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

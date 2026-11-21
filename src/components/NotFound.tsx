@@ -19,7 +19,7 @@ export function NotFound({ message }: NotFoundProps) {
       <AppText color="textMuted" style={styles.message}>
         {message}
       </AppText>
-      <Button label="Wróć do atlasu" onPress={() => router.replace('/')} />
+      <Button label="Wróć do atlasu" onPress={() => router.replace('/atlas')} />
     </View>
   );
 }

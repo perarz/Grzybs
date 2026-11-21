@@ -34,4 +34,58 @@ export const MIGRATIONS: string[] = [
     saved_at INTEGER NOT NULL
   );
   `,
+  `
+  CREATE TABLE learning_sessions (
+    id TEXT PRIMARY KEY NOT NULL,
+    mode TEXT NOT NULL CHECK (mode IN ('quiz', 'lookalikes')),
+    score INTEGER NOT NULL CHECK (score >= 0),
+    total INTEGER NOT NULL CHECK (total > 0 AND score <= total),
+    completed_at INTEGER NOT NULL
+  );
+  `,
+  `
+  CREATE TABLE weather_cache (
+    location_key TEXT PRIMARY KEY NOT NULL,
+    payload TEXT NOT NULL,
+    fetched_at INTEGER NOT NULL
+  );
+  `,
+  `
+  CREATE TABLE mushroom_alerts (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    enabled INTEGER NOT NULL DEFAULT 0,
+    latitude REAL,
+    longitude REAL,
+    location_updated_at INTEGER,
+    last_sent_at INTEGER
+  );
+  INSERT INTO mushroom_alerts (id) VALUES (1);
+  `,
+  `
+  CREATE TABLE user_profile (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    experience TEXT NOT NULL CHECK (experience IN ('new', 'regular', 'expert')),
+    score INTEGER
+  );
+  `,
+  // Repair development installs whose schema version advanced without the profile table.
+  `
+  CREATE TABLE IF NOT EXISTS user_profile (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    experience TEXT NOT NULL CHECK (experience IN ('new', 'regular', 'expert')),
+    score INTEGER
+  );
+  `,
+  `
+  CREATE TABLE course_steps (
+    step_id INTEGER PRIMARY KEY CHECK (step_id BETWEEN 0 AND 49),
+    completed_at INTEGER NOT NULL
+  );
+  `,
+  `
+  CREATE TABLE course_activity (
+    day_key TEXT PRIMARY KEY NOT NULL,
+    completed_at INTEGER NOT NULL
+  );
+  `,
 ];

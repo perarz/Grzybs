@@ -53,6 +53,8 @@ export type SpeciesFeatures = {
 export type Species = {
   id: SpeciesId;
   namePl: string;
+  /** Familiar name shown before the formal Polish species name. */
+  nameCommon?: string;
   nameLatin: string;
   otherNames: string[];
   edibility: Edibility;
