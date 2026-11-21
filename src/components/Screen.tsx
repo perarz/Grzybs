@@ -114,7 +114,6 @@ export function Screen({
             eyebrow={eyebrow}
             title={title}
             subtitle={subtitle}
-            showBack={showBack}
             accessory={titleAccessory}
           />
         )}

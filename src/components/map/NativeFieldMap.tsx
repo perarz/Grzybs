@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Callout, Marker, type Region } from 'react-native-maps';
 import { AppText } from '@/components/AppText';
-import { durations, radius, spacing, useTheme } from '@/theme';
+import { durations, layout, radius, spacing, useTheme } from '@/theme';
 import { fieldMapStyle, fieldMetrics, fieldPanel } from '@/theme/field';
 import type { FieldMapProps } from './FieldMap.types';
 import { fieldMarkers } from './fieldMarkerImages';
 
+const ADD_BUTTON_ZONE = spacing.lg + layout.touchTarget + spacing.sm;
 export function NativeFieldMap({
   spots,
   car,
@@ -98,6 +99,8 @@ export function NativeFieldMap({
         onRegionChange={reportCenter}
         onRegionChangeComplete={reportCenter}
         showsMyLocationButton={false}
+        // Google's logo must stay visible; this moves it right of the add button in the corner.
+        mapPadding={{ top: 0, right: 0, bottom: 0, left: ADD_BUTTON_ZONE }}
         toolbarEnabled={false}
         rotateEnabled={false}
         pitchEnabled={false}

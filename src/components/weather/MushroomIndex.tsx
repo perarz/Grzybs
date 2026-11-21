@@ -143,7 +143,11 @@ export function MushroomIndex({
               <AppText variant="caption" color="textMuted">
                 Wynik jest orientacyjny. Nawet 10/10 nie gwarantuje wysypu.
               </AppText>
-              {open && <MushroomAlertControl forecast={forecast} />}
+              {open && (
+                <View style={styles.alerts}>
+                  <MushroomAlertControl forecast={forecast} />
+                </View>
+              )}
             </ScrollView>
           </View>
         </View>
@@ -152,6 +156,11 @@ export function MushroomIndex({
   );
 }
 const styles = StyleSheet.create({
+  alerts: {
+    borderTopColor: ink.rule,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    paddingTop: spacing.sm,
+  },
   panel: {
     maxWidth: '100%',
     flexDirection: 'row',

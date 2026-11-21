@@ -1,4 +1,5 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
+import Animated, { type AnimatedStyle } from 'react-native-reanimated';
 
 import { AppText } from '@/components/AppText';
 import { radius, spacing, useTheme } from '@/theme';
@@ -6,24 +7,26 @@ import { radius, spacing, useTheme } from '@/theme';
 type NameTagProps = {
   label: string;
   side: 'left' | 'right';
+  style?: StyleProp<AnimatedStyle<StyleProp<ViewStyle>>>;
 };
 
 /** A species name pinned to the bottom corner of a photo. */
-export function NameTag({ label, side }: NameTagProps) {
+export function NameTag({ label, side, style }: NameTagProps) {
   const { colors } = useTheme();
 
   return (
-    <View
+    <Animated.View
       style={[
         styles.tag,
         side === 'left' ? styles.left : styles.right,
         { backgroundColor: colors.surface },
+        style,
       ]}
     >
       <AppText variant="label" numberOfLines={2}>
         {label}
       </AppText>
-    </View>
+    </Animated.View>
   );
 }
 

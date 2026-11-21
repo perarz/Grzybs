@@ -30,7 +30,6 @@ export function AtlasMasthead() {
     <PageMasthead
       title="Atlas"
       eyebrow="Poznaj las"
-      showBack
       onTitlePress={__DEV__ ? tapTitle : undefined}
       subtitle={
         collection.error || collection.loading

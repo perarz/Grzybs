@@ -10,7 +10,6 @@ type Props = {
   title: string;
   eyebrow?: string;
   subtitle?: string;
-  showBack?: boolean;
   onTitlePress?: () => void;
   /** Shown to the right of the large title, e.g. the settings button. */
   accessory?: ReactNode;
@@ -20,7 +19,6 @@ export function PageMasthead({
   title,
   eyebrow,
   subtitle,
-  showBack,
   onTitlePress,
   accessory,
   children,
@@ -36,7 +34,9 @@ export function PageMasthead({
     <View
       style={[
         styles.header,
-        { paddingTop: top + (showBack ? TOP_BAR_HEIGHT : spacing.xl), borderColor: colors.border },
+        // Every title starts below the top bar, so screens line up – and the corner stays free
+        // for the back button or Expo Go's floating Tools button.
+        { paddingTop: top + TOP_BAR_HEIGHT, borderColor: colors.border },
       ]}
     >
       {eyebrow && (

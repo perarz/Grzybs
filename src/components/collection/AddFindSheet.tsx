@@ -4,13 +4,17 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { AppText } from '@/components/AppText';
 import { BottomSheet } from '@/components/BottomSheet';
 import { Button } from '@/components/Button';
+import { CloseIcon } from '@/components/icons/UiIcons';
+import { PressableScale } from '@/components/PressableScale';
 import type { Species } from '@/features/atlas/types';
 import { useAddFind } from '@/features/collection/useAddFind';
-import { durations, spacing } from '@/theme';
+import { durations, spacing, useTheme } from '@/theme';
 
 import { FindPhoto } from './FindPhoto';
 import { FindReview } from './FindReview';
 import { SpeciesPicker } from './SpeciesPicker';
+
+const CLOSE_ICON_SIZE = 22;
 
 export function AddFindSheet({
   onClose,
@@ -38,6 +42,7 @@ export function AddFindSheet({
     choosePhoto,
     save,
   } = useAddFind(initialSpecies, initialPhoto, initialError);
+  const { colors } = useTheme();
   const step = saved
     ? 'Zapisano'
     : !photo
@@ -51,9 +56,22 @@ export function AddFindSheet({
       dismissible={!busy}
       header={(close) => (
         <View style={styles.content}>
-          <AppText variant="label" color="accent">
-            {step}
-          </AppText>
+          <View style={styles.titleRow}>
+            <AppText variant="label" color="accent">
+              {step}
+            </AppText>
+            <PressableScale
+              haptic="tap"
+              accessibilityRole="button"
+              accessibilityLabel="Zamknij"
+              accessibilityState={{ disabled: busy }}
+              disabled={busy}
+              hitSlop={spacing.md}
+              onPress={close}
+            >
+              <CloseIcon color={colors.textMuted} size={CLOSE_ICON_SIZE} />
+            </PressableScale>
+          </View>
           <AppText variant="heading">
             {saved
               ? isDiscovery
@@ -61,7 +79,6 @@ export function AddFindSheet({
                 : 'Kolejne znalezisko!'
               : 'Twoje znalezisko'}
           </AppText>
-          <Button label="Zamknij" variant="secondary" disabled={busy} onPress={close} />
         </View>
       )}
     >
@@ -139,4 +156,5 @@ export function AddFindSheet({
 }
 const styles = StyleSheet.create({
   content: { gap: spacing.md, paddingHorizontal: spacing.lg, paddingBottom: spacing.md },
+  titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
 });

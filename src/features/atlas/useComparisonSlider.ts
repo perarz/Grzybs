@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import type { LayoutChangeEvent } from 'react-native';
 import { usePanGesture } from 'react-native-gesture-handler';
 import {
+  Extrapolation,
+  interpolate,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
@@ -73,10 +75,26 @@ export function useComparisonSlider() {
     transform: [{ translateX: split.get() * frameWidth.get() }],
   }));
   const knobStyle = useAnimatedStyle(() => ({ transform: [{ scale: knobScale.get() }] }));
+  // A name fades out as its photo gets squeezed, so it never sits on the other species.
+  const leftTagStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(split.get(), [0.2, 0.4], [0, 1], Extrapolation.CLAMP),
+  }));
+  const rightTagStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(split.get(), [0.6, 0.8], [1, 0], Extrapolation.CLAMP),
+  }));
 
   function handleLayout(event: LayoutChangeEvent) {
     frameWidth.set(event.nativeEvent.layout.width);
   }
 
-  return { gesture, handleLayout, leftClipStyle, leftPhotoStyle, handleStyle, knobStyle };
+  return {
+    gesture,
+    handleLayout,
+    leftClipStyle,
+    leftPhotoStyle,
+    handleStyle,
+    knobStyle,
+    leftTagStyle,
+    rightTagStyle,
+  };
 }

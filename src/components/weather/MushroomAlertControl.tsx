@@ -50,7 +50,7 @@ export function MushroomAlertControl({ forecast }: { forecast: WeatherForecast |
     }
   }
   return (
-    <View style={[styles.section, { borderColor: colors.border }]}>
+    <View style={styles.section}>
       <View style={styles.row}>
         <AppText variant="bodyStrong" style={styles.label}>
           Daj znać, gdy warto
@@ -76,7 +76,7 @@ export function MushroomAlertControl({ forecast }: { forecast: WeatherForecast |
   );
 }
 const styles = StyleSheet.create({
-  section: { borderTopWidth: StyleSheet.hairlineWidth, paddingTop: spacing.sm, gap: spacing.xs },
+  section: { gap: spacing.xs },
   row: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   label: { flex: 1 },
 });

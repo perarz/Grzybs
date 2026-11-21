@@ -26,8 +26,16 @@ const ICON_SIZE = 24;
 /** Two photos on top of each other – dragging the divider shows more of one or the other. */
 export function ComparisonSlider({ left, right }: ComparisonSliderProps) {
   const { colors } = useTheme();
-  const { gesture, handleLayout, leftClipStyle, leftPhotoStyle, handleStyle, knobStyle } =
-    useComparisonSlider();
+  const {
+    gesture,
+    handleLayout,
+    leftClipStyle,
+    leftPhotoStyle,
+    handleStyle,
+    knobStyle,
+    leftTagStyle,
+    rightTagStyle,
+  } = useComparisonSlider();
 
   return (
     <GestureDetector gesture={gesture}>
@@ -54,8 +62,8 @@ export function ComparisonSlider({ left, right }: ComparisonSliderProps) {
             <DragHandleIcon color={colors.text} size={ICON_SIZE} />
           </Animated.View>
         </Animated.View>
-        <NameTag label={left.label} side="left" />
-        <NameTag label={right.label} side="right" />
+        <NameTag label={left.label} side="left" style={leftTagStyle} />
+        <NameTag label={right.label} side="right" style={rightTagStyle} />
       </View>
     </GestureDetector>
   );
