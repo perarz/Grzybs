@@ -47,6 +47,9 @@ export function SpeciesQuickFacts({ species }: { species: Species }) {
               <AppText
                 variant="caption"
                 maxFontSizeMultiplier={1.3}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                minimumFontScale={0.75}
                 style={styles.numeral}
                 color={active ? 'season' : 'textMuted'}
               >
@@ -64,7 +67,7 @@ const styles = StyleSheet.create({
   panel: { padding: spacing.md, borderRadius: radius.md, gap: spacing.sm },
   habitat: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, flexWrap: 'wrap' },
   text: { flex: 1 },
-  months: { flexDirection: 'row', gap: 2 },
+  months: { flexDirection: 'row', gap: spacing.xs / 2 },
   month: {
     flex: 1,
     paddingVertical: spacing.xs,
@@ -72,5 +75,5 @@ const styles = StyleSheet.create({
     borderRadius: radius.sm,
     borderWidth: 1,
   },
-  numeral: { fontSize: 10 },
+  numeral: { fontSize: 12 },
 });

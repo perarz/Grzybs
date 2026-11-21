@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     backgroundColor: palette.dark.glow,
   },
   helpButton: {
-    width: 32,
+    width: layout.touchTarget,
     height: layout.touchTarget,
     alignItems: 'center',
     justifyContent: 'center',
@@ -193,8 +193,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  track: { flexDirection: 'row', gap: 3 },
-  segment: { flex: 1, height: 4, borderRadius: 2 },
+  track: { flexDirection: 'row', gap: spacing.xs },
+  segment: { flex: 1, height: spacing.xs, borderRadius: radius.xs },
   overlay: {
     flex: 1,
     paddingHorizontal: spacing.xl,

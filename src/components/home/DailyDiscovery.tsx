@@ -5,6 +5,8 @@ import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
 import { FieldIcon } from '@/components/icons/FieldIcon';
 import { SPECIES_PHOTOS } from '@/data/speciesPhotos';
+import { EDIBILITY_LABELS } from '@/features/atlas/labels';
+import { formatSeason } from '@/features/atlas/season';
 import { useDailySpecies } from '@/features/learn/useDailySpecies';
 import { layout, radius, spacing, useTheme } from '@/theme';
 
@@ -30,7 +32,7 @@ export function DailyDiscovery() {
         <View style={styles.copy}>
           <AppText variant="heading">{species.nameCommon ?? species.namePl}</AppText>
           <AppText variant="caption" color="textMuted">
-            {species.nameCommon ? species.namePl : 'Poznaj cechy tego gatunku'}
+            {EDIBILITY_LABELS[species.edibility]} · {formatSeason(species.months)}
           </AppText>
         </View>
         <FieldIcon name="arrowRight" size={layout.icon} color={colors.glow} />

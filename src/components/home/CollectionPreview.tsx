@@ -2,16 +2,19 @@ import { router } from 'expo-router';
 import { ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
+import { AddFindSheet } from '@/components/collection/AddFindSheet';
 import { FindPhoto } from '@/components/collection/FindPhoto';
 import { PressableScale } from '@/components/PressableScale';
 import { FieldIcon } from '@/components/icons/FieldIcon';
 import { useCollection } from '@/features/collection/CollectionProvider';
+import { useQuickPhoto } from '@/features/collection/useQuickPhoto';
 import { findSpecies } from '@/data/species';
 import { layout, radius, spacing, useTheme } from '@/theme';
 
 export function CollectionPreview() {
   const { finds, loading, error, reload } = useCollection();
   const { colors } = useTheme();
+  const quick = useQuickPhoto();
   const { width, fontScale } = useWindowDimensions();
   const tileWidth = Math.min(
     layout.collectionPreviewWidth * Math.max(1, fontScale),
@@ -68,17 +71,36 @@ export function CollectionPreview() {
       ) : (
         <PressableScale
           accessibilityRole="button"
-          onPress={() => router.push('/collection')}
-          style={[styles.empty, { borderColor: colors.border }]}
+          accessibilityLabel="Zrób pierwsze zdjęcie znaleziska"
+          disabled={quick.busy}
+          onPress={() => void quick.takePhoto()}
+          style={[styles.empty, { borderColor: colors.glow }]}
         >
           <FieldIcon name="camera" size={layout.icon} color={colors.glow} />
           <View style={styles.copy}>
             <AppText variant="bodyStrong">Pierwsze znalezisko przed Tobą</AppText>
             <AppText variant="caption" color="textMuted">
-              Zachowaj zdjęcie z lasu.
+              Zrób zdjęcie i wybierz gatunek.
             </AppText>
           </View>
+          <FieldIcon name="plus" size={layout.icon} color={colors.glow} />
         </PressableScale>
+      )}
+      {finds.length > 0 && (
+        <Button
+          label="Dodaj zdjęcie"
+          icon="camera"
+          variant="secondary"
+          disabled={quick.busy}
+          onPress={() => void quick.takePhoto()}
+        />
+      )}
+      {quick.draft && (
+        <AddFindSheet
+          initialPhoto={quick.draft.photo}
+          initialError={quick.draft.error}
+          onClose={quick.close}
+        />
       )}
     </View>
   );
