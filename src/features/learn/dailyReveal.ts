@@ -1,6 +1,6 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-const REVEAL_KEY = 'daily_species_revealed';
+const REVEAL_KEY = 'daily_riddle_solved';
 
 /** The local calendar day – the daily species changes at midnight. */
 export function todayKey(now = new Date()) {

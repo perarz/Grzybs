@@ -118,6 +118,9 @@ npm test                # testy jednostkowe czystych funkcji (gdy dojdą)
   - Mapa: panel miejsc w `SavedPlacesSheet` z „+” do dodania miejscówki i krzyżykiem przy aucie; mniej podpowiedzi; usuwanie przez `ConfirmDialog`.
   - Nazwa: aplikacja nazywa się **Grzybs** (wcześniej Grzybnik): `app.json` (name, slug, scheme, pakiet), teksty w UI, README. Celowo zostały stare identyfikatory wewnętrzne: plik bazy `grzybnik.db` i zadanie w tle `grzybnik-mushroom-conditions` – zmiana odcięłaby dane i zarejestrowane zadanie.
   - Start: karta Nauki z gradientem (tokeny `learnStart/Middle/End`) i obwódką `aqua` (`LearnCard.tsx`). Nauka: dotknięcie passy otwiera mini kalendarz miesiąca z dniami nauki i datą pierwszej lekcji (`StreakCalendar`, `MonthGrid`, `streakCalendar.ts`).
+  - Ikona: własna (bursztynowy grzyb z liśćmi aqua na leśnej zieleni) z `scripts/make-icon.py`, PNG przez `scripts/render-svg.js` (AppKit przez `osascript -l JavaScript`; Quick Look źle skaluje SVG). iOS używa `icon.png` – szablon `assets/expo.icon` usunięty.
+  - Grzyb dnia to teraz zagadka (`dailyRiddle.ts`): rozmyte zdjęcie, dwie cechy z atlasu bez nazwy gatunku i sezon, trzy nazwy do wyboru; po odpowiedzi odsłania się gatunek i „Warto wiedzieć” (pierwsze zdanie z zatrucia/uwagi/opisu – tylko zweryfikowany tekst atlasu). Stan „rozwiązana dziś” w `app_settings` (`daily_riddle_solved`).
+  - Ustawienia: wibracje (`setHapticsEnabled`, wczytywane przy starcie w `_layout`), wspólny `SettingsSwitch`, sekcja „Twoje dane” (`SettingsData`: powitanie ponownie, kurs od nowa, usuń wszystkie znaleziska), `SettingsRow`.
   - Ustawienia: bez podtytułu „Po Twojemu”; usunięty poziom doświadczenia (niczego nie zmieniał; zostaje tylko w onboardingu), krótki napis o powiadomieniach, przełączniki w kolorach aplikacji.
   - Refaktor (subagenci): podzielone pliki logiki Nauki i alertów pogodowych oraz najdłuższe komponenty UI (pogoda, onboarding, `Screen`, atlas). Fakty w `src/data` sprawdzone przez agenta ze źródłami – bez błędów; sezon krowiaka potwierdzony.
 - Pozycja jednorazowa: `getCurrentPositionAsync` z `Accuracy.Balanced` wywołuje systemowe okno Google „Location Accuracy” i bez zgody zwraca angielski błąd — używaj `Accuracy.High` i `mayShowUserSettingsDialog: false`.
@@ -133,7 +136,7 @@ Otwarte sprawy:
 - Haptyka nie jest potwierdzona na fizycznym telefonie, a emulator jej nie odda.
 - README przepisane 2026-11-21 ze zrzutami (`docs/screenshots`); wpis o fizycznym urządzeniu ma `TODO` – potwierdza autor.
 - 2026-11-19 autor podał, że ma 3 dni do oddania. Priorytet: stabilność, dopracowanie istniejących funkcji i natywna weryfikacja.
-- `npm test`: 126 testów (2026-11-22; nowe w `find-details.test.cjs` i `streak-calendar.test.cjs`) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
+- `npm test`: 129 testów (2026-11-22; nowe w `find-details.test.cjs`, `streak-calendar.test.cjs` i `daily-riddle.test.cjs`) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
 
 ## Uruchamianie (Mac autora)
 
@@ -141,6 +144,7 @@ Otwarte sprawy:
 - Powłoka agenta może nie wczytać `~/.zshrc`: wtedy `source ~/.nvm/nvm.sh` przed `npx`/`npm` i pełna ścieżka `~/Library/Android/sdk/platform-tools/adb`.
 - Otwieranie apki przez adb: `adb shell am force-stop host.exp.exponent`, potem `adb shell am start -a android.intent.action.VIEW -d "<adres exp:// z terminala>"`. Konkretny ekran: `<adres>/--/species/amanita-phalloides`.
 - Wpisywanie przez `adb shell input text` bez aktywnego pola trafia do Expo Go: dwa „r” przeładowują apkę. Nie chowaj klawiatury klawiszem wstecz – przy klawiaturze sprzętowej emulatora zamyka on panel.
+- Awaria `CxxInspectorPackagerConnection` (NullPointerException) w logcat to narzędzie debugowania Expo Go, nie kod aplikacji.
 - Na ekranie Nauki stale trwa animacja pulsu, więc `uiautomator dump` nie łapie stanu spoczynku i zwraca stary ekran – klikaj tam po współrzędnych ze zrzutu.
 - Zrzut ekranu: `adb exec-out screencap -p > plik.png`. Po otwarciu apki poczekaj na załadowanie (kilkanaście sekund po przeładowaniu), zanim wyślesz kliknięcia lub zrobisz zrzut – inaczej klawisz wstecz wychodzi z apki, a zdjęcia są jeszcze puste.
 

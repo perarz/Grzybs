@@ -52,7 +52,7 @@ Mapa Google na Androidzie poza Expo Go wymaga klucza „Maps SDK for Android” 
 
 ## Funkcje
 
-**Start** – wejście do atlasu i nauki (karta z gradientem, postępem i XP), „grzyb dnia” ukryty pod rozmytym zdjęciem, który odkrywa się dotknięciem, oraz ostatnie własne znaleziska. Przycisk zdjęcia od razu otwiera aparat.
+**Start** – wejście do atlasu i nauki (karta z gradientem, postępem i XP), „zagadka dnia” – rozmyte zdjęcie, wskazówki z atlasu i trzy nazwy do wyboru; po odpowiedzi grzyb dnia odsłania się z jedną rzeczą „warto wiedzieć”, oraz ostatnie własne znaleziska. Przycisk zdjęcia od razu otwiera aparat.
 
 **Atlas** – 26 gatunków podzielonych na jadalne, niejadalne, trujące i śmiertelnie trujące; zdjęcia na wolnych licencjach, wyszukiwarka bez polskich znaków („kozlarz” znajdzie koźlarza), filtry „Rośnie teraz” i „Moje odkrycia”.
 
@@ -64,7 +64,7 @@ Mapa Google na Androidzie poza Expo Go wymaga klucza „Maps SDK for Android” 
 
 **Nauka** – 5 etapów po 4 lekcje i test etapu na końcu (ostatni to egzamin z całości). Lekcja ma około 7 kart: nowy gatunek albo zasada grzybiarza (np. koszyk zamiast reklamówki, wykręcanie zamiast odcinania, co robić przy podejrzeniu zatrucia), potem różne typy pytań – zdjęcie → nazwa, nazwa → zdjęcie, „do koszyka czy zostawiam”, para sobowtórów, sytuacje z lasu. Pytania dotyczą tylko tego, co już było. Bez „żyć”: błędna odpowiedź pokazuje wyjaśnienie i wraca na końcu lekcji. Pasek postępu, seria poprawnych odpowiedzi, XP, rangi, dzienna passa (dotknięcie licznika pokazuje kalendarz dni z nauką), dźwięki (do wyłączenia w ustawieniach) i haptyka. Ścieżka pokazuje wszystkie etapy: ukończone lekcje na zielono, bieżąca pulsuje, dalsze etapy są przygaszone, a każdy etap ma własne leśne tło. Przerwanie lekcji potwierdza się we własnym oknie aplikacji.
 
-**Ustawienia** – dźwięki w lekcjach, powiadomienia o korzystnych warunkach (tylko w buildzie, nie w Expo Go) oraz źródła i licencje.
+**Ustawienia** – dźwięki i wibracje, powiadomienia o korzystnych warunkach (tylko w buildzie, nie w Expo Go), powitanie od nowa, kurs od nowa i usunięcie wszystkich znalezisk (z potwierdzeniem) oraz źródła i licencje.
 
 **Mapa** – prywatne miejscówki (z GPS albo przytrzymaniem mapy) z notatkami, zapis miejsca parkowania i powrót do auta: odległość i kierunek z kompasem, ostrzeżenie przed zachodem słońca. Panel zapisanych miejsc ma przycisk „+” do dodania miejscówki, a auto i miejscówki usuwa się po potwierdzeniu we własnym oknie. Prognoza na 3 dni (Open-Meteo) z pamięcią offline i orientacyjny „indeks grzybowy” 1–10 liczony z opadów i temperatur ostatniego tygodnia.
 
@@ -165,7 +165,7 @@ Niepewne fakty oznaczamy w kodzie jako `TODO: verify`; obecnie w danych nie ma t
 - [Fraunces](https://github.com/undercasetype/Fraunces) – The Fraunces Project Authors,
 - [IBM Plex Mono](https://github.com/IBM/plex) – IBM Corp.
 
-Dźwięki lekcji (`assets/sounds/`) są własne – generuje je skrypt `scripts/generate-sounds.py` z czystych tonów.
+Dźwięki lekcji (`assets/sounds/`) są własne – generuje je skrypt `scripts/generate-sounds.py` z czystych tonów. Ikona aplikacji też jest własna – rysuje ją `scripts/make-icon.py` (SVG), a `scripts/render-svg.js` zamienia na PNG.
 
 Prognoza pogody: [Open-Meteo](https://open-meteo.com/), dane na licencji [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); bezpłatne API do zastosowań niekomercyjnych.
 
