@@ -32,14 +32,14 @@ export function StartupRecovery() {
   return (
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
       {isReloading ? (
-        <ActivityIndicator color={colors.glow} accessibilityLabel="Uruchamianie Grzybnika" />
+        <ActivityIndicator color={colors.glow} accessibilityLabel="Uruchamianie Grzybsa" />
       ) : (
         <View style={styles.content}>
           <Text accessibilityRole="header" style={[titleText, { color: colors.text }]}>
             Expo Go potrzebuje restartu
           </Text>
           <Text style={[bodyText, { color: colors.textMuted }]}>
-            Grzybnik wystartował w Expo Go obok innego projektu, więc nie dostał dostępu do bazy
+            Grzybs wystartował w Expo Go obok innego projektu, więc nie dostał dostępu do bazy
             danych. Twoje dane są bezpieczne.
           </Text>
           <Text style={[bodyText, { color: colors.textMuted }]}>

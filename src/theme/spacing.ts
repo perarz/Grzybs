@@ -28,4 +28,6 @@ export const layout = {
   mapControlGap: 12,
   courseNode: 72,
   courseStroke: 3,
+  /** A visible but light outline, e.g. around the learning card. */
+  accentStroke: 1.5,
 } as const;

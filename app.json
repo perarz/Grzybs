@@ -1,17 +1,17 @@
 {
   "expo": {
-    "name": "Grzybnik",
-    "slug": "grzybnik",
+    "name": "Grzybs",
+    "slug": "grzybs",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "grzybnik",
+    "scheme": "grzybs",
     "userInterfaceStyle": "dark",
     "ios": {
       "icon": "./assets/expo.icon"
     },
     "android": {
-      "package": "com.grzybnik.app",
+      "package": "com.grzybs.app",
       "adaptiveIcon": {
         "backgroundColor": "#1F3B2D",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -42,7 +42,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Grzybnik używa lokalizacji do zapisu miejsc i powrotu do auta.",
+          "locationWhenInUsePermission": "Grzybs używa lokalizacji do zapisu miejsc i powrotu do auta.",
           "isIosBackgroundLocationEnabled": false,
           "isAndroidBackgroundLocationEnabled": false,
           "isAndroidForegroundServiceEnabled": false

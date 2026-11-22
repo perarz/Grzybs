@@ -1,4 +1,4 @@
-# Grzybnik 🍄
+# Grzybs 🍄
 
 Kieszonkowy przewodnik grzybiarza: atlas 26 polskich gatunków z ostrzeżeniami przed trującymi sobowtórami, nauka rozpoznawania krok po kroku, własny rejestr znalezisk ze zdjęciami oraz mapa z miejscówkami, pogodą i powrotem do auta. Wszystko poza kafelkami mapy i prognozą pogody działa offline – w lesie zasięg bywa słaby.
 
@@ -52,7 +52,7 @@ Mapa Google na Androidzie poza Expo Go wymaga klucza „Maps SDK for Android” 
 
 ## Funkcje
 
-**Start** – wejście do atlasu i nauki (z postępem i XP), „grzyb dnia” ukryty pod rozmytym zdjęciem, który odkrywa się dotknięciem, oraz ostatnie własne znaleziska. Przycisk zdjęcia od razu otwiera aparat.
+**Start** – wejście do atlasu i nauki (karta z gradientem, postępem i XP), „grzyb dnia” ukryty pod rozmytym zdjęciem, który odkrywa się dotknięciem, oraz ostatnie własne znaleziska. Przycisk zdjęcia od razu otwiera aparat.
 
 **Atlas** – 26 gatunków podzielonych na jadalne, niejadalne, trujące i śmiertelnie trujące; zdjęcia na wolnych licencjach, wyszukiwarka bez polskich znaków („kozlarz” znajdzie koźlarza), filtry „Rośnie teraz” i „Moje odkrycia”.
 
@@ -62,7 +62,7 @@ Mapa Google na Androidzie poza Expo Go wymaga klucza „Maps SDK for Android” 
 
 **Rejestr znalezisk** – jedno dotknięcie na Starcie lub na karcie gatunku otwiera aparat (galeria jest dostępna z ekranu kolekcji) → wybór gatunku z listy z miniaturami z atlasu → sprawdzenie: Twoje zdjęcie obok zdjęcia wzorcowego, a przy groźnym sobowtórze krótkie ostrzeżenie, cechy odróżniające i jedno potwierdzenie porównania → zapis. Opcjonalnie waga, miejsce z GPS (jednym dotknięciem) i opis; wszystko można później edytować na karcie gatunku. Zdjęcie jest dowodem znaleziska, nie jest rozpoznawane automatycznie, a zapis nie potwierdza jadalności. Zdjęcia zostają w pamięci telefonu i można je usunąć.
 
-**Nauka** – 5 etapów po 4 lekcje i test etapu na końcu (ostatni to egzamin z całości). Lekcja ma około 7 kart: nowy gatunek albo zasada grzybiarza (np. koszyk zamiast reklamówki, wykręcanie zamiast odcinania, co robić przy podejrzeniu zatrucia), potem różne typy pytań – zdjęcie → nazwa, nazwa → zdjęcie, „do koszyka czy zostawiam”, para sobowtórów, sytuacje z lasu. Pytania dotyczą tylko tego, co już było. Bez „żyć”: błędna odpowiedź pokazuje wyjaśnienie i wraca na końcu lekcji. Pasek postępu, seria poprawnych odpowiedzi, XP, rangi, dzienna passa, dźwięki (do wyłączenia w ustawieniach) i haptyka. Ścieżka pokazuje wszystkie etapy: ukończone lekcje na zielono, bieżąca pulsuje, dalsze etapy są przygaszone, a każdy etap ma własne leśne tło. Przerwanie lekcji potwierdza się we własnym oknie aplikacji.
+**Nauka** – 5 etapów po 4 lekcje i test etapu na końcu (ostatni to egzamin z całości). Lekcja ma około 7 kart: nowy gatunek albo zasada grzybiarza (np. koszyk zamiast reklamówki, wykręcanie zamiast odcinania, co robić przy podejrzeniu zatrucia), potem różne typy pytań – zdjęcie → nazwa, nazwa → zdjęcie, „do koszyka czy zostawiam”, para sobowtórów, sytuacje z lasu. Pytania dotyczą tylko tego, co już było. Bez „żyć”: błędna odpowiedź pokazuje wyjaśnienie i wraca na końcu lekcji. Pasek postępu, seria poprawnych odpowiedzi, XP, rangi, dzienna passa (dotknięcie licznika pokazuje kalendarz dni z nauką), dźwięki (do wyłączenia w ustawieniach) i haptyka. Ścieżka pokazuje wszystkie etapy: ukończone lekcje na zielono, bieżąca pulsuje, dalsze etapy są przygaszone, a każdy etap ma własne leśne tło. Przerwanie lekcji potwierdza się we własnym oknie aplikacji.
 
 **Ustawienia** – dźwięki w lekcjach, powiadomienia o korzystnych warunkach (tylko w buildzie, nie w Expo Go) oraz źródła i licencje.
 

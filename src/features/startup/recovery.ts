@@ -10,7 +10,7 @@ export const RETRY_WINDOW_MS = 30_000;
  * runtime (ExpoModulesV2Host.uninstall clears the whole process), so the reloaded app gets them.
  */
 export function reloadRuntime() {
-  DevSettings.reload('Grzybnik: brak modułów natywnych');
+  DevSettings.reload('Grzybs: brak modułów natywnych');
 }
 
 /** Pure decision, kept apart from the file so it can be tested. */

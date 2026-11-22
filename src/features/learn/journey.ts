@@ -58,6 +58,9 @@ export function learningJourney(records: LearningRecord[], now: number) {
     level,
     next,
     levelNumber: levelIndex + 1,
+    /** Every day with any learning, for the streak calendar. */
+    activeDays: [...days],
+    firstDay: days.size ? Math.min(...days) : null,
     fraction: next ? (xp - level.xp) / (next.xp - level.xp) : 1,
     week: Array.from({ length: 7 }, (_, index) => {
       const day = today - 6 + index;

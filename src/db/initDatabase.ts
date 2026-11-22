@@ -2,6 +2,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { MIGRATIONS } from './migrations';
 
+// The file keeps the app's first name: renaming it would leave existing data behind.
 export const DATABASE_NAME = 'grzybnik.db';
 
 export async function initDatabase(db: SQLiteDatabase): Promise<void> {

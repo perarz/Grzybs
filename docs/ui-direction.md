@@ -1,4 +1,4 @@
-# Grzybnik — UI i nawigacja
+# Grzybs — UI i nawigacja
 
 ## Ustalenia 2026-11-15
 

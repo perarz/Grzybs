@@ -15,7 +15,7 @@ export default function SettingsScreen() {
   const [sheet, setSheet] = useState<'about' | null>(null);
   const card = [styles.card, { backgroundColor: colors.surface, borderColor: colors.border }];
   return (
-    <Screen title="Ustawienia" eyebrow="Po Twojemu" showBack>
+    <Screen title="Ustawienia" showBack>
       <AppText variant="label" color="accent">
         Nauka
       </AppText>
@@ -46,7 +46,7 @@ export default function SettingsScreen() {
         <FieldIcon name="chevron" size={spacing.lg} color={colors.textMuted} />
       </PressableScale>
       <AppText variant="caption" color="textMuted" style={styles.version}>
-        Grzybnik · {app.expo.version}
+        Grzybs · {app.expo.version}
       </AppText>
       {sheet === 'about' && <AboutAtlasSheet onClose={() => setSheet(null)} />}
     </Screen>

@@ -6,14 +6,12 @@ import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
 import { FieldIcon } from '@/components/icons/FieldIcon';
 import { SPECIES } from '@/data/species';
+import { LearnCard } from './LearnCard';
 import { SPECIES_PHOTOS } from '@/data/speciesPhotos';
-import { COURSE_LENGTH } from '@/features/learn/course';
-import { useCourseProgress } from '@/features/learn/useCourseProgress';
 import { durations, layout, radius, spacing, useTheme } from '@/theme';
 
 export function HomeDestinations() {
   const { colors } = useTheme();
-  const course = useCourseProgress();
   return (
     <View style={styles.group}>
       <PressableScale
@@ -58,36 +56,7 @@ export function HomeDestinations() {
           </View>
         </View>
       </PressableScale>
-      <PressableScale
-        accessibilityRole="button"
-        accessibilityLabel="Otwórz naukę"
-        onPress={() => router.push('/learn')}
-        style={[styles.learn, { backgroundColor: colors.surface, borderColor: colors.border }]}
-      >
-        <View style={[styles.symbol, { backgroundColor: colors.primaryMuted }]}>
-          <FieldIcon name="book" size={layout.icon} color={colors.primary} />
-        </View>
-        <View style={styles.label}>
-          <AppText variant="heading">Nauka</AppText>
-          <AppText variant="caption" color="textMuted">
-            {course.completed?.length
-              ? `Ukończono ${course.completed.length} z ${COURSE_LENGTH} · ${course.xp} XP`
-              : 'Krótkie lekcje krok po kroku.'}
-          </AppText>
-          <View style={[styles.track, { backgroundColor: colors.primaryMuted }]}>
-            <View
-              style={[
-                styles.fill,
-                {
-                  backgroundColor: colors.glow,
-                  width: `${Math.min(1, (course.completed?.length ?? 0) / COURSE_LENGTH) * 100}%`,
-                },
-              ]}
-            />
-          </View>
-        </View>
-        <FieldIcon name="arrowRight" size={layout.icon} color={colors.glow} />
-      </PressableScale>
+      <LearnCard />
     </View>
   );
 }
@@ -113,23 +82,6 @@ const styles = StyleSheet.create({
     width: layout.touchTarget,
     height: layout.touchTarget,
     borderRadius: radius.pill,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  learn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-    padding: spacing.lg,
-    borderRadius: radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
-  },
-  track: { height: spacing.xs, borderRadius: radius.xs, overflow: 'hidden', marginTop: spacing.xs },
-  fill: { height: '100%' },
-  symbol: {
-    width: layout.touchTarget,
-    height: layout.touchTarget,
-    borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
   },

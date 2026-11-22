@@ -8,7 +8,7 @@ export default function HomeScreen() {
   return (
     <Screen
       title="Bliżej lasu."
-      eyebrow="Grzybnik / Twój przewodnik"
+      eyebrow="Grzybs / Twój przewodnik"
       titleAccessory={<SettingsButton />}
     >
       <HomeDestinations />

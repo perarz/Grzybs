@@ -18,7 +18,7 @@ export function AboutAtlasSheet({ onClose }: { onClose: () => void }) {
       header={(close) => (
         <View style={styles.section}>
           <AppText variant="label" color="accent">
-            Grzybnik · źródła i informacje
+            Grzybs · źródła i informacje
           </AppText>
           <AppText variant="title">O atlasie</AppText>
           <Button label="Zamknij" variant="secondary" onPress={close} />

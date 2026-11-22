@@ -1,4 +1,4 @@
-# Grzybnik – zasady projektu
+# Grzybs – zasady projektu
 
 Uniwersalna aplikacja grzybiarza (zadanie rekrutacyjne Software Mansion) z dwiema zakładkami:
 **Start** (Atlas, Nauka, kolekcja zdjęć i ustawienia) oraz **Mapa** (miejscówki, pogoda, powrót do auta).
@@ -116,7 +116,9 @@ npm test                # testy jednostkowe czystych funkcji (gdy dojdą)
   - Szczegóły znaleziska: migracja 10 dodaje `weight_grams`, `latitude`, `longitude` (kolumna `note` była); wspólny `FindDetailsForm` przy zapisie i w `EditFindSheet`; logika w `findDraft.ts`, pozycja w `currentPlace.ts` (`Accuracy.High` + `mayShowUserSettingsDialog: false`).
   - Nauka: ścieżka bez linii, ukończone lekcje zielone (`season`) ze złotym ptaszkiem, bieżąca z mrugającą obręczą i falami (`ActivePulse`), wszystkie dalsze etapy widoczne i przygaszone (`TrailFog`), płaskie drzewa inne dla każdego etapu (`TrailBackdrop`). Autor odrzucił poziomice, kreskowanie, mgłę i świetliki.
   - Mapa: panel miejsc w `SavedPlacesSheet` z „+” do dodania miejscówki i krzyżykiem przy aucie; mniej podpowiedzi; usuwanie przez `ConfirmDialog`.
-  - Ustawienia: usunięty poziom doświadczenia (niczego nie zmieniał; zostaje tylko w onboardingu), krótki napis o powiadomieniach, przełączniki w kolorach aplikacji.
+  - Nazwa: aplikacja nazywa się **Grzybs** (wcześniej Grzybnik): `app.json` (name, slug, scheme, pakiet), teksty w UI, README. Celowo zostały stare identyfikatory wewnętrzne: plik bazy `grzybnik.db` i zadanie w tle `grzybnik-mushroom-conditions` – zmiana odcięłaby dane i zarejestrowane zadanie.
+  - Start: karta Nauki z gradientem (tokeny `learnStart/Middle/End`) i obwódką `aqua` (`LearnCard.tsx`). Nauka: dotknięcie passy otwiera mini kalendarz miesiąca z dniami nauki i datą pierwszej lekcji (`StreakCalendar`, `MonthGrid`, `streakCalendar.ts`).
+  - Ustawienia: bez podtytułu „Po Twojemu”; usunięty poziom doświadczenia (niczego nie zmieniał; zostaje tylko w onboardingu), krótki napis o powiadomieniach, przełączniki w kolorach aplikacji.
   - Refaktor (subagenci): podzielone pliki logiki Nauki i alertów pogodowych oraz najdłuższe komponenty UI (pogoda, onboarding, `Screen`, atlas). Fakty w `src/data` sprawdzone przez agenta ze źródłami – bez błędów; sezon krowiaka potwierdzony.
 - Pozycja jednorazowa: `getCurrentPositionAsync` z `Accuracy.Balanced` wywołuje systemowe okno Google „Location Accuracy” i bez zgody zwraca angielski błąd — używaj `Accuracy.High` i `mayShowUserSettingsDialog: false`.
 - Kompas korzysta z `expo-location.watchHeadingAsync`; nieużywane `zustand`, `expo-sensors` i `@types/suncalc` usunięto 2026-11-21.
@@ -131,7 +133,7 @@ Otwarte sprawy:
 - Haptyka nie jest potwierdzona na fizycznym telefonie, a emulator jej nie odda.
 - README przepisane 2026-11-21 ze zrzutami (`docs/screenshots`); wpis o fizycznym urządzeniu ma `TODO` – potwierdza autor.
 - 2026-11-19 autor podał, że ma 3 dni do oddania. Priorytet: stabilność, dopracowanie istniejących funkcji i natywna weryfikacja.
-- `npm test`: 124 testy (2026-11-22; nowe w `find-details.test.cjs`: formularz szczegółów i migracja 10) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
+- `npm test`: 126 testów (2026-11-22; nowe w `find-details.test.cjs` i `streak-calendar.test.cjs`) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
 
 ## Uruchamianie (Mac autora)
 
@@ -139,6 +141,7 @@ Otwarte sprawy:
 - Powłoka agenta może nie wczytać `~/.zshrc`: wtedy `source ~/.nvm/nvm.sh` przed `npx`/`npm` i pełna ścieżka `~/Library/Android/sdk/platform-tools/adb`.
 - Otwieranie apki przez adb: `adb shell am force-stop host.exp.exponent`, potem `adb shell am start -a android.intent.action.VIEW -d "<adres exp:// z terminala>"`. Konkretny ekran: `<adres>/--/species/amanita-phalloides`.
 - Wpisywanie przez `adb shell input text` bez aktywnego pola trafia do Expo Go: dwa „r” przeładowują apkę. Nie chowaj klawiatury klawiszem wstecz – przy klawiaturze sprzętowej emulatora zamyka on panel.
+- Na ekranie Nauki stale trwa animacja pulsu, więc `uiautomator dump` nie łapie stanu spoczynku i zwraca stary ekran – klikaj tam po współrzędnych ze zrzutu.
 - Zrzut ekranu: `adb exec-out screencap -p > plik.png`. Po otwarciu apki poczekaj na załadowanie (kilkanaście sekund po przeładowaniu), zanim wyślesz kliknięcia lub zrobisz zrzut – inaczej klawisz wstecz wychodzi z apki, a zdjęcia są jeszcze puste.
 
 Pułapki:
@@ -157,6 +160,6 @@ Pułapki:
 - Własny `TabBar` używa `emitter` i `navigateToTab`; typ `BottomTabBarProps` jest w `expo-router/tabs`.
 
 - SunCalc jest w wersji **2.1.1**, ma własne typy; stare `@types/suncalc` opisują inny interfejs. V2 zwraca kąty w stopniach, brak zdarzeń jako `null` oraz `alwaysUp/alwaysDown`; offset dnia to minuty na wschód od UTC.
-- Natywny build Androida poza Expo Go wymaga klucza Google Maps: `app.config.ts` czyta `GOOGLE_MAPS_API_KEY` ze środowiska EAS (`preview`, APK w `eas.json`) i ustawia `extra.googleMapsReady`; bez klucza `FieldMap` pokazuje komunikat zamiast mapy (`src/features/spots/mapAvailability.ts`). Pakiet Androida: `com.grzybnik.app`. Builda EAS jeszcze nie uruchomiono – autor loguje się sam.
+- Natywny build Androida poza Expo Go wymaga klucza Google Maps: `app.config.ts` czyta `GOOGLE_MAPS_API_KEY` ze środowiska EAS (`preview`, APK w `eas.json`) i ustawia `extra.googleMapsReady`; bez klucza `FieldMap` pokazuje komunikat zamiast mapy (`src/features/spots/mapAvailability.ts`). Pakiet Androida: `com.grzybs.app`. Builda EAS jeszcze nie uruchomiono – autor loguje się sam.
 - `expo-notifications`, zadania w tle i `MushroomAlertsLifecycle` wczytuj tylko przez `src/features/weather/alerts.ts` – w Expo Go ten moduł ich nie ładuje (inaczej ostrzeżenia przy każdym starcie).
 - Expo Router 58: `unstable_settings.anchor` zamiast `initialRouteName`; zakładki z kotwicą potrzebują `backBehavior="initialRoute"`.

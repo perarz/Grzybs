@@ -36,6 +36,12 @@ const light = {
   onForestMuted: '#9DB5A1',
   /** Dims the screen behind a bottom sheet. */
   backdrop: 'rgba(6, 14, 9, 0.55)',
+  /** A cool water accent – the outline of the learning card. */
+  aqua: '#1F7A6E',
+  /** The learning card's gradient: moss, lake, then dusk. */
+  learnStart: '#CFE3D6',
+  learnMiddle: '#C2DCD9',
+  learnEnd: '#D2DDE3',
 };
 
 export type ThemeColors = typeof light;
@@ -72,6 +78,10 @@ const dark: ThemeColors = {
   onForest: '#E8F0E4',
   onForestMuted: '#8FA995',
   backdrop: 'rgba(0, 0, 0, 0.55)',
+  aqua: '#5ED6C4',
+  learnStart: '#1F5139',
+  learnMiddle: '#15504A',
+  learnEnd: '#1A3B55',
 };
 
 export const palette = { light, dark };
