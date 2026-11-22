@@ -23,7 +23,7 @@ def art(mono=False):
             f'<path d="{LEAF_R}" fill="#3FAE9E"/>')
 
 BG = ('<defs><linearGradient id="bg" x1="0" y1="0" x2="0.35" y2="1">'
-      '<stop offset="0" stop-color="#22573D"/><stop offset="1" stop-color="#0E2217"/>'
+      '<stop offset="0" stop-color="#18221C"/><stop offset="1" stop-color="#060807"/>'
       '</linearGradient></defs><rect width="1024" height="1024" fill="url(#bg)"/>')
 
 def svg(body):

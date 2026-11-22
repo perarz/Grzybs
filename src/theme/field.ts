@@ -18,14 +18,14 @@ export const fieldPanel = {
 
 // Keep woodland, developed land and water distinguishable below the markers.
 export const fieldMapStyle = [
-  { elementType: 'geometry', stylers: [{ color: '#293532' }] },
-  { featureType: 'landscape.natural', elementType: 'geometry', stylers: [{ color: '#294738' }] },
-  { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#375744' }] },
-  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#1C3E47' }] },
-  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#48564E' }] },
-  { featureType: 'road.arterial', elementType: 'geometry.fill', stylers: [{ color: '#637268' }] },
-  { featureType: 'road.highway', elementType: 'geometry.fill', stylers: [{ color: '#929981' }] },
-  { elementType: 'labels.text.fill', stylers: [{ color: '#D2D8C8' }] },
-  { elementType: 'labels.text.stroke', stylers: [{ color: '#293532' }] },
+  { elementType: 'geometry', stylers: [{ color: '#0F1311' }] },
+  { featureType: 'landscape.natural', elementType: 'geometry', stylers: [{ color: '#14201A' }] },
+  { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#182A20' }] },
+  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0C2A30' }] },
+  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#2A322D' }] },
+  { featureType: 'road.arterial', elementType: 'geometry.fill', stylers: [{ color: '#3B453F' }] },
+  { featureType: 'road.highway', elementType: 'geometry.fill', stylers: [{ color: '#56604F' }] },
+  { elementType: 'labels.text.fill', stylers: [{ color: '#B9C2B5' }] },
+  { elementType: 'labels.text.stroke', stylers: [{ color: '#0F1311' }] },
   { featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] },
 ];

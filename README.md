@@ -76,7 +76,7 @@ Mapa Google na Androidzie poza Expo Go wymaga klucza „Maps SDK for Android” 
 - **Ruch i dotyk:** Reanimated 4 (sprężyny, layout animations, CSS transitions) i Gesture Handler 3; każdy przycisk reaguje sprężyną i haptyką (`expo-haptics`).
 - **Dane o grzybach:** pisane własnymi słowami na podstawie źródeł poniżej i sprawdzane z nimi; niepewny fakt oznaczamy w kodzie `TODO: verify` (obecnie żadnego takiego nie ma – ostatni, sezon krowiaka, potwierdzono 2026-11-22).
 - **Okna i panele:** wybory krok po kroku w panelu od dołu, który ma wysokość swojej treści; pytania przed nieodwracalną akcją we wspólnym `ConfirmDialog` zamiast systemowego `Alert`.
-- **Wygląd:** ciemna leśna zieleń z akcentem koloru kurki, Oswald + Source Sans Pro, łacina kursywą Fraunces, etykiety IBM Plex Mono.
+- **Wygląd „Nocny las”:** tło prawie czarne, przyciski w zieleni mchu, aqua dla nauki, pomarańcz kurki tylko przy ostrzeżeniach; Oswald + Source Sans Pro, łacina kursywą Fraunces, etykiety IBM Plex Mono.
 
 ## Stack
 
