@@ -15,9 +15,11 @@ type Props = {
   next: number;
   /** How many stages ahead of the learner this one is – 0 means no fog. */
   fog: number;
+  /** Called once the trail knows its width and is drawn. */
+  onDrawn?: () => void;
 };
 
-export function CourseTrail({ stage, next, fog }: Props) {
+export function CourseTrail({ stage, next, fog, onDrawn }: Props) {
   const { fontScale } = useWindowDimensions();
   const [width, setWidth] = useState(0);
   const [nodeHeights, setNodeHeights] = useState<Record<number, number>>({});
@@ -33,7 +35,13 @@ export function CourseTrail({ stage, next, fog }: Props) {
     y: rowHeights.slice(0, index).reduce((sum, row) => sum + row, 0) + nodeFrame / 2,
   }));
   return (
-    <View style={styles.trail} onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
+    <View
+      style={styles.trail}
+      onLayout={(event) => {
+        setWidth(event.nativeEvent.layout.width);
+        onDrawn?.();
+      }}
+    >
       {width > 0 && (
         <View style={{ height }}>
           <TrailBackdrop stage={stage} width={width} height={height} points={points} />

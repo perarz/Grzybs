@@ -15,7 +15,8 @@ export default function HomeLayout() {
     >
       <Stack.Screen name="index" />
       <Stack.Screen name="atlas" />
-      <Stack.Screen name="learn" />
+      {/* Nauka fades in under its own curtain (LearnCurtain) instead of sliding. */}
+      <Stack.Screen name="learn" options={{ animation: 'fade' }} />
       <Stack.Screen name="collection" />
       <Stack.Screen name="settings" />
       <Stack.Screen name="species/[id]" />

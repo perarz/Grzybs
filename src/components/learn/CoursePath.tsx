@@ -8,7 +8,13 @@ import { COURSE_LENGTH, LESSONS_PER_STAGE } from '@/features/learn/course';
 import { layout, radius, spacing, useTheme } from '@/theme';
 import { CourseTrail } from './CourseTrail';
 
-export function CoursePath({ completed }: { completed: number[] }) {
+type Props = {
+  completed: number[];
+  /** Called when the current stage's trail is on screen. */
+  onDrawn?: () => void;
+};
+
+export function CoursePath({ completed, onDrawn }: Props) {
   const { colors } = useTheme();
   const next = completed.length;
   const currentStage = Math.min(COURSE_STAGES.length - 1, Math.floor(next / LESSONS_PER_STAGE));
@@ -91,7 +97,14 @@ export function CoursePath({ completed }: { completed: number[] }) {
                 </View>
               )}
             </PressableScale>
-            {trailShown && <CourseTrail stage={index} next={next} fog={Math.max(0, distance)} />}
+            {trailShown && (
+              <CourseTrail
+                stage={index}
+                next={next}
+                fog={Math.max(0, distance)}
+                onDrawn={expanded ? onDrawn : undefined}
+              />
+            )}
           </View>
         );
       })}
