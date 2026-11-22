@@ -35,7 +35,7 @@ Treść zadania jest najważniejszym punktem odniesienia przy każdej decyzji.
 - Czytelne nazwy zamiast komentarzy; komentarz tylko, gdy wyjaśnia „dlaczego”.
 - TypeScript strict, zero `any`.
 - Style tylko przez tokeny z `src/theme` (kolory, odstępy, typografia, promienie, ruch) – żadnych „magicznych” wartości w komponentach.
-- Wygląd „las”: domyślnie ciemna zieleń na każdym telefonie, niezależnie od jego ustawień (`useTheme` zwraca `palette.dark`, `app.json`: `dark`), akcent w kolorze kurki; proste nagłówki i ciemnozielony pasek zakładek; Oswald (nagłówki), Source Sans Pro (treść), kursywa Fraunces (łacina), IBM Plex Mono (etykiety), umiarkowane promienie. Unikaj szablonowego wyglądu (pigułki, duże promienie, generyczne palety). Wybór z wielu opcji – krok po kroku w `BottomSheet`, nie wielkie panele.
+- Wygląd „las”: domyślnie ciemna zieleń na każdym telefonie, niezależnie od jego ustawień (`useTheme` zwraca `palette.dark`, `app.json`: `dark`), akcent w kolorze kurki; proste nagłówki i ciemnozielony pasek zakładek; Oswald (nagłówki), Source Sans Pro (treść), kursywa Fraunces (łacina), IBM Plex Mono (etykiety), umiarkowane promienie. Unikaj szablonowego wyglądu (pigułki, duże promienie, generyczne palety, rozmyte poświaty i „świetliki” – autor uznał je za AI slop). Wybór z wielu opcji – krok po kroku w `BottomSheet` (ma wysokość treści, maks. 86% ekranu), nie wielkie panele. Pytanie przed nieodwracalną akcją – `ConfirmDialog` (`src/components/ConfirmDialog.tsx`), nie systemowy `Alert`.
 - Kolory: `accent` tylko na tekst i cienkie linie na tle strony, `glow` + `onGlow` na wypełnienia i elementy na ciemnych powierzchniach. Kontrast: min. 4,5:1 dla tekstu, 3:1 dla grafiki. Jasna paleta w `colors.ts` jest teraz nieużywana – to zapas na ewentualny przełącznik.
 - Wszystko klikalne przez `PressableScale` (sprężyna + haptyka); zmiany stanu animowane (Reanimated), nie skokowe. Wyjątek: pasek zakładek jest stale na ekranie, więc rusza się spokojnie – `withTiming`, bez sprężyn i bez uginania (sprężyny były tam dla autora zbyt rozbujane).
 - Wszystko, co może zawieść (lokalizacja, czujniki, sieć, baza, uprawnienia), ma obsługę błędu i stan zastępczy – aplikacja nigdy się nie crashuje.
@@ -78,8 +78,8 @@ Wejście aplikacji: `index.ts` (sprawdza moduły natywne, potem `expo-router/ent
 - Etap 1 – Test 3D ✅ → porzucony (proceduralne modele wyglądały zbyt słabo – zamiast nich zdjęcia)
 - Etap 2 – Dane 26 gatunków (cechy, sezony, sobowtóry, zdjęcia na wolnej licencji) ✅
 - Etap 3 – Atlas: karty, kategorie, wyszukiwarka, klucz do oznaczania; ekran gatunku (zegar sezonu, sobowtóry z alertem, suwak porównania) ✅
-- Etap 4 – Odblokowywanie zdjęciem: zaimplementowane; oczekuje testu w Expo Go i oceny wyglądu
-- Etap 5 – Nauka: przebudowana 2026-11-21 na lekcje w stylu Duolingo; lekcje 1–3 sprawdzone na emulatorze, test etapu jeszcze nie
+- Etap 4 – Odblokowywanie zdjęciem: przebudowane 2026-11-22 (aparat jednym dotknięciem, lista gatunków z miniaturami, opcjonalna waga/miejsce/opis z edycją); sprawdzone na emulatorze
+- Etap 5 – Nauka: przebudowana 2026-11-21 na lekcje w stylu Duolingo, ścieżka dopracowana 2026-11-22; lekcje 1–3 sprawdzone na emulatorze, test etapu jeszcze nie
 - Etap 6 – Mapa: miejscówki, parkowanie, kierunek/odległość do auta, ostrzeżenie o zachodzie, obsługa GPS — zaimplementowane; bez natywnego testu UI
 - Etap 7 – Źródła i szlif: panel źródeł, przegląd błędów i testy regresji zaimplementowane; weryfikacja treści i testy natywne nadal otwarte
 - Etap 8 – Indeks grzybowy 1–10 i pogoda: prognoza na 3 dni z pamięcią offline zaimplementowana; test natywnego UI otwarty
@@ -95,39 +95,50 @@ npm run format          # Prettier – formatowanie wszystkich plików
 npm test                # testy jednostkowe czystych funkcji (gdy dojdą)
 ```
 
-## Stan projektu (2026-11-21)
+## Stan projektu (2026-11-22)
 
-- Gotowe: etapy 0–8 i przebudowa wyglądu, wszystko w commitach na `main` (etapy 4–8 zacommitowane 2026-11-21 jako jeden commit). Repo nie ma zdalnego – GitHub tylko na prośbę autora.
+- Gotowe: etapy 0–8 i przebudowa wyglądu, wszystko w commitach na `main` (etapy 4–8 zacommitowane 2026-11-21 jako jeden commit, poprawki z 2026-11-22 w osobnych commitach). Repo nie ma zdalnego – GitHub tylko na prośbę autora. Autor chce budować APK przez expo.dev + GitHub: potrzebny adres repo i ID projektu Expo (`extra.eas.projectId`), push tylko na wyraźne polecenie.
 - Start w Expo Go: błąd `Cannot find native module 'ExpoSQLite'` przy pierwszym `npx expo start` + `a` naprawiony 2026-11-21 (`index.ts` + `src/features/startup`, opis w `docs/expo-startup-investigation.md`). Pierwszy start nie wypisuje już ostrzeżeń routera ani `expo-notifications`.
 - Etap 4: aparat/galeria, ręczny wybór, kontrola cech groźnych sobowtórów, zapis zdjęć w dokumentach aplikacji i SQLite, licznik unikalnych gatunków, oznaczenia kart, zdjęcia na stronie gatunku.
-- Nauka (2026-11-21): `src/features/learn/course.ts` (5 etapów × 4 lekcje + test), `exercises.ts` (karty i pytania; tylko o tym, co już było), `lessonSession.ts` (czysty reducer: błędne pytanie wraca na koniec z przestawionymi odpowiedziami), `useLesson.ts` (dźwięki, haptyka, zapis). Zasady grzybiarza z GIS i Lasów Państwowych w `src/data/fieldRules.ts`. Ekran lekcji `src/app/lesson/[id].tsx` leży poza zakładkami (bez paska). Migracja 9 czyści stary postęp kursu, dodaje `mistakes` i `app_settings` (przełącznik dźwięków). Dźwięki z `scripts/generate-sounds.py`. Test zaliczony przy ≤20% błędów za pierwszym razem.
+- Nauka (2026-11-21): plan kursu w `src/data/courseStages.ts` (5 etapów × 4 lekcje + test), `src/features/learn/course.ts` (stałe i `courseLesson`), pytania w `lessonExercises.ts`, `speciesQuestions.ts`, `lookalikeQuestions.ts`, `ruleExercises.ts`, `exerciseHelpers.ts` (`exercises.ts` ma tylko typy; pytania tylko o tym, co już było), `lessonSession.ts` (czysty reducer: błędne pytanie wraca na koniec z przestawionymi odpowiedziami), `useLesson.ts` (dźwięki, haptyka, zapis). Zasady grzybiarza z GIS i Lasów Państwowych w `src/data/fieldRules.ts`. Ekran lekcji `src/app/lesson/[id].tsx` leży poza zakładkami (bez paska). Migracja 9 czyści stary postęp kursu, dodaje `mistakes` i `app_settings` (przełącznik dźwięków). Dźwięki z `scripts/generate-sounds.py`. Test zaliczony przy ≤20% błędów za pierwszym razem.
 - Etap 5 (stara wersja, zastąpiona): codzienny gatunek, quiz cech/nazw łacińskich, sobowtóry, losowane rundy po 5 pytań z wyjaśnieniami, najlepszy wynik i liczba rund w SQLite. Migracja 2 dodaje `learning_sessions`, nie zmienia tabel znalezisk. Identyfikator rundy chroni przed podwójnym naliczaniem po ponowieniu zapisu.
 - Etap 6: mapa Google/Apple w Expo Go, dodawanie/edycja/usuwanie miejscówek, zapis auta z potwierdzeniem zastąpienia, współrzędne offline, odległość/azymut oraz true-heading kompas z fallbackiem. GPS automatycznie po otwarciu mapy za zgodą użytkownika; timeout, odmowa zgody, błędy i restart śledzenia obsłużone. Zapis GPS wymaga <=60 s i dokładności <=100 m. Ostrzeżenie o zachodzie z SunCalc działa tylko przy otwartej mapie, bez powiadomień w tle.
 - UI: mapa jako notatnik terenowy, ciemna mapa, tarcza kompasu, lista punktów, panel dodawania. Atlas ma filtr „Moje odkrycia”, mocniejsze wyróżnienie odkrytych kart i licznik obserwacji.
 - Etap 7: panel „O atlasie” z materiałami, 26 autorami/licencjami zdjęć i fontami; poprawki opóźnionych odczytów GPS, wygasania kompasu, kolejkowanych kliknięć quizu, odzyskiwania zdjęcia i niedostępnego pliku. README odpowiada aktualnym funkcjom.
 - Etap 8: Open-Meteo, prognoza 3 dni (temperatura, opady, prawdopodobieństwo, wiatr), automatyczne pobieranie na mapie i ręczne odświeżanie ikoną; współrzędne zaokrąglone do 2 miejsc. Migracja 3 dodaje weather_cache (10 obszarów), starsze niż 6 h lub poprzedni dzień dane oznaczone jako nieaktualne. Timeout, anulowanie, błędy sieci/zapisu oraz zmiana miejsca obsłużone. Orientacyjny indeks 1–10 ocenia warunki na podstawie poprzednich 7 dni. Bezpłatne API niekomercyjne; warunki opisane w README.
 - Szlif UI: kompaktowy nagłówek lasu, uproszczona góra Atlasu, zdjęcia do krawędzi kart, siatka 1–3 kolumn zależna od szerokości i skali fontu; treść maks. 720 px, spokojniejsze przyciski pomocnicze i cele dotykowe 48 px. Nauka, pogoda i powrót do auta mają ujednoliconą hierarchię. Zmiany wymagają wizualnej weryfikacji na urządzeniu.
-- Następny krok: natywna weryfikacja dotychczasowych funkcji, pozostałe TODO treści i ewentualne bonusy, gdy podstawy zostaną ocenione wizualnie. Użytkownik daje swobodę pracy z maksymalnie dwoma subagentami i nie chce zadań ani odpytywania.
-- Test wizualny 2026-11-21 (emulator, ADB działa): pierwszy start, ekran Start, ekran awaryjny startu. Pozostałe ekrany po przebudowie 2026-11-15 nadal czekają na przegląd na urządzeniu.
+- Następny krok: test etapu Nauki na urządzeniu, repo na GitHubie i build APK przez expo.dev (gdy autor poda adres repo i ID projektu), wpis o fizycznym urządzeniu w README. Użytkownik daje swobodę pracy z maksymalnie dwoma subagentami i nie chce zadań ani odpytywania; prosi o oszczędne korzystanie z limitu (bez długiego klikania po emulatorze).
+- Test wizualny: 2026-11-21 pierwszy start, Start i ekran awaryjny; 2026-11-22 Start, Nauka (ścieżka, okno przerwania), ustawienia, panel miejsc na mapie, zapis i edycja znaleziska. Atlas (po refaktorze), klucz, porównanie i rozwinięta prognoza nie były oglądane na nowo.
 - Pod Etap 4 są już: tabela `finds` (`src/db/migrations.ts`), wielokrotnego użytku `BottomSheet`, zainstalowane `expo-image-picker` i `expo-file-system`.
+- Sesja 2026-11-22 (wszystko sprawdzone zrzutami z emulatora):
+  - Start: karta Nauki z postępem i XP; „grzyb dnia” ukryty (rozmycie + „?”), odkrywany dotknięciem, pamiętany do północy w `app_settings` (`src/features/learn/dailyReveal.ts`); ikona ustawień bez ramki; „Twoje odkrycia” bez strzałki.
+  - Zdjęcia: `useQuickPhoto` otwiera aparat od razu (Start, karta gatunku); `SpeciesPicker` to lista z miniaturami; w kroku gatunku zdjęcie jest małe; w `FindReview` miniatura z atlasu, przy groźnym sobowtórze krótkie ostrzeżenie i jedno potwierdzenie (zamiast osobnego dla każdej cechy — decyzja autora).
+  - Szczegóły znaleziska: migracja 10 dodaje `weight_grams`, `latitude`, `longitude` (kolumna `note` była); wspólny `FindDetailsForm` przy zapisie i w `EditFindSheet`; logika w `findDraft.ts`, pozycja w `currentPlace.ts` (`Accuracy.High` + `mayShowUserSettingsDialog: false`).
+  - Nauka: ścieżka bez linii, ukończone lekcje zielone (`season`) ze złotym ptaszkiem, bieżąca z mrugającą obręczą i falami (`ActivePulse`), wszystkie dalsze etapy widoczne i przygaszone (`TrailFog`), płaskie drzewa inne dla każdego etapu (`TrailBackdrop`). Autor odrzucił poziomice, kreskowanie, mgłę i świetliki.
+  - Mapa: panel miejsc w `SavedPlacesSheet` z „+” do dodania miejscówki i krzyżykiem przy aucie; mniej podpowiedzi; usuwanie przez `ConfirmDialog`.
+  - Ustawienia: usunięty poziom doświadczenia (niczego nie zmieniał; zostaje tylko w onboardingu), krótki napis o powiadomieniach, przełączniki w kolorach aplikacji.
+  - Refaktor (subagenci): podzielone pliki logiki Nauki i alertów pogodowych oraz najdłuższe komponenty UI (pogoda, onboarding, `Screen`, atlas). Fakty w `src/data` sprawdzone przez agenta ze źródłami – bez błędów; sezon krowiaka potwierdzony.
+- Pozycja jednorazowa: `getCurrentPositionAsync` z `Accuracy.Balanced` wywołuje systemowe okno Google „Location Accuracy” i bez zgody zwraca angielski błąd — używaj `Accuracy.High` i `mayShowUserSettingsDialog: false`.
 - Kompas korzysta z `expo-location.watchHeadingAsync`; nieużywane `zustand`, `expo-sensors` i `@types/suncalc` usunięto 2026-11-21.
 
 Otwarte sprawy:
 
 - Odzyskiwanie zdjęcia po odtworzeniu aplikacji jest teraz automatyczne; przetestowano scenariusz na atrapach, bez fizycznego aparatu.
 
-- `src/data/species.ts`: miesiące krowiaka mają `TODO: verify`.
+- Pliki powyżej ~150 linii: `NativeFieldMap.tsx` (206), `src/app/(tabs)/map.tsx` (202), `AddFindSheet.tsx` (177), `MushroomIndexDialog.tsx` (157), `BottomSheet.tsx` (152).
+- Reset profilu w `OnboardingProvider` nadal używa `Alert` (tylko w trybie deweloperskim).
 - Panel źródeł jest dostępny w Atlasie. Metadane zdjęć są kompletne; testy danych nie stanowią merytorycznej weryfikacji całego atlasu.
 - Haptyka nie jest potwierdzona na fizycznym telefonie, a emulator jej nie odda.
 - README przepisane 2026-11-21 ze zrzutami (`docs/screenshots`); wpis o fizycznym urządzeniu ma `TODO` – potwierdza autor.
 - 2026-11-19 autor podał, że ma 3 dni do oddania. Priorytet: stabilność, dopracowanie istniejących funkcji i natywna weryfikacja.
-- `npm test`: 119 testów (2026-11-21, po przebudowie Nauki) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
+- `npm test`: 124 testy (2026-11-22; nowe w `find-details.test.cjs`: formularz szczegółów i migracja 10) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
 
 ## Uruchamianie (Mac autora)
 
 - `ANDROID_HOME` jest w `~/.zshrc`, więc w nowym terminalu `a` w `npx expo start` sam włącza emulator (AVD `Medium_Phone_API_37.0`). Serwer uruchomiony przed tą zmianą tego nie umie.
 - Powłoka agenta może nie wczytać `~/.zshrc`: wtedy `source ~/.nvm/nvm.sh` przed `npx`/`npm` i pełna ścieżka `~/Library/Android/sdk/platform-tools/adb`.
 - Otwieranie apki przez adb: `adb shell am force-stop host.exp.exponent`, potem `adb shell am start -a android.intent.action.VIEW -d "<adres exp:// z terminala>"`. Konkretny ekran: `<adres>/--/species/amanita-phalloides`.
+- Wpisywanie przez `adb shell input text` bez aktywnego pola trafia do Expo Go: dwa „r” przeładowują apkę. Nie chowaj klawiatury klawiszem wstecz – przy klawiaturze sprzętowej emulatora zamyka on panel.
 - Zrzut ekranu: `adb exec-out screencap -p > plik.png`. Po otwarciu apki poczekaj na załadowanie (kilkanaście sekund po przeładowaniu), zanim wyślesz kliknięcia lub zrobisz zrzut – inaczej klawisz wstecz wychodzi z apki, a zdjęcia są jeszcze puste.
 
 Pułapki:

@@ -21,7 +21,7 @@ Kieszonkowy przewodnik grzybiarza: atlas 26 polskich gatunków z ostrzeżeniami 
 
 - **Przygotowana głównie pod:** Android.
 - **Testowana na fizycznym urządzeniu:** TODO – do uzupełnienia przez autora przed oddaniem.
-- **Emulator:** Android Studio, Medium Phone (API 37), Expo Go 58.0.5 – wszystkie ekrany przeklikane 2026-11-21, w tym zdjęcie z aparatu, zapis znaleziska, mapa i lekcje.
+- **Emulator:** Android Studio, Medium Phone (API 37), Expo Go 58.0.5 – wszystkie ekrany przeklikane 2026-11-21, w tym zdjęcie z aparatu, zapis znaleziska, mapa i lekcje; zmiany z 2026-11-22 (Start, ścieżka nauki, panel miejsc, szczegóły znaleziska) sprawdzone na emulatorze tego dnia.
 - **iOS:** nie był testowany.
 
 ## Uruchomienie
@@ -52,17 +52,21 @@ Mapa Google na Androidzie poza Expo Go wymaga klucza „Maps SDK for Android” 
 
 ## Funkcje
 
+**Start** – wejście do atlasu i nauki (z postępem i XP), „grzyb dnia” ukryty pod rozmytym zdjęciem, który odkrywa się dotknięciem, oraz ostatnie własne znaleziska. Przycisk zdjęcia od razu otwiera aparat.
+
 **Atlas** – 26 gatunków podzielonych na jadalne, niejadalne, trujące i śmiertelnie trujące; zdjęcia na wolnych licencjach, wyszukiwarka bez polskich znaków („kozlarz” znajdzie koźlarza), filtry „Rośnie teraz” i „Moje odkrycia”.
 
 **Klucz do oznaczania** – zamiast ściany filtrów pytania po kolei: co jest pod kapeluszem, kolor, pierścień, pochwa, zmiana barwy miąższu, siedlisko. Każda odpowiedź ma ilustrację SVG i liczbę gatunków, które zostaną; odpowiedzi prowadzące donikąd są wyszarzone.
 
 **Karta gatunku** – opis, cechy rozpoznawcze, kalendarz sezonu, objawy zatrucia i alert o groźnych sobowtórach. Porównanie z sobowtórem pokazuje oba zdjęcia pod przeciąganym suwakiem i tabelę różnic; śmiertelnie trujący sobowtór jest oznaczony kolorem i haptyką.
 
-**Rejestr znalezisk** – zdjęcie z aparatu lub galerii → ręczny wybór gatunku → przy gatunkach z groźnymi sobowtórami potwierdzenie każdej cechy odróżniającej → zapis. Zdjęcie jest dowodem znaleziska, nie jest rozpoznawane automatycznie, a zapis nie potwierdza jadalności. Zdjęcia zostają w pamięci telefonu i można je usunąć.
+**Rejestr znalezisk** – jedno dotknięcie na Starcie lub na karcie gatunku otwiera aparat (galeria jest dostępna z ekranu kolekcji) → wybór gatunku z listy z miniaturami z atlasu → sprawdzenie: Twoje zdjęcie obok zdjęcia wzorcowego, a przy groźnym sobowtórze krótkie ostrzeżenie, cechy odróżniające i jedno potwierdzenie porównania → zapis. Opcjonalnie waga, miejsce z GPS (jednym dotknięciem) i opis; wszystko można później edytować na karcie gatunku. Zdjęcie jest dowodem znaleziska, nie jest rozpoznawane automatycznie, a zapis nie potwierdza jadalności. Zdjęcia zostają w pamięci telefonu i można je usunąć.
 
-**Nauka** – 5 etapów po 4 lekcje i test etapu na końcu (ostatni to egzamin z całości). Lekcja ma około 7 kart: nowy gatunek albo zasada grzybiarza (np. koszyk zamiast reklamówki, wykręcanie zamiast odcinania, co robić przy podejrzeniu zatrucia), potem różne typy pytań – zdjęcie → nazwa, nazwa → zdjęcie, „do koszyka czy zostawiam”, para sobowtórów, sytuacje z lasu. Pytania dotyczą tylko tego, co już było. Bez „żyć”: błędna odpowiedź pokazuje wyjaśnienie i wraca na końcu lekcji. Pasek postępu, seria poprawnych odpowiedzi, XP, rangi, dzienna passa, dźwięki (do wyłączenia w ustawieniach) i haptyka.
+**Nauka** – 5 etapów po 4 lekcje i test etapu na końcu (ostatni to egzamin z całości). Lekcja ma około 7 kart: nowy gatunek albo zasada grzybiarza (np. koszyk zamiast reklamówki, wykręcanie zamiast odcinania, co robić przy podejrzeniu zatrucia), potem różne typy pytań – zdjęcie → nazwa, nazwa → zdjęcie, „do koszyka czy zostawiam”, para sobowtórów, sytuacje z lasu. Pytania dotyczą tylko tego, co już było. Bez „żyć”: błędna odpowiedź pokazuje wyjaśnienie i wraca na końcu lekcji. Pasek postępu, seria poprawnych odpowiedzi, XP, rangi, dzienna passa, dźwięki (do wyłączenia w ustawieniach) i haptyka. Ścieżka pokazuje wszystkie etapy: ukończone lekcje na zielono, bieżąca pulsuje, dalsze etapy są przygaszone, a każdy etap ma własne leśne tło. Przerwanie lekcji potwierdza się we własnym oknie aplikacji.
 
-**Mapa** – prywatne miejscówki (z GPS albo przytrzymaniem mapy) z notatkami, zapis miejsca parkowania i powrót do auta: odległość i kierunek z kompasem, ostrzeżenie przed zachodem słońca. Prognoza na 3 dni (Open-Meteo) z pamięcią offline i orientacyjny „indeks grzybowy” 1–10 liczony z opadów i temperatur ostatniego tygodnia.
+**Ustawienia** – dźwięki w lekcjach, powiadomienia o korzystnych warunkach (tylko w buildzie, nie w Expo Go) oraz źródła i licencje.
+
+**Mapa** – prywatne miejscówki (z GPS albo przytrzymaniem mapy) z notatkami, zapis miejsca parkowania i powrót do auta: odległość i kierunek z kompasem, ostrzeżenie przed zachodem słońca. Panel zapisanych miejsc ma przycisk „+” do dodania miejscówki, a auto i miejscówki usuwa się po potwierdzeniu we własnym oknie. Prognoza na 3 dni (Open-Meteo) z pamięcią offline i orientacyjny „indeks grzybowy” 1–10 liczony z opadów i temperatur ostatniego tygodnia.
 
 ## Decyzje techniczne
 
@@ -70,7 +74,8 @@ Mapa Google na Androidzie poza Expo Go wymaga klucza „Maps SDK for Android” 
 - **Odporność na błędy:** GPS, aparat, sieć, baza i uprawnienia mają obsługę błędów i stany zastępcze; globalny `ErrorBoundary` zamiast crasha.
 - **Start w Expo Go:** Expo Go 58 na Androidzie daje moduły natywne nowego typu (m.in. SQLite) tylko pierwszemu silnikowi JS w procesie – gdy Expo Go ma już otwarty inny projekt, zwykły start kończy się błędem `Cannot find native module 'ExpoSQLite'`. Wejście `index.ts` sprawdza moduły, zanim wczyta router i bazę, i w razie potrzeby raz przeładowuje własny silnik JS. Opis: [docs/expo-startup-investigation.md](docs/expo-startup-investigation.md).
 - **Ruch i dotyk:** Reanimated 4 (sprężyny, layout animations, CSS transitions) i Gesture Handler 3; każdy przycisk reaguje sprężyną i haptyką (`expo-haptics`).
-- **Dane o grzybach:** pisane własnymi słowami na podstawie źródeł poniżej, sprawdzane z nimi; niepewne fakty oznaczone w kodzie `TODO: verify`.
+- **Dane o grzybach:** pisane własnymi słowami na podstawie źródeł poniżej i sprawdzane z nimi; niepewny fakt oznaczamy w kodzie `TODO: verify` (obecnie żadnego takiego nie ma – ostatni, sezon krowiaka, potwierdzono 2026-11-22).
+- **Okna i panele:** wybory krok po kroku w panelu od dołu, który ma wysokość swojej treści; pytania przed nieodwracalną akcją we wspólnym `ConfirmDialog` zamiast systemowego `Alert`.
 - **Wygląd:** ciemna leśna zieleń z akcentem koloru kurki, Oswald + Source Sans Pro, łacina kursywą Fraunces, etykiety IBM Plex Mono.
 
 ## Stack
@@ -108,6 +113,7 @@ CI (GitHub Actions) uruchamia lint, typecheck i testy przy każdym pushu.
 - Alerty o dobrych warunkach w tle działają tylko w development/release buildzie, nie w Expo Go.
 - Jeśli przy pytaniu o aparat wybierzesz „Tylko tym razem” i aparat zostanie otwarty dłużej niż minutę, Android może zamknąć Expo Go i zdjęcie przepada – przy „Podczas używania aplikacji” problem nie występuje.
 - Indeks grzybowy to heurystyka aplikacji, nie prognoza wysypu.
+- Miejsce znaleziska to pozycja telefonu w chwili dotknięcia „Dodaj miejsce” (GPS, bez trybu dokładności Google); lokalizacja zapisana w samym zdjęciu nie jest odczytywana.
 
 ## Źródła i licencje
 
@@ -119,7 +125,7 @@ CI (GitHub Actions) uruchamia lint, typecheck i testy przy każdym pushu.
 - kalendarzy grzybiarza stacji sanitarno-epidemiologicznych ([gov.pl](https://www.gov.pl/web/psse-wabrzezno/w-lesie-grzybow-coraz-wiecej)).
 - zasady grzybiarza w lekcjach: Główny Inspektorat Sanitarny – [„Bezpieczne grzybobranie”](https://www.gov.pl/web/gis/bezpieczne-grzybobranie) i [poradnik dla miłośników zbierania grzybów](https://www.gov.pl/web/gis/dla-milosnikow-zbierania-grzybow2); Lasy Państwowe – [zakazy wstępu do lasu](https://www.lasy.gov.pl/pl/informacje/zakazy-wstepu-do-lasow).
 
-Niepewne fakty są oznaczone w kodzie jako `TODO: verify`.
+Niepewne fakty oznaczamy w kodzie jako `TODO: verify`; obecnie w danych nie ma takich oznaczeń.
 
 **Zdjęcia gatunków** pochodzą z [Wikimedia Commons](https://commons.wikimedia.org), są na licencjach Creative Commons i zostały zmniejszone do 800 px. Kliknij nazwę gatunku, aby zobaczyć oryginał.
 
