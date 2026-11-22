@@ -10,6 +10,7 @@ import { OnboardingProvider } from '@/features/onboarding/OnboardingProvider';
 import { MushroomAlertsLifecycle } from '@/features/weather/alerts';
 import { ErrorFallback } from '@/components/ErrorFallback';
 import { CollectionProvider } from '@/features/collection/CollectionProvider';
+import { useHapticsPreference } from '@/features/feedback/useHapticsPreference';
 import { DATABASE_NAME, initDatabase } from '@/db/initDatabase';
 import { FONT_FILES, getNavigationTheme, useTheme } from '@/theme';
 
@@ -55,6 +56,7 @@ export default function RootLayout() {
                   options={{ animation: 'slide_from_bottom', gestureEnabled: false }}
                 />
               </Stack>
+              <FeedbackPreferences />
               {MushroomAlertsLifecycle ? <MushroomAlertsLifecycle /> : null}
             </ThemeProvider>
           </OnboardingProvider>
@@ -62,4 +64,10 @@ export default function RootLayout() {
       </SQLiteProvider>
     </GestureHandlerRootView>
   );
+}
+
+/** Applies saved feedback choices once the database is open. */
+function FeedbackPreferences() {
+  useHapticsPreference();
+  return null;
 }

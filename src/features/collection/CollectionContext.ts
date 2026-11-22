@@ -12,6 +12,7 @@ export type Collection = {
   add: (speciesId: SpeciesId, uri: string, details: FindDetails) => Promise<void>;
   update: (find: Find, details: FindDetails) => Promise<void>;
   remove: (find: Find) => Promise<void>;
+  removeAll: () => Promise<void>;
 };
 export const CollectionContext = createContext<Collection | null>(null);
 

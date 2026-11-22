@@ -7,9 +7,12 @@ import type { Experience } from './questions';
 type Profile = { experience: Experience; score: number | null };
 const Context = createContext<{
   profile: Profile | null;
+  /** Opens the welcome questions again; the current answers stay until new ones are saved. */
+  showOnboarding: () => void;
   resetDevelopment: () => void;
 }>({
   profile: null,
+  showOnboarding: () => {},
   resetDevelopment: () => {},
 });
 export const useOnboarding = () => useContext(Context);
@@ -87,6 +90,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     <Context.Provider
       value={{
         profile,
+        showOnboarding: () => setOpen(true),
         resetDevelopment: () => {
           if (__DEV__) devReset.current();
         },

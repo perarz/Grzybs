@@ -2,7 +2,7 @@ import { useAudioPlayer, type AudioPlayer } from 'expo-audio';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 
-import { readSoundsEnabled } from './settings';
+import { readSetting } from './settings';
 
 export type LessonSound = 'correct' | 'wrong' | 'combo' | 'complete';
 
@@ -19,7 +19,7 @@ export function useLessonSounds() {
 
   useEffect(() => {
     let active = true;
-    readSoundsEnabled(db)
+    readSetting(db, 'lesson_sounds')
       .then((value) => {
         if (active) setEnabled(value);
       })

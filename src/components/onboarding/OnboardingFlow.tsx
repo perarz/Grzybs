@@ -59,7 +59,7 @@ export function OnboardingFlow({
             <ScrollView contentContainerStyle={s.scroll}>
               <View style={s.top}>
                 <AppText variant="label" color="accent">
-                  GRZYBNIK / NA START
+                  GRZYBS / NA START
                 </AppText>
                 <PressableScale
                   accessibilityRole="button"

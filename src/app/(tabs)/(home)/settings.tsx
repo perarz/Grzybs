@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Screen } from '@/components/Screen';
 import { AppText } from '@/components/AppText';
-import { PressableScale } from '@/components/PressableScale';
-import { FieldIcon } from '@/components/icons/FieldIcon';
 import { AboutAtlasSheet } from '@/components/about/AboutAtlasSheet';
 import { SettingsNotifications } from '@/components/settings/SettingsNotifications';
-import { SettingsSounds } from '@/components/settings/SettingsSounds';
-import { layout, radius, spacing, useTheme } from '@/theme';
+import { SettingsData } from '@/components/settings/SettingsData';
+import { SettingsRow } from '@/components/settings/SettingsRow';
+import { SettingsSwitch } from '@/components/settings/SettingsSwitch';
+import { setHapticsEnabled } from '@/features/feedback/haptics';
+import { radius, spacing, useTheme } from '@/theme';
 import app from '../../../../app.json';
 
 export default function SettingsScreen() {
@@ -20,7 +21,18 @@ export default function SettingsScreen() {
         Nauka
       </AppText>
       <View style={card}>
-        <SettingsSounds />
+        <SettingsSwitch
+          setting="lesson_sounds"
+          title="Dźwięki w lekcjach"
+          description="Krótki sygnał przy dobrej i złej odpowiedzi oraz na koniec lekcji."
+        />
+        <View style={[styles.divider, { backgroundColor: colors.border }]} />
+        <SettingsSwitch
+          setting="haptics"
+          title="Wibracje"
+          description="Delikatne drgnięcie przy dotyku, odpowiedziach i ostrzeżeniach."
+          onChange={setHapticsEnabled}
+        />
       </View>
       <AppText variant="label" color="accent">
         Powiadomienia
@@ -29,22 +41,18 @@ export default function SettingsScreen() {
         <SettingsNotifications />
       </View>
       <AppText variant="label" color="accent">
+        Twoje dane
+      </AppText>
+      <SettingsData />
+      <AppText variant="label" color="accent">
         O aplikacji
       </AppText>
-      <PressableScale
-        accessibilityRole="button"
+      <SettingsRow
+        icon="info"
+        title="Źródła i informacje"
+        caption="Materiały, licencje i prywatność"
         onPress={() => setSheet('about')}
-        style={[card, styles.row]}
-      >
-        <FieldIcon name="info" size={spacing.xl} color={colors.glow} />
-        <View style={styles.label}>
-          <AppText variant="bodyStrong">Źródła i informacje</AppText>
-          <AppText variant="caption" color="textMuted">
-            Materiały, licencje i Twoje dane
-          </AppText>
-        </View>
-        <FieldIcon name="chevron" size={spacing.lg} color={colors.textMuted} />
-      </PressableScale>
+      />
       <AppText variant="caption" color="textMuted" style={styles.version}>
         Grzybs · {app.expo.version}
       </AppText>
@@ -59,12 +67,6 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     gap: spacing.sm,
   },
-  row: {
-    minHeight: layout.touchTarget,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-  },
-  label: { flex: 1, gap: spacing.xs },
+  divider: { height: StyleSheet.hairlineWidth, marginVertical: spacing.sm },
   version: { textAlign: 'center', paddingVertical: spacing.sm },
 });

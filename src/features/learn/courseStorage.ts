@@ -59,3 +59,8 @@ export function courseXP(records: CourseStepRecord[]) {
     0,
   );
 }
+
+/** Starts the course over; the streak days stay, they are a record of past learning. */
+export async function resetCourse(db: SQLiteDatabase): Promise<void> {
+  await db.runAsync('DELETE FROM course_steps');
+}

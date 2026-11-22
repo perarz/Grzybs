@@ -53,7 +53,7 @@ export function OnboardingHero({
       <AppText variant="title">
         {step < 0 ? 'Jak dobrze\nznasz las?' : done ? result : question.title}
       </AppText>
-      {step < 0 && <AppText color="textMuted">Dopasujmy Naukę do Ciebie.</AppText>}
+      {step < 0 && <AppText color="textMuted">Kilka pytań na rozgrzewkę.</AppText>}
       {done && (
         <AppText color="textMuted">
           {level === 'new'

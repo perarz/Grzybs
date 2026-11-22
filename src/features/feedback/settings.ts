@@ -1,21 +1,25 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-const SOUND_KEY = 'lesson_sounds';
+/** On/off preferences kept in `app_settings`; each is on until the user turns it off. */
+export type FeedbackSetting = 'lesson_sounds' | 'haptics';
 
-/** Lesson sounds are on unless the user turned them off. */
-export async function readSoundsEnabled(db: SQLiteDatabase): Promise<boolean> {
+export async function readSetting(db: SQLiteDatabase, key: FeedbackSetting): Promise<boolean> {
   const row = await db.getFirstAsync<{ value: string }>(
     'SELECT value FROM app_settings WHERE key = ?',
-    SOUND_KEY,
+    key,
   );
   return row?.value !== 'off';
 }
 
-export async function saveSoundsEnabled(db: SQLiteDatabase, enabled: boolean): Promise<void> {
+export async function saveSetting(
+  db: SQLiteDatabase,
+  key: FeedbackSetting,
+  enabled: boolean,
+): Promise<void> {
   await db.runAsync(
     `INSERT INTO app_settings (key, value) VALUES (?, ?)
      ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
-    SOUND_KEY,
+    key,
     enabled ? 'on' : 'off',
   );
 }

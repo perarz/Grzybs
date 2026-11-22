@@ -3,11 +3,19 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Switch, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
-import { readSoundsEnabled, saveSoundsEnabled } from '@/features/feedback/settings';
+import { readSetting, saveSetting, type FeedbackSetting } from '@/features/feedback/settings';
 import { spacing, useTheme } from '@/theme';
 
-/** Turns the lesson sounds on or off; the choice is kept on the phone. */
-export function SettingsSounds() {
+type Props = {
+  setting: FeedbackSetting;
+  title: string;
+  description: string;
+  /** Called after a change, e.g. to apply it right away. */
+  onChange?: (enabled: boolean) => void;
+};
+
+/** One on/off preference; the choice is kept on the phone. */
+export function SettingsSwitch({ setting, title, description, onChange }: Props) {
   const db = useSQLiteContext();
   const { colors } = useTheme();
   const [enabled, setEnabled] = useState<boolean | null>(null);
@@ -15,7 +23,7 @@ export function SettingsSounds() {
 
   useEffect(() => {
     let active = true;
-    readSoundsEnabled(db)
+    readSetting(db, setting)
       .then((value) => {
         if (active) setEnabled(value);
       })
@@ -25,14 +33,16 @@ export function SettingsSounds() {
     return () => {
       active = false;
     };
-  }, [db]);
+  }, [db, setting]);
 
   function toggle(value: boolean) {
     const previous = enabled;
     setEnabled(value);
     setError(false);
-    saveSoundsEnabled(db, value).catch(() => {
+    onChange?.(value);
+    saveSetting(db, setting, value).catch(() => {
       setEnabled(previous);
+      if (previous !== null) onChange?.(previous);
       setError(true);
     });
   }
@@ -41,10 +51,10 @@ export function SettingsSounds() {
     <View style={styles.section}>
       <View style={styles.row}>
         <AppText variant="bodyStrong" style={styles.label}>
-          Dźwięki w lekcjach
+          {title}
         </AppText>
         <Switch
-          accessibilityLabel="Dźwięki w lekcjach"
+          accessibilityLabel={title}
           value={enabled ?? false}
           disabled={enabled === null}
           onValueChange={toggle}
@@ -53,7 +63,7 @@ export function SettingsSounds() {
         />
       </View>
       <AppText variant="caption" color="textMuted">
-        Krótki sygnał przy dobrej i złej odpowiedzi oraz na koniec lekcji.
+        {description}
       </AppText>
       {error ? (
         <AppText variant="caption" color="danger" accessibilityRole="alert">

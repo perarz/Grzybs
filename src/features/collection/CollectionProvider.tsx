@@ -102,9 +102,34 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  async function removeAll() {
+    if (saving.current) throw new Error('Kolekcja zapisuje zmiany. Spróbuj za chwilę.');
+    saving.current = true;
+    try {
+      for (const find of finds) await deleteFind(db, find);
+      setFinds([]);
+    } catch (cause) {
+      saving.current = false;
+      // Part of the finds may already be gone – show what is really left.
+      await reload();
+      throw cause;
+    } finally {
+      saving.current = false;
+    }
+  }
+
   return (
     <CollectionContext.Provider
-      value={{ finds, loading: loading || recovery.checking, error, reload, add, update, remove }}
+      value={{
+        finds,
+        loading: loading || recovery.checking,
+        error,
+        reload,
+        add,
+        update,
+        remove,
+        removeAll,
+      }}
     >
       {children}
       {recovery.pending && !loading ? (
