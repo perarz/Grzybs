@@ -4,6 +4,9 @@ import { layout, useTheme } from '@/theme';
 
 type Point = { x: number; y: number };
 type Props = {
+  /** Each stage grows its own scenery: pines, leafy trees, then mushrooms, and again. */
+  stage: number;
+  fog: number;
   width: number;
   height: number;
   points: Point[];
@@ -31,8 +34,25 @@ function pine(x: number, y: number, size: number) {
   return [tier(1, 0.28, 0.55), tier(0.75, 0.36, 0.3), tier(0.5, 0.44, 0.05)].join(' ');
 }
 
+/** A leafy tree: a round crown on a short trunk. */
+function leafy(x: number, y: number, size: number) {
+  const r = size * 0.32;
+  const top = y - size * 0.3 - r;
+  return `M ${x - size * 0.05} ${y} h ${size * 0.1} v ${-size * 0.3} h ${-size * 0.1} Z M ${x} ${top - r} a ${r} ${r} 0 1 0 0.01 0 Z`;
+}
+
+/** A mushroom: a half-round cap on a stem. */
+function mushroom(x: number, y: number, size: number) {
+  const r = size * 0.36;
+  const capY = y - size * 0.45;
+  return `M ${x - size * 0.09} ${y} h ${size * 0.18} v ${-size * 0.45} h ${-size * 0.18} Z M ${x - r} ${capY} a ${r} ${r * 0.85} 0 0 1 ${r * 2} 0 Z`;
+}
+
+const SCENERY = [pine, leafy, mushroom];
+
 /** Quiet forest scenery behind the lesson trail: a clearing, glows, pines and fireflies. */
-export function TrailBackdrop({ width, height, points, states }: Props) {
+export function TrailBackdrop({ stage, fog, width, height, points, states }: Props) {
+  const shape = SCENERY[stage % SCENERY.length];
   const { colors } = useTheme();
   return (
     <Svg width={width} height={height} style={StyleSheet.absoluteFill} accessible={false}>
@@ -72,7 +92,7 @@ export function TrailBackdrop({ width, height, points, states }: Props) {
           return (
             <Path
               key={`pine-${index}`}
-              d={pine(x, point.y + layout.courseNode / 2, size)}
+              d={shape(x, point.y + layout.courseNode / 2, size)}
               fill={index % 2 ? colors.primaryMuted : colors.surfaceMuted}
             />
           );
@@ -85,7 +105,7 @@ export function TrailBackdrop({ width, height, points, states }: Props) {
           cy={y * height}
           r={r}
           fill={colors.glow}
-          opacity={0.5}
+          opacity={fog > 0 ? 0.25 : 0.5}
         />
       ))}
     </Svg>

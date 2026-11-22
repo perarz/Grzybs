@@ -5,11 +5,19 @@ import { courseLesson, LESSONS_PER_STAGE } from '@/features/learn/course';
 import { durations, layout, spacing } from '@/theme';
 import { CourseTrailNode } from './CourseTrailNode';
 import { TrailBackdrop } from './TrailBackdrop';
+import { TrailFog } from './TrailFog';
 
 const bends = [0, 0.8, -0.2, -0.9, 0];
 const nodeFrame = layout.courseNode + spacing.lg;
 
-export function CourseTrail({ stage, next }: { stage: number; next: number }) {
+type Props = {
+  stage: number;
+  next: number;
+  /** How many stages ahead of the learner this one is – 0 means no fog. */
+  fog: number;
+};
+
+export function CourseTrail({ stage, next, fog }: Props) {
   const { fontScale } = useWindowDimensions();
   const [width, setWidth] = useState(0);
   const [nodeHeights, setNodeHeights] = useState<Record<number, number>>({});
@@ -29,6 +37,8 @@ export function CourseTrail({ stage, next }: { stage: number; next: number }) {
       {width > 0 && (
         <View style={{ height }}>
           <TrailBackdrop
+            stage={stage}
+            fog={fog}
             width={width}
             height={height}
             points={points}
@@ -65,6 +75,7 @@ export function CourseTrail({ stage, next }: { stage: number; next: number }) {
               </Animated.View>
             );
           })}
+          <TrailFog width={width} height={height} level={fog} />
         </View>
       )}
     </View>

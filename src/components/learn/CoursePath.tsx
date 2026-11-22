@@ -27,6 +27,9 @@ export function CoursePath({ completed }: { completed: number[] }) {
       {COURSE_STAGES.map((stage, index) => {
         const expanded = shown === index;
         const locked = index > currentStage;
+        // Stages ahead stay visible, fading into the fog the further away they are.
+        const distance = index - currentStage;
+        const trailShown = expanded || (distance > 0 && shown === currentStage);
         const count = Math.min(LESSONS_PER_STAGE, Math.max(0, next - index * LESSONS_PER_STAGE));
         return (
           <View key={stage.title} style={styles.content}>
@@ -88,7 +91,7 @@ export function CoursePath({ completed }: { completed: number[] }) {
                 </View>
               )}
             </PressableScale>
-            {expanded && <CourseTrail stage={index} next={next} />}
+            {trailShown && <CourseTrail stage={index} next={next} fog={Math.max(0, distance)} />}
           </View>
         );
       })}
