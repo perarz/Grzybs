@@ -6,11 +6,7 @@ import { CollectionPreview } from '@/components/home/CollectionPreview';
 
 export default function HomeScreen() {
   return (
-    <Screen
-      title="Bliżej lasu."
-      eyebrow="Grzybs / Twój przewodnik"
-      titleAccessory={<SettingsButton />}
-    >
+    <Screen title="Panel główny" eyebrow="Grzybs" titleAccessory={<SettingsButton />}>
       <HomeDestinations />
       <DailyDiscovery />
       <CollectionPreview />
