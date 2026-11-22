@@ -4,6 +4,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { courseLesson, LESSONS_PER_STAGE } from '@/features/learn/course';
 import { durations, layout, spacing } from '@/theme';
 import { CourseTrailNode } from './CourseTrailNode';
+import { TrailBackdrop } from './TrailBackdrop';
 
 const bends = [0, 0.8, -0.2, -0.9, 0];
 const nodeFrame = layout.courseNode + spacing.lg;
@@ -27,6 +28,15 @@ export function CourseTrail({ stage, next }: { stage: number; next: number }) {
     <View style={styles.trail} onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
       {width > 0 && (
         <View style={{ height }}>
+          <TrailBackdrop
+            width={width}
+            height={height}
+            points={points}
+            states={points.map((_, position) => {
+              const id = stage * LESSONS_PER_STAGE + position;
+              return id < next ? 'done' : id === next ? 'active' : 'locked';
+            })}
+          />
           {points.map((point, position) => {
             const step = courseLesson(stage * LESSONS_PER_STAGE + position)!;
             return (

@@ -59,7 +59,7 @@ export function CourseTrailNode({ step, done, active, width }: Props) {
           </View>
         ) : null}
       </PressableScale>
-      <View style={[styles.caption, { backgroundColor: colors.background }]}>
+      <View style={styles.caption}>
         <AppText
           variant={active ? 'bodyStrong' : 'caption'}
           color={locked ? 'textMuted' : 'text'}
