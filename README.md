@@ -2,7 +2,7 @@
 
 Kieszonkowy przewodnik grzybiarza: atlas 26 polskich gatunków z ostrzeżeniami przed trującymi sobowtórami, nauka rozpoznawania krok po kroku, własny rejestr znalezisk ze zdjęciami oraz mapa z miejscówkami, pogodą i powrotem do auta. Wszystko poza kafelkami mapy i prognozą pogody działa offline – w lesie zasięg bywa słaby.
 
-> Zadanie rekrutacyjne Software Mansion. React Native + Expo (SDK 58), TypeScript.
+> Zadanie rekrutacyjne Software Mansion. React Native + Expo (SDK 58), TypeScript. Autor: [perarz](https://github.com/perarz).
 
 <p>
   <img src="docs/screenshots/01-start.jpg" width="200" alt="Ekran Start" />
@@ -16,12 +16,15 @@ Kieszonkowy przewodnik grzybiarza: atlas 26 polskich gatunków z ostrzeżeniami 
   <img src="docs/screenshots/07-quiz.jpg" width="200" alt="Pytanie w lekcji" />
   <img src="docs/screenshots/08-map.jpg" width="200" alt="Mapa z pogodą i indeksem grzybowym" />
 </p>
+<p>
+  <img src="docs/screenshots/09-daily.jpg" width="200" alt="Okno grzyba dnia" />
+</p>
 
 ## Platforma i testy
 
 - **Przygotowana głównie pod:** Android.
-- **Testowana na fizycznym urządzeniu:** TODO – do uzupełnienia przez autora przed oddaniem.
-- **Emulator:** Android Studio, Medium Phone (API 37), Expo Go 58.0.5 – wszystkie ekrany przeklikane 2026-11-21, w tym zdjęcie z aparatu, zapis znaleziska, mapa i lekcje; zmiany z 2026-11-22 (Start, ścieżka nauki, panel miejsc, szczegóły znaleziska, wygląd „Nocny las”) sprawdzone na emulatorze tego dnia; zrzuty poniżej pochodzą z tego dnia.
+- **Testowana na fizycznym urządzeniu:** tak – telefon z Androidem, przez Expo Go.
+- **Emulator:** Android Studio, Medium Phone (API 37), Expo Go 58.0.5 – wszystkie ekrany przeklikane 2026-11-21, w tym zdjęcie z aparatu, zapis znaleziska, mapa i lekcje; zmiany z 2026-11-22 sprawdzone na emulatorze; zrzuty poniżej pochodzą z 2026-11-22.
 - **iOS:** nie był testowany.
 
 ## Uruchomienie

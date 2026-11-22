@@ -23,7 +23,7 @@ Treść zadania jest najważniejszym punktem odniesienia przy każdej decyzji.
 
 - Przy każdym zadaniu dotyczącym UI/UX korzystaj ze skilla `design-mobile-apps` wskazanego przez autora: https://github.com/designed-by-ai/skills (folder `skills/design-mobile-apps`). Przeczytaj jego `SKILL.md` przed projektowaniem.
 - Instalacja wskazana przez autora: `npx skills add https://github.com/designed-by-ai/skills --skill design-mobile-apps`.
-- Stan na 2026-11-15: potwierdzono lokalną instalację i przeczytano `/Users/kacper/.agents/skills/design-mobile-apps/SKILL.md`. W tym samym katalogu są `designing.md`, `implementing.md`, `endpoints.md` i `styling/`. Czytaj te pliki zgodnie z zadaniem. Skill wymaga połączenia z usługą Sleek; w sesji sprawdzającej `SLEEK_API_KEY` nie był skonfigurowany. Sprawdź aktualny stan autoryzacji przed użyciem API; nie utożsamiaj instalacji skilla z połączeniem konta.
+- Stan na 2026-11-15: potwierdzono lokalną instalację i przeczytano `~/.agents/skills/design-mobile-apps/SKILL.md`. W tym samym katalogu są `designing.md`, `implementing.md`, `endpoints.md` i `styling/`. Czytaj te pliki zgodnie z zadaniem. Skill wymaga połączenia z usługą Sleek; w sesji sprawdzającej `SLEEK_API_KEY` nie był skonfigurowany. Sprawdź aktualny stan autoryzacji przed użyciem API; nie utożsamiaj instalacji skilla z połączeniem konta.
 - Autor zdecydował 2026-11-15, że nie podłącza konta Sleek. Stosuj lokalne wskazówki projektowania i wdrażania tego skilla bez API Sleek; nie ponawiaj autoryzacji. Nie zapisuj kluczy API w repozytorium.
 - Kierunek UI i przegląd względem skilla: `docs/ui-direction.md`. Dwie zakładki: Start i Mapa. Start zawiera stos Atlasu, Nauki, kolekcji, szczegółów i ustawień, z widocznym dolnym paskiem. Przejście na Mapę zwija stos Startu (`popToTopOnBlur`), więc powrót na Start pokazuje stronę Startu, a nie np. Naukę.
 
@@ -141,7 +141,7 @@ Otwarte sprawy:
 - Reset profilu w `OnboardingProvider` nadal używa `Alert` (tylko w trybie deweloperskim).
 - Panel źródeł jest dostępny w Atlasie. Metadane zdjęć są kompletne; testy danych nie stanowią merytorycznej weryfikacji całego atlasu.
 - Haptyka nie jest potwierdzona na fizycznym telefonie, a emulator jej nie odda.
-- README przepisane 2026-11-21 ze zrzutami (`docs/screenshots`); wpis o fizycznym urządzeniu ma `TODO` – potwierdza autor.
+- README ze zrzutami (`docs/screenshots`); autor potwierdził test na fizycznym telefonie przez Expo Go (2026-11-22). Repo: https://github.com/perarz/Grzybs (push tylko na polecenie autora).
 - 2026-11-19 autor podał, że ma 3 dni do oddania. Priorytet: stabilność, dopracowanie istniejących funkcji i natywna weryfikacja.
 - `npm test`: 132 testy (2026-11-22; nowe także w `streak-forecast.test.cjs` i test losowej kolejności pytań w `course-content.test.cjs`; nowe w `find-details.test.cjs`, `streak-calendar.test.cjs`, `daily-fact.test.cjs` i `ranks.test.cjs`) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
 
