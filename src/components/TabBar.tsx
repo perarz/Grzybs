@@ -3,17 +3,17 @@ import type { BottomTabBarProps } from 'expo-router/tabs';
 import { useState } from 'react';
 import { StyleSheet, View, type LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
+import Svg, { Defs, LinearGradient, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { selectionHaptic } from '@/features/feedback/haptics';
-import { durations, radius, spacing, useTheme } from '@/theme';
+import { durations, spacing, useTheme } from '@/theme';
 
 import { TabBarItem } from './TabBarItem';
 
 const ICON_SIZE = 24;
 const INDICATOR_HEIGHT = 3;
-// The highlighted plate leaves a margin on both sides of the tab.
-const PLATE_INSET = spacing.xl;
+// The light leaves a small margin on both sides of the tab; it fades out anyway.
+const PLATE_INSET = spacing.sm;
 
 /** The forest floor: a dark bar whose lit plate, with a moss-green edge, slides to the open tab. */
 export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: BottomTabBarProps) {
@@ -52,17 +52,22 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
           pointerEvents="none"
           style={[styles.plate, { width: tabWidth - PLATE_INSET * 2 }, indicatorStyle]}
         >
-          {/* A soft light falling from the edge line, fading out before the label. */}
+          {/* A soft oval of light under the edge, fading out on every side – no hard corners. */}
           <Svg style={StyleSheet.absoluteFill}>
             <Defs>
-              <LinearGradient id="tabGlow" x1="0" y1="0" x2="0" y2="1">
-                <Stop offset="0" stopColor={colors.glow} stopOpacity="0.28" />
+              <RadialGradient id="tabGlow" cx="50%" cy="0%" rx="50%" ry="100%">
+                <Stop offset="0" stopColor={colors.glow} stopOpacity="0.32" />
+                <Stop offset="1" stopColor={colors.glow} stopOpacity="0" />
+              </RadialGradient>
+              <LinearGradient id="tabLine" x1="0" y1="0" x2="1" y2="0">
+                <Stop offset="0" stopColor={colors.glow} stopOpacity="0" />
+                <Stop offset="0.5" stopColor={colors.glow} stopOpacity="1" />
                 <Stop offset="1" stopColor={colors.glow} stopOpacity="0" />
               </LinearGradient>
             </Defs>
             <Rect width="100%" height="100%" fill="url(#tabGlow)" />
+            <Rect width="100%" height={INDICATOR_HEIGHT} fill="url(#tabLine)" />
           </Svg>
-          <View style={[styles.line, { backgroundColor: colors.glow }]} />
         </Animated.View>
       ) : null}
       {state.routes.map((route, index) => {
@@ -112,5 +117,4 @@ const styles = StyleSheet.create({
     left: 0,
     overflow: 'hidden',
   },
-  line: { height: INDICATOR_HEIGHT, borderRadius: radius.xs },
 });
