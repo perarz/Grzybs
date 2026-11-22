@@ -111,7 +111,7 @@ npm test                # testy jednostkowe czystych funkcji (gdy dojdą)
 - Test wizualny: 2026-11-21 pierwszy start, Start i ekran awaryjny; 2026-11-22 Start, Nauka (ścieżka, okno przerwania), ustawienia, panel miejsc na mapie, zapis i edycja znaleziska. Atlas (po refaktorze), klucz, porównanie i rozwinięta prognoza nie były oglądane na nowo.
 - Pod Etap 4 są już: tabela `finds` (`src/db/migrations.ts`), wielokrotnego użytku `BottomSheet`, zainstalowane `expo-image-picker` i `expo-file-system`.
 - Sesja 2026-11-22 (wszystko sprawdzone zrzutami z emulatora):
-  - Start: karta Nauki z postępem i XP; „grzyb dnia” ukryty (rozmycie + „?”), odkrywany dotknięciem, pamiętany do północy w `app_settings` (`src/features/learn/dailyReveal.ts`); ikona ustawień bez ramki; „Twoje odkrycia” bez strzałki.
+  - Start: karta Nauki z postępem i XP; ikona ustawień bez ramki; „Twoje odkrycia” bez strzałki.
   - Zdjęcia: `useQuickPhoto` otwiera aparat od razu (Start, karta gatunku); `SpeciesPicker` to lista z miniaturami; w kroku gatunku zdjęcie jest małe; w `FindReview` miniatura z atlasu, przy groźnym sobowtórze krótkie ostrzeżenie i jedno potwierdzenie (zamiast osobnego dla każdej cechy — decyzja autora).
   - Szczegóły znaleziska: migracja 10 dodaje `weight_grams`, `latitude`, `longitude` (kolumna `note` była); wspólny `FindDetailsForm` przy zapisie i w `EditFindSheet`; logika w `findDraft.ts`, pozycja w `currentPlace.ts` (`Accuracy.High` + `mayShowUserSettingsDialog: false`).
   - Nauka: ścieżka bez linii, ukończone lekcje zielone (`season`) ze złotym ptaszkiem, bieżąca z mrugającą obręczą i falami (`ActivePulse`), wszystkie dalsze etapy widoczne i przygaszone (`TrailFog`), płaskie drzewa inne dla każdego etapu (`TrailBackdrop`). Autor odrzucił poziomice, kreskowanie, mgłę i świetliki.
@@ -119,7 +119,7 @@ npm test                # testy jednostkowe czystych funkcji (gdy dojdą)
   - Nazwa: aplikacja nazywa się **Grzybs** (wcześniej Grzybnik): `app.json` (name, slug, scheme, pakiet), teksty w UI, README. Celowo zostały stare identyfikatory wewnętrzne: plik bazy `grzybnik.db` i zadanie w tle `grzybnik-mushroom-conditions` – zmiana odcięłaby dane i zarejestrowane zadanie.
   - Start: karta Nauki z gradientem (tokeny `learnStart/Middle/End`) i obwódką `aqua` (`LearnCard.tsx`). Nauka: dotknięcie passy otwiera mini kalendarz miesiąca z dniami nauki i datą pierwszej lekcji (`StreakCalendar`, `MonthGrid`, `streakCalendar.ts`).
   - Ikona: własna (bursztynowy grzyb z liśćmi aqua na leśnej zieleni) z `scripts/make-icon.py`, PNG przez `scripts/render-svg.js` (AppKit przez `osascript -l JavaScript`; Quick Look źle skaluje SVG). iOS używa `icon.png` – szablon `assets/expo.icon` usunięty.
-  - Grzyb dnia to teraz zagadka (`dailyRiddle.ts`): rozmyte zdjęcie, dwie cechy z atlasu bez nazwy gatunku i sezon, trzy nazwy do wyboru; po odpowiedzi odsłania się gatunek i „Warto wiedzieć” (pierwsze zdanie z zatrucia/uwagi/opisu – tylko zweryfikowany tekst atlasu). Stan „rozwiązana dziś” w `app_settings` (`daily_riddle_solved`).
+  - Grzyb dnia: ukryty (rozmyte zdjęcie, „?”, „Jaki grzyb dziś?”), jedno dotknięcie odsłania gatunek z obrotem karty i „Warto wiedzieć” (`dailyFact.ts`: pierwsze zdanie z zatrucia/uwagi/opisu – tylko tekst atlasu). Autor nie chce zgadywania ani wskazówek – po prostu „kliknij, żeby się dowiedzieć”. Stan do północy w `app_settings` (`daily_species_opened`).
   - Ustawienia: wibracje (`setHapticsEnabled`, wczytywane przy starcie w `_layout`), wspólny `SettingsSwitch`, sekcja „Twoje dane” (`SettingsData`: powitanie ponownie, kurs od nowa, usuń wszystkie znaleziska), `SettingsRow`.
   - Ustawienia: bez podtytułu „Po Twojemu”; usunięty poziom doświadczenia (niczego nie zmieniał; zostaje tylko w onboardingu), krótki napis o powiadomieniach, przełączniki w kolorach aplikacji.
   - Refaktor (subagenci): podzielone pliki logiki Nauki i alertów pogodowych oraz najdłuższe komponenty UI (pogoda, onboarding, `Screen`, atlas). Fakty w `src/data` sprawdzone przez agenta ze źródłami – bez błędów; sezon krowiaka potwierdzony.
@@ -136,7 +136,7 @@ Otwarte sprawy:
 - Haptyka nie jest potwierdzona na fizycznym telefonie, a emulator jej nie odda.
 - README przepisane 2026-11-21 ze zrzutami (`docs/screenshots`); wpis o fizycznym urządzeniu ma `TODO` – potwierdza autor.
 - 2026-11-19 autor podał, że ma 3 dni do oddania. Priorytet: stabilność, dopracowanie istniejących funkcji i natywna weryfikacja.
-- `npm test`: 129 testów (2026-11-22; nowe w `find-details.test.cjs`, `streak-calendar.test.cjs` i `daily-riddle.test.cjs`) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
+- `npm test`: 127 testów (2026-11-22; nowe w `find-details.test.cjs`, `streak-calendar.test.cjs` i `daily-fact.test.cjs`) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
 
 ## Uruchamianie (Mac autora)
 
