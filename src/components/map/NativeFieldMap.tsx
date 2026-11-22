@@ -101,6 +101,8 @@ export function NativeFieldMap({
         }}
         onLongPress={(event) => onLongPress(event.nativeEvent.coordinate)}
         onPress={(event) => {
+          // Android also reports a tap on a marker here – that tap must keep its label open.
+          if (event.nativeEvent.action === 'marker-press') return;
           // A tap anywhere else closes the "Twoja pozycja" / "Twoje auto" label.
           gpsMarker.current?.hideCallout();
           carMarker.current?.hideCallout();
