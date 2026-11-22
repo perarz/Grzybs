@@ -52,15 +52,15 @@ export function ActivePulse() {
     <>
       <Animated.View
         pointerEvents="none"
-        style={[fill, { backgroundColor: colors.aqua }, firstWave]}
+        style={[fill, { backgroundColor: colors.glow }, firstWave]}
       />
       <Animated.View
         pointerEvents="none"
-        style={[fill, { backgroundColor: colors.aqua }, secondWave]}
+        style={[fill, { backgroundColor: colors.glow }, secondWave]}
       />
       <Animated.View
         pointerEvents="none"
-        style={[fill, styles.rim, { borderColor: colors.aqua }, rimStyle]}
+        style={[fill, styles.rim, { borderColor: colors.glow }, rimStyle]}
       />
     </>
   );

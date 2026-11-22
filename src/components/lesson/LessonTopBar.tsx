@@ -7,6 +7,7 @@ import Animated, {
   ZoomIn,
   ZoomOut,
 } from 'react-native-reanimated';
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/AppText';
@@ -51,7 +52,17 @@ export function LessonTopBar({ progress, combo, onClose }: LessonTopBarProps) {
         accessibilityValue={{ min: 0, max: 100, now: Math.round(progress * 100) }}
         style={[styles.track, { backgroundColor: colors.surfaceMuted }]}
       >
-        <Animated.View style={[styles.fill, { backgroundColor: colors.aqua }, fillStyle]}>
+        <Animated.View style={[styles.fill, fillStyle]}>
+          {/* Moss green flowing into aqua – the colour of learning, as a light accent. */}
+          <Svg style={StyleSheet.absoluteFill} accessible={false}>
+            <Defs>
+              <LinearGradient id="lessonProgress" x1="0" y1="0" x2="1" y2="0">
+                <Stop offset="0" stopColor={colors.glow} />
+                <Stop offset="1" stopColor={colors.aqua} />
+              </LinearGradient>
+            </Defs>
+            <Rect width="100%" height="100%" fill="url(#lessonProgress)" />
+          </Svg>
           <View style={[styles.shine, { backgroundColor: colors.onForest }]} />
         </Animated.View>
       </View>
@@ -64,7 +75,7 @@ export function LessonTopBar({ progress, combo, onClose }: LessonTopBarProps) {
             style={styles.comboRow}
             accessibilityLabel={`${combo} poprawne z rzędu`}
           >
-            <FieldIcon name="flame" size={layout.icon} color={colors.aqua} />
+            <FieldIcon name="flame" size={layout.icon} color={colors.glow} />
             <AppText variant="bodyStrong" color="accent">
               {combo}
             </AppText>
@@ -90,7 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   track: { flex: 1, height: BAR_HEIGHT, borderRadius: radius.pill, overflow: 'hidden' },
-  fill: { height: '100%', borderRadius: radius.pill },
+  fill: { height: '100%', borderRadius: radius.pill, overflow: 'hidden' },
   // A light streak on top of the fill, like the gloss on a progress bar in a game.
   shine: {
     height: BAR_HEIGHT / 4,

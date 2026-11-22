@@ -7,6 +7,7 @@ import { COURSE_STAGES } from '@/data/courseStages';
 import { COURSE_LENGTH, LESSONS_PER_STAGE } from '@/features/learn/course';
 import { layout, radius, spacing, useTheme } from '@/theme';
 import { CourseTrail } from './CourseTrail';
+import { LearnGradient } from './LearnGradient';
 
 type Props = {
   completed: number[];
@@ -47,16 +48,17 @@ export function CoursePath({ completed, onDrawn }: Props) {
               style={[
                 styles.header,
                 {
-                  backgroundColor: expanded ? colors.surface : colors.background,
+                  backgroundColor: colors.background,
                   borderColor: colors.border,
                 },
               ]}
             >
+              {expanded && <LearnGradient />}
               <View style={styles.headline}>
                 <View
                   style={[
                     styles.stageNumber,
-                    { backgroundColor: expanded ? colors.aqua : colors.surfaceMuted },
+                    { backgroundColor: expanded ? colors.glow : colors.surfaceMuted },
                   ]}
                 >
                   {locked ? (
@@ -75,7 +77,7 @@ export function CoursePath({ completed, onDrawn }: Props) {
                     {stage.subtitle}
                   </AppText>
                 </View>
-                <AppText variant="label" color={expanded ? 'aqua' : 'textMuted'}>
+                <AppText variant="label" color={expanded ? 'accent' : 'textMuted'}>
                   {count}/{LESSONS_PER_STAGE}
                 </AppText>
               </View>
@@ -90,7 +92,7 @@ export function CoursePath({ completed, onDrawn }: Props) {
                       key={step}
                       style={[
                         styles.segment,
-                        { backgroundColor: step < count ? colors.aqua : colors.border },
+                        { backgroundColor: step < count ? colors.season : colors.border },
                       ]}
                     />
                   ))}
@@ -120,6 +122,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     borderWidth: StyleSheet.hairlineWidth,
     minHeight: layout.touchTarget,
+    overflow: 'hidden',
   },
   headline: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   stageNumber: {

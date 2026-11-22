@@ -12,6 +12,8 @@ import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { NotFound } from '@/components/NotFound';
 import { courseLesson, type CourseLesson } from '@/features/learn/course';
 import { useCourseProgress } from '@/features/learn/useCourseProgress';
+import { useLearningJourney } from '@/features/learn/useLearningJourney';
+import { streakAfterLesson } from '@/features/learn/streakForecast';
 import { useLesson } from '@/features/learn/useLesson';
 import { durations, layout, spacing, useTheme } from '@/theme';
 
@@ -30,14 +32,22 @@ export default function LessonScreen() {
   return <Lesson key={attempt} lesson={lesson} onRetry={() => setAttempt((value) => value + 1)} />;
 }
 
+/** Back to where the lesson was opened from – or to Nauka when it was opened by a link. */
+function leaveLesson() {
+  if (router.canGoBack()) router.back();
+  else router.replace('/learn');
+}
+
 function Lesson({ lesson, onRetry }: { lesson: CourseLesson; onRetry: () => void }) {
   const { colors } = useTheme();
   const run = useLesson(lesson);
+  // Read when the lesson opens, i.e. before this lesson is saved.
+  const { journey } = useLearningJourney(false);
   const exercise = run.exercise;
   const [quitting, setQuitting] = useState(false);
 
   function leave() {
-    if (run.finished) return router.back();
+    if (run.finished) return leaveLesson();
     setQuitting(true);
   }
 
@@ -53,7 +63,7 @@ function Lesson({ lesson, onRetry }: { lesson: CourseLesson; onRetry: () => void
 
   async function finish() {
     if (run.passed && !(await run.save())) return;
-    router.back();
+    leaveLesson();
   }
 
   if (run.finished || !exercise) {
@@ -68,6 +78,7 @@ function Lesson({ lesson, onRetry }: { lesson: CourseLesson; onRetry: () => void
           perfect={run.session.mistakes === 0}
           saving={run.saving}
           error={run.saveError}
+          streak={journey ? streakAfterLesson(journey) : null}
           onContinue={() => void finish()}
           onRetry={onRetry}
         />
@@ -119,7 +130,7 @@ function Lesson({ lesson, onRetry }: { lesson: CourseLesson; onRetry: () => void
           onCancel={() => setQuitting(false)}
           onConfirm={() => {
             setQuitting(false);
-            router.back();
+            leaveLesson();
           }}
         />
       )}

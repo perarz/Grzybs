@@ -12,7 +12,7 @@ type Props = { step: CourseLesson; done: boolean; active: boolean; width: number
 export function CourseTrailNode({ step, done, active, width }: Props) {
   const { colors } = useTheme();
   const locked = !done && !active;
-  const nodeColor = active ? colors.aqua : done ? colors.season : colors.surfaceMuted;
+  const nodeColor = active ? colors.glow : done ? colors.season : colors.surfaceMuted;
   return (
     <View style={[styles.container, { width }]}>
       <PressableScale
@@ -76,7 +76,7 @@ export function CourseTrailNode({ step, done, active, width }: Props) {
             }
             style={styles.action}
           >
-            <AppText variant="label" color="aqua">
+            <AppText variant="label" color="accent">
               {step.isTest ? 'Rozpocznij test' : 'Ucz się'}
             </AppText>
           </PressableScale>

@@ -2,10 +2,10 @@ import { router } from 'expo-router';
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
 import { FieldIcon } from '@/components/icons/FieldIcon';
+import { LearnGradient } from '@/components/learn/LearnGradient';
 import { COURSE_LENGTH } from '@/features/learn/course';
 import { useCourseProgress } from '@/features/learn/useCourseProgress';
 import { durations, layout, radius, spacing, useTheme } from '@/theme';
@@ -29,16 +29,7 @@ export function LearnCard() {
       onPress={() => router.push('/learn')}
       style={[styles.card, { borderColor: colors.aqua }]}
     >
-      <Svg style={StyleSheet.absoluteFill} accessible={false}>
-        <Defs>
-          <LinearGradient id="learnCard" x1="0" y1="0" x2="1" y2="1">
-            <Stop offset="0" stopColor={colors.learnStart} />
-            <Stop offset="0.55" stopColor={colors.learnMiddle} />
-            <Stop offset="1" stopColor={colors.learnEnd} />
-          </LinearGradient>
-        </Defs>
-        <Rect width="100%" height="100%" fill="url(#learnCard)" />
-      </Svg>
+      <LearnGradient />
       <View style={[styles.symbol, { borderColor: colors.aqua }]}>
         <FieldIcon name="book" size={layout.icon} color={colors.aqua} />
       </View>

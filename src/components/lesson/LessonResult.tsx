@@ -6,6 +6,8 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { FieldIcon } from '@/components/icons/FieldIcon';
 import { durations, layout, radius, spacing, springs, useTheme } from '@/theme';
+import { CountUp } from './CountUp';
+import { StreakBadge } from './StreakBadge';
 
 type LessonResultProps = {
   title: string;
@@ -16,19 +18,27 @@ type LessonResultProps = {
   perfect: boolean;
   saving: boolean;
   error: string | null;
+  /** The streak after this lesson, when it is known; null hides the streak card. */
+  streak: { before: number; after: number; grows: boolean } | null;
   onContinue: () => void;
   onRetry: () => void;
 };
 
 const TROPHY_SIZE = 64;
+// The stat cards start appearing after the trophy has popped in.
+const STATS_DELAY = durations.slow;
 
 /** The end of a lesson: experience earned, accuracy and best streak, popping in one by one. */
 export function LessonResult(props: LessonResultProps) {
   const { colors } = useTheme();
   const { top, bottom } = useSafeAreaInsets();
   const stats = [
-    { icon: 'flame' as const, value: `+${props.xp}`, label: 'XP' },
-    { icon: 'check' as const, value: `${Math.round(props.accuracy * 100)}%`, label: 'celność' },
+    { icon: 'mushrooms' as const, value: null, label: 'XP' },
+    {
+      icon: 'check' as const,
+      value: `${Math.round(props.accuracy * 100)}%`,
+      label: 'celność',
+    },
     { icon: 'trophy' as const, value: String(props.bestCombo), label: 'z rzędu' },
   ];
   return (
@@ -64,20 +74,29 @@ export function LessonResult(props: LessonResultProps) {
             {stats.map((stat, index) => (
               <Animated.View
                 key={stat.label}
-                entering={FadeInDown.delay(durations.slow + index * durations.fast)}
+                entering={FadeInDown.delay(STATS_DELAY + index * durations.fast)}
                 style={[
                   styles.stat,
                   { borderColor: colors.border, backgroundColor: colors.surface },
                 ]}
               >
                 <FieldIcon name={stat.icon} size={layout.icon} color={colors.glow} />
-                <AppText variant="title">{stat.value}</AppText>
+                {stat.value === null ? (
+                  <CountUp to={props.xp} prefix="+" delay={STATS_DELAY} />
+                ) : (
+                  <AppText variant="title">{stat.value}</AppText>
+                )}
                 <AppText variant="label" color="textMuted">
                   {stat.label}
                 </AppText>
               </Animated.View>
             ))}
           </View>
+        ) : null}
+        {props.passed && props.streak ? (
+          <Animated.View entering={FadeInDown.delay(STATS_DELAY + durations.slow)}>
+            <StreakBadge {...props.streak} delay={STATS_DELAY + durations.slow * 2} />
+          </Animated.View>
         ) : null}
       </View>
       <View style={styles.actions}>
