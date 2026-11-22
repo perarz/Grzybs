@@ -36,17 +36,7 @@ export function CourseTrail({ stage, next, fog }: Props) {
     <View style={styles.trail} onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
       {width > 0 && (
         <View style={{ height }}>
-          <TrailBackdrop
-            stage={stage}
-            fog={fog}
-            width={width}
-            height={height}
-            points={points}
-            states={points.map((_, position) => {
-              const id = stage * LESSONS_PER_STAGE + position;
-              return id < next ? 'done' : id === next ? 'active' : 'locked';
-            })}
-          />
+          <TrailBackdrop stage={stage} width={width} height={height} points={points} />
           {points.map((point, position) => {
             const step = courseLesson(stage * LESSONS_PER_STAGE + position)!;
             return (

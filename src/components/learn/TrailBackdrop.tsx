@@ -1,31 +1,25 @@
 import { StyleSheet } from 'react-native';
-import Svg, { Circle, Defs, G, LinearGradient, Path, RadialGradient, Stop } from 'react-native-svg';
+import Svg, { G, Path } from 'react-native-svg';
 import { layout, useTheme } from '@/theme';
 
 type Point = { x: number; y: number };
 type Props = {
   /** Each stage grows its own scenery: pines, leafy trees, then mushrooms, and again. */
   stage: number;
-  fog: number;
   width: number;
   height: number;
   points: Point[];
-  /** Per point: finished, the next one to do, or still locked. */
-  states: ('done' | 'active' | 'locked')[];
 };
 
-const GLOW_RADIUS = layout.courseNode * 1.3;
-// Fixed "random" fireflies, so the picture is the same on every visit.
-const FIREFLIES = [
-  [0.12, 0.08, 2],
-  [0.86, 0.18, 1.5],
-  [0.2, 0.36, 1.5],
-  [0.92, 0.47, 2],
-  [0.08, 0.62, 2],
-  [0.78, 0.74, 1.5],
-  [0.3, 0.9, 2],
-  [0.95, 0.94, 1.5],
-] as const;
+// Contour lines like on a hiking map, a few per screen of trail.
+const CONTOUR_GAP = layout.courseNode * 1.6;
+const CONTOUR_WAVE = layout.courseNode * 0.35;
+
+/** A gently wavy line across the trail, shifted per line so they never run parallel. */
+function contour(width: number, y: number, index: number) {
+  const wave = CONTOUR_WAVE * (index % 2 ? 1 : -0.7);
+  return `M 0 ${y} C ${width * 0.3} ${y - wave}, ${width * 0.6} ${y + wave}, ${width} ${y - wave / 2}`;
+}
 
 /** A pine drawn from three stacked triangles, standing with its foot at (x, y). */
 function pine(x: number, y: number, size: number) {
@@ -50,39 +44,22 @@ function mushroom(x: number, y: number, size: number) {
 
 const SCENERY = [pine, leafy, mushroom];
 
-/** Quiet forest scenery behind the lesson trail: a clearing, glows, pines and fireflies. */
-export function TrailBackdrop({ stage, fog, width, height, points, states }: Props) {
+/** Map-like scenery behind the lesson trail: contour lines and flat trees beside it. */
+export function TrailBackdrop({ stage, width, height, points }: Props) {
   const shape = SCENERY[stage % SCENERY.length];
   const { colors } = useTheme();
   return (
     <Svg width={width} height={height} style={StyleSheet.absoluteFill} accessible={false}>
-      <Defs>
-        <LinearGradient id="clearing" x1="0" y1="0" x2="1" y2="0">
-          <Stop offset="0" stopColor={colors.surface} stopOpacity="0" />
-          <Stop offset="0.5" stopColor={colors.surface} stopOpacity="0.7" />
-          <Stop offset="1" stopColor={colors.surface} stopOpacity="0" />
-        </LinearGradient>
-        <RadialGradient id="done" cx="50%" cy="50%" r="50%">
-          <Stop offset="0" stopColor={colors.season} stopOpacity="0.28" />
-          <Stop offset="1" stopColor={colors.season} stopOpacity="0" />
-        </RadialGradient>
-        <RadialGradient id="active" cx="50%" cy="50%" r="50%">
-          <Stop offset="0" stopColor={colors.glow} stopOpacity="0.35" />
-          <Stop offset="1" stopColor={colors.glow} stopOpacity="0" />
-        </RadialGradient>
-      </Defs>
-      <Path d={`M 0 0 H ${width} V ${height} H 0 Z`} fill="url(#clearing)" />
-      {points.map((point, index) =>
-        states[index] === 'locked' ? null : (
-          <Circle
-            key={`glow-${index}`}
-            cx={point.x}
-            cy={point.y}
-            r={GLOW_RADIUS}
-            fill={`url(#${states[index]})`}
-          />
-        ),
-      )}
+      {Array.from({ length: Math.ceil(height / CONTOUR_GAP) }, (_, index) => (
+        <Path
+          key={`contour-${index}`}
+          d={contour(width, CONTOUR_GAP * (index + 0.5), index)}
+          fill="none"
+          stroke={colors.border}
+          strokeWidth={StyleSheet.hairlineWidth * 2}
+          strokeDasharray={index % 3 === 2 ? '6 6' : undefined}
+        />
+      ))}
       <G opacity={0.55}>
         {points.map((point, index) => {
           // Pines grow on the side the trail leaves free.
@@ -98,16 +75,6 @@ export function TrailBackdrop({ stage, fog, width, height, points, states }: Pro
           );
         })}
       </G>
-      {FIREFLIES.map(([x, y, r], index) => (
-        <Circle
-          key={`firefly-${index}`}
-          cx={x * width}
-          cy={y * height}
-          r={r}
-          fill={colors.glow}
-          opacity={fog > 0 ? 0.25 : 0.5}
-        />
-      ))}
     </Svg>
   );
 }
