@@ -52,7 +52,7 @@ Mapa Google na Androidzie poza Expo Go wymaga klucza „Maps SDK for Android” 
 
 ## Funkcje
 
-**Start** – wejście do atlasu i nauki (karta z gradientem, postępem i XP), „grzyb dnia” ukryty pod rozmytym zdjęciem – dotknięcie pokazuje, jaki to gatunek, i jedną rzecz „warto wiedzieć” z atlasu, oraz ostatnie własne znaleziska. Przycisk zdjęcia od razu otwiera aparat.
+**Start** – wejście do atlasu i nauki (karta z gradientem, postępem i XP), „grzyb dnia” ukryty za znakiem zapytania – dotknięcie pokazuje, jaki to gatunek, i jedną rzecz „warto wiedzieć” z atlasu, oraz ostatnie własne znaleziska. Przycisk zdjęcia od razu otwiera aparat.
 
 **Atlas** – 26 gatunków podzielonych na jadalne, niejadalne, trujące i śmiertelnie trujące; zdjęcia na wolnych licencjach, wyszukiwarka bez polskich znaków („kozlarz” znajdzie koźlarza), filtry „Rośnie teraz” i „Moje odkrycia”.
 

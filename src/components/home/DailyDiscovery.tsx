@@ -14,9 +14,6 @@ import { useDailyReveal } from '@/features/learn/useDailyReveal';
 import { useDailySpecies } from '@/features/learn/useDailySpecies';
 import { durations, layout, radius, spacing, useTheme } from '@/theme';
 
-// Enough blur that the mushroom stays a secret until it is opened.
-const HIDDEN_BLUR = 18;
-
 /** Today's mushroom starts hidden; one tap shows which it is and one thing worth knowing. */
 export function DailyDiscovery() {
   const species = useDailySpecies();
@@ -45,21 +42,22 @@ export function DailyDiscovery() {
           style={styles.section}
         >
           <View style={styles.row}>
-            <View style={[styles.photo, { backgroundColor: colors.surface }]}>
+            {revealed ? (
               <Image
                 source={SPECIES_PHOTOS[species.id].source}
-                style={StyleSheet.absoluteFill}
+                style={[styles.photo, { backgroundColor: colors.surface }]}
                 contentFit="cover"
-                blurRadius={revealed ? 0 : HIDDEN_BLUR}
               />
-              {!revealed && (
-                <View style={[styles.mystery, { backgroundColor: colors.backdrop }]}>
-                  <AppText variant="title" color="accent">
-                    ?
-                  </AppText>
-                </View>
-              )}
-            </View>
+            ) : (
+              // No photo at all while hidden – even a blurred one gives the colour away.
+              <View
+                style={[styles.photo, styles.mystery, { backgroundColor: colors.surfaceMuted }]}
+              >
+                <AppText variant="title" color="accent">
+                  ?
+                </AppText>
+              </View>
+            )}
             <View style={styles.copy}>
               <AppText variant="heading">
                 {revealed ? (species.nameCommon ?? species.namePl) : 'Jaki grzyb dziś?'}
@@ -95,13 +93,8 @@ const styles = StyleSheet.create({
   section: { gap: spacing.md },
   row: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   copy: { flex: 1, gap: spacing.xs },
-  photo: {
-    width: layout.thumbnail,
-    height: layout.thumbnail,
-    borderRadius: radius.md,
-    overflow: 'hidden',
-  },
-  mystery: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  photo: { width: layout.thumbnail, height: layout.thumbnail, borderRadius: radius.md },
+  mystery: { alignItems: 'center', justifyContent: 'center' },
   fact: { gap: spacing.xs, paddingLeft: spacing.md, borderLeftWidth: layout.accentStroke },
   rule: { height: StyleSheet.hairlineWidth, marginTop: spacing.xs },
 });
