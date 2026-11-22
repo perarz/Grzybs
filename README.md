@@ -77,6 +77,8 @@ Mapa Google na Androidzie poza Expo Go wymaga klucza „Maps SDK for Android” 
 
 **Ustawienia** – dźwięki i wibracje, powiadomienia o korzystnych warunkach (tylko w buildzie, nie w Expo Go), powitanie od nowa, kurs od nowa i usunięcie wszystkich znalezisk (z potwierdzeniem) oraz źródła i licencje.
 
+**Nawigacja** – dwie zakładki: Start i Mapa; przesunięcie palcem w lewo na Starcie otwiera Mapę (na Mapie gest zostaje dla przesuwania mapy).
+
 **Mapa** – prywatne miejscówki (z GPS albo przytrzymaniem mapy) z notatkami, zapis miejsca parkowania i powrót do auta: odległość i kierunek z kompasem, ostrzeżenie przed zachodem słońca. Panel zapisanych miejsc ma przycisk „+” do dodania miejscówki, a auto i miejscówki usuwa się po potwierdzeniu we własnym oknie. Prognoza na 3 dni (Open-Meteo) z pamięcią offline i orientacyjny „indeks grzybowy” 1–10 liczony z opadów i temperatur ostatniego tygodnia.
 
 ## Decyzje techniczne

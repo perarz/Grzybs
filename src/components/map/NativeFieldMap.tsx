@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import MapView, { Callout, Marker, type Region } from 'react-native-maps';
+import MapView, { Callout, Marker, type MapMarker, type Region } from 'react-native-maps';
 import { AppText } from '@/components/AppText';
 import { durations, layout, radius, spacing, useTheme } from '@/theme';
 import { fieldMapStyle, fieldMetrics, fieldPanel } from '@/theme/field';
@@ -24,6 +24,8 @@ export function NativeFieldMap({
 }: FieldMapProps) {
   const { colors } = useTheme();
   const map = useRef<MapView>(null);
+  const gpsMarker = useRef<MapMarker>(null);
+  const carMarker = useRef<MapMarker>(null);
   const [ready, setReady] = useState(false);
   const centeredGps = useRef(false);
   const lastFocus = useRef(focus);
@@ -98,7 +100,12 @@ export function NativeFieldMap({
           setReady(true);
         }}
         onLongPress={(event) => onLongPress(event.nativeEvent.coordinate)}
-        onPress={onPick ? (event) => onPick(event.nativeEvent.coordinate) : undefined}
+        onPress={(event) => {
+          // A tap anywhere else closes the "Twoja pozycja" / "Twoje auto" label.
+          gpsMarker.current?.hideCallout();
+          carMarker.current?.hideCallout();
+          onPick?.(event.nativeEvent.coordinate);
+        }}
         onRegionChange={reportCenter}
         onRegionChangeComplete={reportCenter}
         showsMyLocationButton={false}
@@ -134,6 +141,7 @@ export function NativeFieldMap({
         )}
         {car ? (
           <Marker
+            ref={carMarker}
             key="car-icon"
             coordinate={car}
             title="Twoje auto"
@@ -154,6 +162,7 @@ export function NativeFieldMap({
         ) : null}
         {position ? (
           <Marker
+            ref={gpsMarker}
             key="gps-dot"
             coordinate={position}
             title="Twoja pozycja GPS"
