@@ -7,16 +7,14 @@ import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated'
 import { selectionHaptic } from '@/features/feedback/haptics';
 import { durations, radius, spacing, useTheme } from '@/theme';
 
-import { AppText } from './AppText';
-import { PressableScale } from './PressableScale';
+import { TabBarItem } from './TabBarItem';
 
 const ICON_SIZE = 24;
-const INDICATOR_WIDTH = 28;
 const INDICATOR_HEIGHT = 3;
-// The bar is always on screen, so its motion stays calm: no springs, no press bounce.
-const NO_PRESS_SCALE = 1;
+// The highlighted plate leaves a margin on both sides of the tab.
+const PLATE_INSET = spacing.xl;
 
-/** The forest floor: a dark green bar with typewritten labels and an amber marker that slides to the open tab. */
+/** The forest floor: a dark bar whose lit plate, with a moss-green edge, slides to the open tab. */
 export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: BottomTabBarProps) {
   const { colors } = useTheme();
   const [barWidth, setBarWidth] = useState(0);
@@ -25,7 +23,7 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
   const indicatorStyle = useAnimatedStyle(() => ({
     transform: [
       {
-        translateX: withTiming(state.index * tabWidth + (tabWidth - INDICATOR_WIDTH) / 2, {
+        translateX: withTiming(state.index * tabWidth + PLATE_INSET, {
           duration: durations.base,
         }),
       },
@@ -50,8 +48,14 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
     >
       {barWidth > 0 ? (
         <Animated.View
-          style={[styles.indicator, { backgroundColor: colors.glow }, indicatorStyle]}
-        />
+          style={[
+            styles.plate,
+            { width: tabWidth - PLATE_INSET * 2, backgroundColor: colors.surfaceMuted },
+            indicatorStyle,
+          ]}
+        >
+          <View style={[styles.line, { backgroundColor: colors.glow }]} />
+        </Animated.View>
       ) : null}
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
@@ -73,21 +77,14 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
         }
 
         return (
-          <PressableScale
+          <TabBarItem
             key={route.key}
-            haptic="none"
-            pressedScale={NO_PRESS_SCALE}
-            accessibilityRole="tab"
-            accessibilityState={{ selected: focused }}
-            accessibilityLabel={label}
+            label={label}
+            focused={focused}
+            color={color}
+            icon={options.tabBarIcon?.({ focused, color, size: ICON_SIZE })}
             onPress={openTab}
-            style={styles.tab}
-          >
-            {options.tabBarIcon?.({ focused, color, size: ICON_SIZE })}
-            <AppText variant="label" style={{ color }}>
-              {label}
-            </AppText>
-          </PressableScale>
+          />
         );
       })}
     </View>
@@ -100,19 +97,13 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
     paddingTop: spacing.sm,
   },
-  indicator: {
+  plate: {
     position: 'absolute',
     top: 0,
+    bottom: 0,
     left: 0,
-    width: INDICATOR_WIDTH,
-    height: INDICATOR_HEIGHT,
-    borderBottomLeftRadius: radius.xs,
-    borderBottomRightRadius: radius.xs,
+    borderBottomLeftRadius: radius.md,
+    borderBottomRightRadius: radius.md,
   },
-  tab: {
-    flex: 1,
-    alignItems: 'center',
-    gap: spacing.xs,
-    paddingVertical: spacing.sm,
-  },
+  line: { height: INDICATOR_HEIGHT },
 });
