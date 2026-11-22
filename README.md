@@ -21,7 +21,7 @@ Kieszonkowy przewodnik grzybiarza: atlas 26 polskich gatunków z ostrzeżeniami 
 
 - **Przygotowana głównie pod:** Android.
 - **Testowana na fizycznym urządzeniu:** TODO – do uzupełnienia przez autora przed oddaniem.
-- **Emulator:** Android Studio, Medium Phone (API 37), Expo Go 58.0.5 – wszystkie ekrany przeklikane 2026-11-21, w tym zdjęcie z aparatu, zapis znaleziska, mapa i lekcje; zmiany z 2026-11-22 (Start, ścieżka nauki, panel miejsc, szczegóły znaleziska) sprawdzone na emulatorze tego dnia.
+- **Emulator:** Android Studio, Medium Phone (API 37), Expo Go 58.0.5 – wszystkie ekrany przeklikane 2026-11-21, w tym zdjęcie z aparatu, zapis znaleziska, mapa i lekcje; zmiany z 2026-11-22 (Start, ścieżka nauki, panel miejsc, szczegóły znaleziska, wygląd „Nocny las”) sprawdzone na emulatorze tego dnia; zrzuty poniżej pochodzą z tego dnia.
 - **iOS:** nie był testowany.
 
 ## Uruchomienie
