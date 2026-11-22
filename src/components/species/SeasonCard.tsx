@@ -23,7 +23,7 @@ export function SeasonCard({ months }: SeasonCardProps) {
       <View style={styles.clock}>
         <SeasonClock months={months} currentMonth={currentMonth} />
       </View>
-      <AppText variant="heading" color={inSeasonNow ? 'season' : 'textMuted'} style={styles.center}>
+      <AppText variant="heading" color={inSeasonNow ? 'accent' : 'textMuted'} style={styles.center}>
         {inSeasonNow ? 'Teraz w sezonie' : 'Teraz poza sezonem'}
       </AppText>
       <AppText variant="caption" color="textMuted" style={styles.center}>

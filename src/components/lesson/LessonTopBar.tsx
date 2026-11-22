@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -30,6 +30,7 @@ export function LessonTopBar({ progress, combo, onClose }: LessonTopBarProps) {
   const { colors } = useTheme();
   const { top } = useSafeAreaInsets();
   const fill = useSharedValue(progress);
+  const [trackWidth, setTrackWidth] = useState(0);
 
   useEffect(() => {
     fill.set(withSpring(progress, springs.settle));
@@ -50,19 +51,23 @@ export function LessonTopBar({ progress, combo, onClose }: LessonTopBarProps) {
       <View
         accessibilityRole="progressbar"
         accessibilityValue={{ min: 0, max: 100, now: Math.round(progress * 100) }}
+        onLayout={(event) => setTrackWidth(event.nativeEvent.layout.width)}
         style={[styles.track, { backgroundColor: colors.surfaceMuted }]}
       >
         <Animated.View style={[styles.fill, fillStyle]}>
-          {/* Moss green flowing into aqua – the colour of learning, as a light accent. */}
-          <Svg style={StyleSheet.absoluteFill} accessible={false}>
-            <Defs>
-              <LinearGradient id="lessonProgress" x1="0" y1="0" x2="1" y2="0">
-                <Stop offset="0" stopColor={colors.glow} />
-                <Stop offset="1" stopColor={colors.aqua} />
-              </LinearGradient>
-            </Defs>
-            <Rect width="100%" height="100%" fill="url(#lessonProgress)" />
-          </Svg>
+          {/* The gradient spans the whole track and the fill only uncovers it: an SVG inside
+              an animated width would not resize with it. Moss green turns into aqua near the end. */}
+          {trackWidth > 0 && (
+            <Svg width={trackWidth} height={BAR_HEIGHT} style={styles.gradient} accessible={false}>
+              <Defs>
+                <LinearGradient id="lessonProgress" x1="0" y1="0" x2="1" y2="0">
+                  <Stop offset="0" stopColor={colors.glow} />
+                  <Stop offset="1" stopColor={colors.aqua} />
+                </LinearGradient>
+              </Defs>
+              <Rect width="100%" height="100%" fill="url(#lessonProgress)" />
+            </Svg>
+          )}
           <View style={[styles.shine, { backgroundColor: colors.onForest }]} />
         </Animated.View>
       </View>
@@ -102,6 +107,7 @@ const styles = StyleSheet.create({
   },
   track: { flex: 1, height: BAR_HEIGHT, borderRadius: radius.pill, overflow: 'hidden' },
   fill: { height: '100%', borderRadius: radius.pill, overflow: 'hidden' },
+  gradient: { position: 'absolute', left: 0, top: 0 },
   // A light streak on top of the fill, like the gloss on a progress bar in a game.
   shine: {
     height: BAR_HEIGHT / 4,

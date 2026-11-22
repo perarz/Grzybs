@@ -23,7 +23,7 @@ export function SpeciesQuickFacts({ species }: { species: Species }) {
         </AppText>
         <AppText
           variant="caption"
-          color={species.months.includes(current) ? 'season' : 'textMuted'}
+          color={species.months.includes(current) ? 'accent' : 'textMuted'}
         >
           {species.months.includes(current) ? 'Teraz w sezonie' : 'Poza sezonem'}
         </AppText>
@@ -51,7 +51,7 @@ export function SpeciesQuickFacts({ species }: { species: Species }) {
                 adjustsFontSizeToFit
                 minimumFontScale={0.75}
                 style={styles.numeral}
-                color={active ? 'season' : 'textMuted'}
+                color={active ? 'accent' : 'textMuted'}
               >
                 {MONTH_NUMERALS[month]}
               </AppText>

@@ -45,7 +45,10 @@ export function lessonExercises(lesson: CourseLesson, random: Random = Math.rand
   const pool = known.length ? known : lesson.newSpecies;
   const asked = new Set(items.map((item) => item.key));
   items.push(...reviewExercises(pool, lesson.knownRules, allowed, reviewCount, random, asked));
-  return items;
+  // Learning cards first, then the questions in a new order on every attempt.
+  const cards = items.filter((item) => item.kind !== 'choice');
+  const questions = items.filter((item) => item.kind === 'choice');
+  return [...cards, ...shuffled(questions, random)];
 }
 
 function testExercises(lesson: CourseLesson, random: Random): Exercise[] {

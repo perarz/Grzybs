@@ -92,7 +92,13 @@ test('a new species is never asked in the same form as the card that taught it',
       .join(),
     'teach-species,teach-species',
   );
-  assert.equal(items[2].layout, 'photos');
+  // The card shows photo and name, so the first new species is asked to be found among photos.
+  const [first] = courseLesson(0).newSpecies;
+  assert.ok(
+    items.some(
+      (item) => item.kind === 'choice' && item.layout === 'photos' && item.correctId === first,
+    ),
+  );
 });
 
 test('every field rule cites an official source and has a correct answer', () => {
@@ -116,4 +122,18 @@ test('habitat questions are capped and never offer the other forest type as a wr
       }
     }
   }
+});
+
+test('a lesson teaches first and asks its questions in a new order on every attempt', () => {
+  const orders = new Set();
+  for (let seed = 1; seed <= 12; seed++) {
+    const items = lessonExercises(courseLesson(0), seeded(seed));
+    const firstQuestion = items.findIndex((item) => item.kind === 'choice');
+    assert.ok(
+      items.slice(firstQuestion).every((item) => item.kind === 'choice'),
+      'no learning card after a question',
+    );
+    orders.add(items.map((item) => item.kind + ':' + item.key.split(':')[0]).join(','));
+  }
+  assert.ok(orders.size > 1, 'question order changes between attempts');
 });
