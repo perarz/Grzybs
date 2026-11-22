@@ -57,8 +57,8 @@ export function OnboardingHero({
       {done && (
         <AppText color="textMuted">
           {level === 'new'
-            ? 'W Nauce zaczniesz od jednego gatunku dziennie.'
-            : 'W Nauce czekają podobne gatunki i krótkie quizy.'}
+            ? 'W Nauce zaczniesz od pierwszego koszyka: prawdziwka i podgrzybka.'
+            : 'W Nauce czekają krótkie lekcje, sobowtóry i testy etapów.'}
         </AppText>
       )}
     </View>

@@ -44,6 +44,9 @@ export function OnboardingFlow({
   return (
     <Modal
       visible
+      // Draws under the system bars, so the screen's own colour fills them – no grey strip.
+      statusBarTranslucent
+      navigationBarTranslucent
       animationType="fade"
       onRequestClose={() => {
         if (busy) return;
