@@ -51,7 +51,7 @@ export function LessonTopBar({ progress, combo, onClose }: LessonTopBarProps) {
         accessibilityValue={{ min: 0, max: 100, now: Math.round(progress * 100) }}
         style={[styles.track, { backgroundColor: colors.surfaceMuted }]}
       >
-        <Animated.View style={[styles.fill, { backgroundColor: colors.glow }, fillStyle]}>
+        <Animated.View style={[styles.fill, { backgroundColor: colors.aqua }, fillStyle]}>
           <View style={[styles.shine, { backgroundColor: colors.onForest }]} />
         </Animated.View>
       </View>
@@ -64,7 +64,7 @@ export function LessonTopBar({ progress, combo, onClose }: LessonTopBarProps) {
             style={styles.comboRow}
             accessibilityLabel={`${combo} poprawne z rzędu`}
           >
-            <FieldIcon name="flame" size={layout.icon} color={colors.glow} />
+            <FieldIcon name="flame" size={layout.icon} color={colors.aqua} />
             <AppText variant="bodyStrong" color="accent">
               {combo}
             </AppText>

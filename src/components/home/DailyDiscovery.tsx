@@ -6,6 +6,7 @@ import { successHaptic } from '@/features/feedback/haptics';
 import { useDailySpecies } from '@/features/learn/useDailySpecies';
 import { layout, radius, spacing, useTheme } from '@/theme';
 import { DailySpeciesDialog } from './DailySpeciesDialog';
+import { MysteryMark } from './MysteryMark';
 
 /** Today's mushroom is always a question mark on Start; a tap opens it in its own window. */
 export function DailyDiscovery() {
@@ -27,9 +28,7 @@ export function DailyDiscovery() {
         style={styles.row}
       >
         <View style={[styles.mystery, { backgroundColor: colors.surfaceMuted }]}>
-          <AppText variant="title" color="accent">
-            ?
-          </AppText>
+          <MysteryMark />
         </View>
         <View style={styles.copy}>
           <AppText variant="heading">Jaki grzyb dziś?</AppText>

@@ -56,7 +56,7 @@ export function CoursePath({ completed, onDrawn }: Props) {
                 <View
                   style={[
                     styles.stageNumber,
-                    { backgroundColor: expanded ? colors.glow : colors.surfaceMuted },
+                    { backgroundColor: expanded ? colors.aqua : colors.surfaceMuted },
                   ]}
                 >
                   {locked ? (
@@ -75,7 +75,7 @@ export function CoursePath({ completed, onDrawn }: Props) {
                     {stage.subtitle}
                   </AppText>
                 </View>
-                <AppText variant="label" color={expanded ? 'accent' : 'textMuted'}>
+                <AppText variant="label" color={expanded ? 'aqua' : 'textMuted'}>
                   {count}/{LESSONS_PER_STAGE}
                 </AppText>
               </View>
@@ -90,7 +90,7 @@ export function CoursePath({ completed, onDrawn }: Props) {
                       key={step}
                       style={[
                         styles.segment,
-                        { backgroundColor: step < count ? colors.season : colors.border },
+                        { backgroundColor: step < count ? colors.aqua : colors.border },
                       ]}
                     />
                   ))}

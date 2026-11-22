@@ -36,7 +36,7 @@ export default function LearnScreen() {
             onPress={() => setOpen('calendar')}
             style={styles.stat}
           >
-            <FieldIcon name="flame" size={spacing.xl} color={colors.glow} />
+            <FieldIcon name="flame" size={spacing.xl} color={colors.aqua} />
             <AppText variant="heading">{streakError ? '—' : (journey?.streak ?? '…')}</AppText>
             <AppText color="textMuted">
               {journey?.streak === 1 ? 'dzień passy' : 'dni passy'}
@@ -49,7 +49,7 @@ export default function LearnScreen() {
             onPress={() => setOpen('xp')}
             style={styles.stat}
           >
-            <FieldIcon name="mushrooms" size={spacing.lg} color={colors.glow} />
+            <FieldIcon name="mushrooms" size={spacing.lg} color={colors.aqua} />
             <AppText variant="bodyStrong">{course.completed ? `${course.xp} XP` : '…'}</AppText>
           </PressableScale>
           <PressableScale
@@ -59,7 +59,7 @@ export default function LearnScreen() {
             onPress={() => setOpen('xp')}
             style={styles.stat}
           >
-            <FieldIcon name="trophy" size={spacing.lg} color={colors.glow} />
+            <FieldIcon name="trophy" size={spacing.lg} color={colors.aqua} />
             <AppText variant="bodyStrong">{course.completed ? rank.name : '…'}</AppText>
           </PressableScale>
         </View>

@@ -1,18 +1,27 @@
 import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
 import { FieldIcon } from '@/components/icons/FieldIcon';
 import { COURSE_LENGTH } from '@/features/learn/course';
 import { useCourseProgress } from '@/features/learn/useCourseProgress';
-import { layout, radius, spacing, useTheme } from '@/theme';
+import { durations, layout, radius, spacing, useTheme } from '@/theme';
 
 /** The way into the course: a lake-coloured card with the learner's progress. */
 export function LearnCard() {
   const { colors } = useTheme();
   const course = useCourseProgress();
   const done = course.completed?.length ?? 0;
+  const share = Math.min(1, done / COURSE_LENGTH);
+  // The bar fills up from empty each time Start opens – progress you can see growing.
+  const fill = useSharedValue<number>(0);
+  useEffect(() => {
+    fill.set(withTiming(share, { duration: durations.slow * 3 }));
+  }, [fill, share]);
+  const fillStyle = useAnimatedStyle(() => ({ width: `${fill.get() * 100}%` }));
   return (
     <PressableScale
       accessibilityRole="button"
@@ -41,15 +50,7 @@ export function LearnCard() {
             : 'Krótkie lekcje krok po kroku.'}
         </AppText>
         <View style={[styles.track, { backgroundColor: colors.background }]}>
-          <View
-            style={[
-              styles.fill,
-              {
-                backgroundColor: colors.aqua,
-                width: `${Math.min(1, done / COURSE_LENGTH) * 100}%`,
-              },
-            ]}
-          />
+          <Animated.View style={[styles.fill, { backgroundColor: colors.aqua }, fillStyle]} />
         </View>
       </View>
     </PressableScale>
