@@ -3,32 +3,42 @@ import Animated, { FadeInDown, FadeOut, LinearTransition } from 'react-native-re
 
 import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
+import { FieldIcon } from '@/components/icons/FieldIcon';
 import type { Spot } from '@/features/spots/storage';
-import { durations, spacing, useTheme } from '@/theme';
+import { durations, layout, radius, spacing, useTheme } from '@/theme';
 
 type Props = {
   spots: Spot[];
   busy: boolean;
   onShow: (spot: Spot) => void;
+  onAdd: () => void;
   onEdit: (spot: Spot) => void;
   onDelete: (spot: Spot) => void;
 };
 
-export function SpotList({ spots, busy, onShow, onEdit, onDelete }: Props) {
+export function SpotList({ spots, busy, onShow, onAdd, onEdit, onDelete }: Props) {
   const { colors } = useTheme();
   return (
     <View style={styles.list}>
       <View style={styles.heading}>
-        <AppText variant="title">Miejscówki</AppText>
-        <AppText variant="label" color="accent">
-          {spots.length}
+        <AppText variant="title" style={styles.text}>
+          Miejscówki
         </AppText>
+        {spots.length > 0 && (
+          <AppText variant="label" color="accent">
+            {spots.length}
+          </AppText>
+        )}
+        <PressableScale
+          accessibilityRole="button"
+          accessibilityLabel="Dodaj miejscówkę"
+          disabled={busy}
+          onPress={onAdd}
+          style={[styles.add, { backgroundColor: colors.glow }]}
+        >
+          <FieldIcon name="plus" size={layout.icon} color={colors.onGlow} />
+        </PressableScale>
       </View>
-      {!spots.length ? (
-        <AppText variant="caption" color="textMuted">
-          Brak zapisanych miejscówek.
-        </AppText>
-      ) : null}
       {spots.map((spot, index) => (
         <Animated.View
           key={spot.id}
@@ -91,5 +101,11 @@ const styles = StyleSheet.create({
   entry: { borderTopWidth: StyleSheet.hairlineWidth, paddingTop: spacing.lg, gap: spacing.md },
   actions: { flexDirection: 'row', gap: spacing.xl },
   action: { paddingVertical: spacing.md },
-  empty: { borderLeftWidth: spacing.xs, paddingLeft: spacing.lg, gap: spacing.sm },
+  add: {
+    width: layout.touchTarget,
+    height: layout.touchTarget,
+    borderRadius: radius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

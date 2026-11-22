@@ -7,8 +7,8 @@ import { ChoiceExercise } from '@/components/lesson/ChoiceExercise';
 import { LessonFooter } from '@/components/lesson/LessonFooter';
 import { LessonResult } from '@/components/lesson/LessonResult';
 import { LessonTopBar } from '@/components/lesson/LessonTopBar';
-import { QuitLessonDialog } from '@/components/lesson/QuitLessonDialog';
 import { TeachRuleCard, TeachSpeciesCard } from '@/components/lesson/TeachCards';
+import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { NotFound } from '@/components/NotFound';
 import { courseLesson, type CourseLesson } from '@/features/learn/course';
 import { useCourseProgress } from '@/features/learn/useCourseProgress';
@@ -107,10 +107,17 @@ function Lesson({ lesson, onRetry }: { lesson: CourseLesson; onRetry: () => void
         onNext={run.next}
       />
       {quitting && (
-        <QuitLessonDialog
-          progress={run.progress}
-          onStay={() => setQuitting(false)}
-          onQuit={() => {
+        <ConfirmDialog
+          title="Przerwać lekcję?"
+          message={
+            run.progress > 0
+              ? `Masz za sobą ${Math.round(run.progress * 100)}% lekcji. Jeśli wyjdziesz, postęp przepadnie.`
+              : 'Jeśli wyjdziesz, postęp tej lekcji przepadnie.'
+          }
+          cancelLabel="Ucz się dalej"
+          confirmLabel="Przerwij"
+          onCancel={() => setQuitting(false)}
+          onConfirm={() => {
             setQuitting(false);
             router.back();
           }}

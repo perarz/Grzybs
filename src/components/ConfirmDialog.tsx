@@ -1,32 +1,48 @@
+import type { ReactNode } from 'react';
 import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
-import { FieldIcon } from '@/components/icons/FieldIcon';
+import { FieldIcon, type FieldIconName } from '@/components/icons/FieldIcon';
 import { durations, layout, radius, spacing, useTheme } from '@/theme';
 
 type Props = {
-  /** Share of the lesson already done, 0–1 – shown so leaving feels like a real loss. */
-  progress: number;
-  onStay: () => void;
-  onQuit: () => void;
+  title: string;
+  message: string;
+  /** The safe choice – the highlighted button, also chosen by tapping outside or going back. */
+  cancelLabel: string;
+  confirmLabel: string;
+  icon?: FieldIconName;
+  /** Extra content under the message, e.g. a progress bar. */
+  children?: ReactNode;
+  onCancel: () => void;
+  onConfirm: () => void;
 };
 
 const DIALOG_MAX_WIDTH = 360;
 
-export function QuitLessonDialog({ progress, onStay, onQuit }: Props) {
+/** An in-app question before something that can't be undone. */
+export function ConfirmDialog({
+  title,
+  message,
+  cancelLabel,
+  confirmLabel,
+  icon = 'close',
+  children,
+  onCancel,
+  onConfirm,
+}: Props) {
   const { colors } = useTheme();
-  const percent = Math.round(progress * 100);
   return (
-    <Modal transparent visible animationType="none" statusBarTranslucent onRequestClose={onStay}>
+    <Modal transparent visible animationType="none" statusBarTranslucent onRequestClose={onCancel}>
       <Animated.View
         entering={FadeIn.duration(durations.fast)}
         style={[styles.backdrop, { backgroundColor: colors.backdrop }]}
       >
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Ucz się dalej"
-          onPress={onStay}
+          accessibilityLabel={cancelLabel}
+          onPress={onCancel}
           style={StyleSheet.absoluteFill}
         />
         <Animated.View
@@ -35,24 +51,18 @@ export function QuitLessonDialog({ progress, onStay, onQuit }: Props) {
           style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
         >
           <View style={[styles.symbol, { backgroundColor: colors.dangerMuted }]}>
-            <FieldIcon name="close" size={layout.icon} color={colors.danger} />
+            <FieldIcon name={icon} size={layout.icon} color={colors.danger} />
           </View>
           <AppText variant="title" style={styles.center}>
-            Przerwać lekcję?
+            {title}
           </AppText>
           <AppText color="textMuted" style={styles.center}>
-            {percent > 0
-              ? `Masz za sobą ${percent}% lekcji. Jeśli wyjdziesz, postęp przepadnie.`
-              : 'Jeśli wyjdziesz, postęp tej lekcji przepadnie.'}
+            {message}
           </AppText>
-          {percent > 0 && (
-            <View style={[styles.track, { backgroundColor: colors.border }]}>
-              <View style={[styles.fill, { backgroundColor: colors.glow, width: `${percent}%` }]} />
-            </View>
-          )}
+          {children}
           <View style={styles.actions}>
-            <Button label="Ucz się dalej" onPress={onStay} />
-            <Button label="Przerwij" variant="secondary" onPress={onQuit} />
+            <Button label={cancelLabel} onPress={onCancel} />
+            <Button label={confirmLabel} variant="secondary" onPress={onConfirm} />
           </View>
         </Animated.View>
       </Animated.View>
@@ -80,7 +90,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   center: { textAlign: 'center' },
-  track: { alignSelf: 'stretch', height: spacing.xs, borderRadius: radius.xs, overflow: 'hidden' },
-  fill: { height: '100%' },
   actions: { alignSelf: 'stretch', gap: spacing.sm, marginTop: spacing.sm },
 });

@@ -8,7 +8,7 @@ import { CloseIcon } from '@/components/icons/UiIcons';
 import { PressableScale } from '@/components/PressableScale';
 import type { Species } from '@/features/atlas/types';
 import { useAddFind } from '@/features/collection/useAddFind';
-import { durations, spacing, useTheme } from '@/theme';
+import { durations, layout, spacing, useTheme } from '@/theme';
 
 import { FindPhoto } from './FindPhoto';
 import { FindReview } from './FindReview';
@@ -93,10 +93,24 @@ export function AddFindSheet({
             entering={FadeInDown.duration(durations.base)}
             style={styles.content}
           >
-            {photo ? (
+            {photo && !species && !saved ? (
+              // While choosing the species, the photo shrinks so the list fits on screen.
+              <View style={styles.compact}>
+                <View style={styles.compactPhoto}>
+                  <FindPhoto key={photo} uri={photo} onError={photoFailed} />
+                </View>
+                <Button
+                  label="Zmień zdjęcie"
+                  variant="secondary"
+                  disabled={busy}
+                  onPress={() => setPhoto(null)}
+                  style={styles.grow}
+                />
+              </View>
+            ) : photo ? (
               <FindPhoto key={photo} uri={photo} onError={saved ? undefined : photoFailed} />
             ) : null}
-            {photo && !saved ? (
+            {photo && species && !saved ? (
               <Button
                 label="Zmień zdjęcie"
                 variant="secondary"
@@ -157,4 +171,7 @@ export function AddFindSheet({
 const styles = StyleSheet.create({
   content: { gap: spacing.md, paddingHorizontal: spacing.lg, paddingBottom: spacing.md },
   titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  compact: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  compactPhoto: { width: layout.thumbnail },
+  grow: { flex: 1 },
 });

@@ -31,7 +31,6 @@ export function CollectionPreview() {
         <AppText variant="heading" style={styles.headingText}>
           Twoje odkrycia
         </AppText>
-        <FieldIcon name="arrowRight" size={layout.icon} color={colors.glow} />
       </PressableScale>
       {loading ? (
         <AppText color="textMuted">Wczytuję zdjęcia…</AppText>

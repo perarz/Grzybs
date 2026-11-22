@@ -1,23 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useRef, useState, type ComponentRef, type ReactNode } from 'react';
+import { useEffect, useRef, type ComponentRef, type ReactNode } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
-import Animated, {
-  FadeIn,
-  FadeOut,
-  ReduceMotion,
-  useReducedMotion,
-  useAnimatedScrollHandler,
-  useSharedValue,
-} from 'react-native-reanimated';
+import Animated, { useSharedValue } from 'react-native-reanimated';
 
-import { durations, layout, radius, spacing, useTheme } from '@/theme';
+import { layout, spacing, useTheme } from '@/theme';
 
-import { scheduleOnRN } from 'react-native-worklets';
-import { PressableScale } from './PressableScale';
-import { FieldIcon } from './icons/FieldIcon';
+import { BackToTopButton } from './BackToTopButton';
 import { BackButton } from './BackButton';
 import { CollapsingTopBar } from './CollapsingTopBar';
 import { PageMasthead } from './PageMasthead';
+import { useBackToTop } from './useBackToTop';
 
 type ScreenProps = {
   title: string;
@@ -56,39 +48,7 @@ export function Screen({
   useEffect(() => {
     if (resetScrollKey !== undefined) scrollRef.current?.scrollTo({ y: 0, animated: false });
   }, [resetScrollKey]);
-  const [showTop, setShowTop] = useState(false);
-  const reducedMotion = useReducedMotion();
-  const directionDistance = useSharedValue(0);
-  const topVisible = useSharedValue(false);
-  const returning = useSharedValue(false);
-  const handleScroll = useAnimatedScrollHandler({
-    onBeginDrag: () => {
-      returning.set(false);
-    },
-    onScroll: (event) => {
-      const y = Math.max(0, event.contentOffset.y);
-      const delta = scrollY.get() - y;
-      scrollY.set(y);
-      if (!backToTop) return;
-      const distance = directionDistance.get();
-      directionDistance.set(delta * distance < 0 ? delta : distance + delta);
-      let visible = topVisible.get();
-      if (y < event.layoutMeasurement.height * 0.6 || returning.get()) visible = false;
-      else if (directionDistance.get() > 24) visible = true;
-      else if (directionDistance.get() < -24) visible = false;
-      if (visible !== topVisible.get()) {
-        topVisible.set(visible);
-        scheduleOnRN(setShowTop, visible);
-      }
-    },
-  });
-  const goToTop = () => {
-    returning.set(true);
-    topVisible.set(false);
-    directionDistance.set(0);
-    setShowTop(false);
-    scrollRef.current?.scrollTo({ y: 0, animated: !reducedMotion });
-  };
+  const { handleScroll, showTop, goToTop } = useBackToTop(scrollRef, scrollY, backToTop);
 
   return (
     <KeyboardAvoidingView
@@ -119,25 +79,7 @@ export function Screen({
         )}
         <View style={styles.body}>{children}</View>
       </Animated.ScrollView>
-      {backToTop && showTop && (
-        <Animated.View
-          entering={FadeIn.duration(durations.fast).reduceMotion(ReduceMotion.System)}
-          exiting={FadeOut.duration(durations.fast).reduceMotion(ReduceMotion.System)}
-          style={styles.toTop}
-        >
-          <PressableScale
-            accessibilityRole="button"
-            accessibilityLabel="Wróć na górę atlasu"
-            onPress={goToTop}
-            style={[
-              styles.topButton,
-              { backgroundColor: colors.surface, borderColor: colors.border },
-            ]}
-          >
-            <FieldIcon name="arrowUp" size={23} color={colors.text} />
-          </PressableScale>
-        </Animated.View>
-      )}
+      {backToTop && showTop && <BackToTopButton onPress={goToTop} />}
       <CollapsingTopBar
         scrollY={scrollY}
         title={title}
@@ -149,16 +91,6 @@ export function Screen({
 }
 
 const styles = StyleSheet.create({
-  toTop: { position: 'absolute', bottom: spacing.lg, alignSelf: 'center' },
-  topButton: {
-    width: layout.touchTarget,
-    height: layout.touchTarget,
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    elevation: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   screen: {
     flex: 1,
   },

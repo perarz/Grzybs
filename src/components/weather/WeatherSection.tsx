@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
+import { StyleSheet, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { AppText } from '@/components/AppText';
 import { FieldIcon } from '@/components/icons/FieldIcon';
 import { PressableScale } from '@/components/PressableScale';
@@ -9,9 +9,8 @@ import { useWeatherForecast } from '@/features/weather/useWeatherForecast';
 import { weatherPeriods } from '@/features/weather/weather';
 import { durations, layout, radius, spacing } from '@/theme';
 import { fieldPanel as ink } from '@/theme/field';
-import { WeatherAttribution } from './WeatherAttribution';
 import { MushroomIndex } from './MushroomIndex';
-import { WeatherTable } from './WeatherTable';
+import { WeatherDetails } from './WeatherDetails';
 
 type Props = { point: Coordinate | null; locationLabel: string };
 export function WeatherSection({ point, locationLabel }: Props) {
@@ -67,51 +66,16 @@ export function WeatherSection({ point, locationLabel }: Props) {
         <MushroomIndex forecast={w.forecast} now={w.now} stale={w.stale} />
       </View>
       {expanded && (
-        <Animated.View
-          entering={FadeIn.duration(durations.fast).reduceMotion(ReduceMotion.System)}
-          style={styles.body}
-        >
-          {w.stale && present && (
-            <AppText variant="caption" style={styles.muted}>
-              Starsze dane
-            </AppText>
-          )}
-          {present && <WeatherTable rows={rows} />}
-          <View style={styles.footer}>
-            {present && <WeatherAttribution />}
-            {point && (
-              <PressableScale
-                accessibilityRole="button"
-                accessibilityLabel="Odśwież pogodę"
-                accessibilityState={{ disabled: busy, busy }}
-                disabled={busy}
-                onPress={() => void w.refresh()}
-                style={styles.refresh}
-              >
-                {busy ? (
-                  <ActivityIndicator size="small" color={ink.accent} />
-                ) : (
-                  <FieldIcon name="refresh" size={17} color={ink.accent} />
-                )}
-              </PressableScale>
-            )}
-          </View>
-          {w.error && (
-            <AppText variant="caption" style={styles.muted} accessibilityRole="alert">
-              Nie udało się odświeżyć prognozy.
-            </AppText>
-          )}
-          {!present && !w.error && !busy && (
-            <AppText variant="caption" style={styles.muted}>
-              {point ? 'Brak danych godzinowych.' : 'Włącz GPS lub wybierz miejscówkę.'}
-            </AppText>
-          )}
-          {w.cacheWarning && (
-            <AppText variant="caption" style={styles.muted}>
-              {w.cacheWarning}
-            </AppText>
-          )}
-        </Animated.View>
+        <WeatherDetails
+          rows={rows}
+          present={present}
+          stale={w.stale}
+          point={point}
+          busy={busy}
+          error={w.error}
+          cacheWarning={w.cacheWarning}
+          onRefresh={() => void w.refresh()}
+        />
       )}
     </View>
   );
@@ -139,23 +103,5 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   summary: { flexShrink: 1, paddingVertical: spacing.xs },
-  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  refresh: {
-    marginLeft: 'auto',
-    minHeight: layout.touchTarget,
-    width: layout.touchTarget,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   text: { color: ink.text },
-  muted: { color: ink.muted },
-  body: {
-    width: 292,
-    maxWidth: '100%',
-    padding: spacing.sm,
-    gap: spacing.sm,
-    backgroundColor: ink.background,
-    borderRadius: radius.lg,
-    elevation: 3,
-  },
 });

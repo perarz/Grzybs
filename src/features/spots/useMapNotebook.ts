@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { Alert } from 'react-native';
 
 import { useDaylight } from '@/features/navigation/useDaylight';
 import { useFieldLocation } from '@/features/navigation/useFieldLocation';
@@ -17,6 +16,8 @@ export function useMapNotebook(active: boolean) {
   const [error, setError] = useState<string | null>(null);
   const lock = useRef(false);
   const [parkingOpen, setParkingOpen] = useState(false);
+  /** What waits for the user's confirmation before it is deleted. */
+  const [removal, setRemoval] = useState<Spot | 'car' | null>(null);
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     if (!active) return;
@@ -65,21 +66,11 @@ export function useMapNotebook(active: boolean) {
     }
     if (await act(() => field.park(fix))) setParkingOpen(false);
   }
-  function remove(spot: Spot) {
-    Alert.alert('Usunąć miejscówkę?', spot.name, [
-      { text: 'Zostaw', style: 'cancel' },
-      {
-        text: 'Usuń',
-        style: 'destructive',
-        onPress: () => void act(() => field.removeSpot(spot.id)),
-      },
-    ]);
-  }
-  function clearCar() {
-    Alert.alert('Usunąć zapis auta?', 'Współrzędne parkowania przestaną być dostępne.', [
-      { text: 'Zostaw', style: 'cancel' },
-      { text: 'Usuń', style: 'destructive', onPress: () => void act(field.clearCar) },
-    ]);
+  function confirmRemoval() {
+    const target = removal;
+    setRemoval(null);
+    if (target === 'car') void act(field.clearCar);
+    else if (target) void act(() => field.removeSpot(target.id));
   }
   return {
     field,
@@ -97,7 +88,10 @@ export function useMapNotebook(active: boolean) {
     parkingOpen,
     setParkingOpen,
     confirmParking,
-    remove,
-    clearCar,
+    removal,
+    remove: (spot: Spot) => setRemoval(spot),
+    clearCar: () => setRemoval('car'),
+    cancelRemoval: () => setRemoval(null),
+    confirmRemoval,
   };
 }

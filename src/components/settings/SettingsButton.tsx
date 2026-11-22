@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import { PressableScale } from '@/components/PressableScale';
 import { FieldIcon } from '@/components/icons/FieldIcon';
-import { layout, radius, spacing, useTheme } from '@/theme';
+import { layout, spacing, useTheme } from '@/theme';
 
 export function SettingsButton() {
   const { colors } = useTheme();
@@ -11,7 +11,7 @@ export function SettingsButton() {
       accessibilityRole="button"
       accessibilityLabel="Ustawienia"
       onPress={() => router.navigate('/settings')}
-      style={[styles.button, { backgroundColor: colors.surface, borderColor: colors.border }]}
+      style={styles.button}
     >
       <FieldIcon name="settings" size={spacing.xl} color={colors.text} />
     </PressableScale>
@@ -23,7 +23,5 @@ const styles = StyleSheet.create({
     height: layout.touchTarget,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radius.md,
-    borderWidth: StyleSheet.hairlineWidth,
   },
 });

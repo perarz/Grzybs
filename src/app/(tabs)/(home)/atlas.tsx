@@ -1,16 +1,13 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 
 import { AboutAtlasButton } from '@/components/about/AboutAtlasButton';
+import { AtlasFilters } from '@/components/atlas/AtlasFilters';
 import { ActiveAnswers } from '@/components/atlas/ActiveAnswers';
-import { CategoryTabs } from '@/components/atlas/CategoryTabs';
 import { EmptyResults } from '@/components/atlas/EmptyResults';
 import { AppText } from '@/components/AppText';
-import { PressableScale } from '@/components/PressableScale';
 import { SpeciesGrid } from '@/components/atlas/SpeciesGrid';
 import { AddFindFab, AtlasMasthead } from '@/components/atlas/AtlasMasthead';
-import { IdentifyIcon, SlidersIcon } from '@/components/icons/UiIcons';
-import { Chip } from '@/components/Chip';
 import { IdentificationKeySheet } from '@/components/key/IdentificationKeySheet';
 import { Screen } from '@/components/Screen';
 import { SearchField } from '@/components/SearchField';
@@ -23,13 +20,10 @@ import {
 } from '@/features/atlas/filterSpecies';
 import { getCurrentMonth } from '@/features/atlas/season';
 import { useCollection } from '@/features/collection/CollectionProvider';
-import { layout, spacing, useTheme } from '@/theme';
 
 export default function AtlasScreen() {
-  const { colors } = useTheme();
   const [filter, setFilter] = useState<SpeciesFilter>(EMPTY_FILTER);
   const [discoveredOnly, setDiscoveredOnly] = useState(false);
-  const [filtersOpen, setFiltersOpen] = useState(false);
   const activeFilters =
     Number(discoveredOnly) + Number(filter.inSeasonOnly) + Number(filter.edibility !== null);
   const answered = countFeatureFilters(filter);
@@ -61,54 +55,16 @@ export default function AtlasScreen() {
           onChangeText={(query) => setFilter({ ...filter, query })}
           placeholder="Szukaj gatunku"
         />
-        <View style={[styles.tools, { borderColor: colors.border }]}>
-          <PressableScale
-            accessibilityRole="button"
-            accessibilityState={{ expanded: filtersOpen }}
-            onPress={() => setFiltersOpen(!filtersOpen)}
-            style={styles.tool}
-          >
-            <SlidersIcon
-              size={18}
-              color={activeFilters || filtersOpen ? colors.accent : colors.textMuted}
-            />
-            <AppText variant="button" color={activeFilters || filtersOpen ? 'accent' : 'text'}>
-              {filtersOpen ? 'Zwiń filtry' : 'Filtry'}
-              {activeFilters ? ` · ${activeFilters}` : ''}
-            </AppText>
-          </PressableScale>
-          <PressableScale
-            accessibilityRole="button"
-            onPress={() => setKeyOpen(true)}
-            style={styles.tool}
-          >
-            <IdentifyIcon size={19} color={colors.primary} />
-            <AppText variant="button">
-              Klucz do oznaczania{answered ? ` · ${answered}` : ''}
-            </AppText>
-          </PressableScale>
-        </View>
-        {filtersOpen ? (
-          <View style={styles.filters}>
-            <CategoryTabs
-              species={matchingAnyCategory}
-              selected={filter.edibility}
-              onChange={(edibility) => setFilter({ ...filter, edibility })}
-            />
-            <View style={styles.quickFilters}>
-              <Chip
-                label="Moje odkrycia"
-                selected={discoveredOnly}
-                onPress={() => setDiscoveredOnly(!discoveredOnly)}
-              />
-              <Chip
-                label="Rośnie teraz"
-                selected={filter.inSeasonOnly}
-                onPress={() => setFilter({ ...filter, inSeasonOnly: !filter.inSeasonOnly })}
-              />
-            </View>
-          </View>
-        ) : null}
+        <AtlasFilters
+          filter={filter}
+          onFilterChange={setFilter}
+          discoveredOnly={discoveredOnly}
+          onDiscoveredOnlyChange={setDiscoveredOnly}
+          speciesForCategories={matchingAnyCategory}
+          activeFilters={activeFilters}
+          answeredKeyQuestions={answered}
+          onOpenKey={() => setKeyOpen(true)}
+        />
         <ActiveAnswers filter={filter} onChange={setFilter} />
         {activeFilters || answered || filter.query.trim() ? (
           <AppText variant="caption" color="textMuted">
@@ -145,21 +101,3 @@ export default function AtlasScreen() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  tools: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    columnGap: spacing.md,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  tool: {
-    minHeight: layout.touchTarget,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-  },
-  filters: { gap: spacing.sm },
-  quickFilters: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
-});

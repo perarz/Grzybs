@@ -1,13 +1,12 @@
 import { useIsFocused } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
-import { BottomSheet } from '@/components/BottomSheet';
+import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { Button } from '@/components/Button';
 import { FieldIcon } from '@/components/icons/FieldIcon';
 import { PressableScale } from '@/components/PressableScale';
-import { CarReturnPanel } from '@/components/map/CarReturnPanel';
 import { DaylightStrip } from '@/components/map/DaylightStrip';
 import { FieldMap } from '@/components/map/FieldMap';
 import { ParkingDialog } from '@/components/map/ParkingDialog';
@@ -15,13 +14,12 @@ import { MapActions } from '@/components/map/MapActions';
 import { WeatherSection } from '@/components/weather/WeatherSection';
 import { getWeatherLocation } from '@/features/weather/location';
 import { SpotEditorSheet } from '@/components/map/SpotEditorSheet';
-import { SpotList } from '@/components/map/SpotList';
+import { SavedPlacesSheet } from '@/components/map/SavedPlacesSheet';
 import { isFreshFix } from '@/features/spots/useSpotEditor';
 import { useMapNotebook } from '@/features/spots/useMapNotebook';
 import type { Coordinate } from '@/features/spots/storage';
 import { layout, radius, spacing, useTheme } from '@/theme';
 
-import { CloseIcon } from '@/components/icons/UiIcons';
 import { fieldMetrics, fieldPanel as ink } from '@/theme/field';
 
 export default function MapScreen() {
@@ -130,47 +128,42 @@ function MapNotebookScreen() {
         />
       )}
       {places && (
-        <BottomSheet
+        <SavedPlacesSheet
+          car={field.car}
+          spots={field.spots}
+          position={freshPosition}
+          heading={location.heading}
+          busy={n.busy}
           onClose={() => setPlaces(false)}
-          header={(close) => (
-            <View style={styles.head}>
-              <AppText variant="heading">Zapisane miejsca</AppText>
-              <PressableScale
-                accessibilityRole="button"
-                accessibilityLabel="Zamknij zapisane miejsca"
-                onPress={close}
-                style={styles.close}
-              >
-                <CloseIcon size={22} color={colors.textMuted} />
-              </PressableScale>
-            </View>
-          )}
-        >
-          {() => (
-            <ScrollView contentContainerStyle={styles.details}>
-              {field.car && (
-                <CarReturnPanel
-                  car={field.car}
-                  position={freshPosition}
-                  heading={freshPosition ? location.heading : null}
-                  busy={n.busy}
-                  onShow={() => field.car && show(field.car, fieldMetrics.carDelta)}
-                  onClear={n.clearCar}
-                />
-              )}
-              <SpotList
-                spots={field.spots}
-                busy={n.busy}
-                onShow={show}
-                onEdit={(spot) => {
-                  setPlaces(false);
-                  n.setDraft({ point: spot, spot });
-                }}
-                onDelete={n.remove}
-              />
-            </ScrollView>
-          )}
-        </BottomSheet>
+          onShow={show}
+          onShowCar={() => field.car && show(field.car, fieldMetrics.carDelta)}
+          onAdd={() => {
+            setPlaces(false);
+            if (isFreshFix(gps)) n.addHere();
+            else setPicking(true);
+          }}
+          onEdit={(spot) => {
+            setPlaces(false);
+            n.setDraft({ point: spot, spot });
+          }}
+          onDelete={n.remove}
+          onClearCar={n.clearCar}
+        />
+      )}
+      {n.removal && (
+        <ConfirmDialog
+          title={n.removal === 'car' ? 'Usunąć zapis auta?' : 'Usunąć miejscówkę?'}
+          message={
+            n.removal === 'car'
+              ? 'Pozycja parkowania zniknie z mapy.'
+              : `„${n.removal.name}” zniknie z mapy.`
+          }
+          cancelLabel="Zostaw"
+          confirmLabel="Usuń"
+          icon={n.removal === 'car' ? 'car' : 'pin'}
+          onCancel={n.cancelRemoval}
+          onConfirm={n.confirmRemoval}
+        />
       )}
       {n.draft && (
         <SpotEditorSheet
@@ -206,12 +199,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  close: {
-    width: layout.touchTarget,
-    height: layout.touchTarget,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  details: { gap: spacing.lg, padding: spacing.lg },
-  head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
 });
