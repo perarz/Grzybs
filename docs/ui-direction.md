@@ -4,8 +4,9 @@
 
 Zachowujemy ciemną zieleń i bursztyn. Dwie zakładki: Start i Mapa. Atlas, Nauka,
 kolekcja, szczegóły i ustawienia są ekranami wewnątrz Startu, z widocznym dolnym
-paskiem. Ponowne naciśnięcie aktywnego Startu wraca do jego początku. Zmiana
-zakładki zachowuje stos ekranów. Dane użytkownika pozostają w istniejącej bazie.
+paskiem. Ponowne naciśnięcie aktywnego Startu wraca do jego początku. Wyjście ze
+Startu na Mapę zwija stos Startu (decyzja autora 2026-11-22), więc powrót zawsze
+pokazuje Start. Dane użytkownika pozostają w istniejącej bazie.
 Autor nie chce podłączać Sleek: stosujemy lokalne wskazówki projektowania i
 wdrażania skilla bez wywoływania jego API.
 

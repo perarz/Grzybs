@@ -18,6 +18,9 @@ export default function TabsLayout() {
         name="(home)"
         options={{
           title: 'Start',
+          // Leaving Start (e.g. from Nauka to Mapa) closes its inner screens,
+          // so coming back always shows the Start page itself.
+          popToTopOnBlur: true,
           tabBarIcon: ({ color, size }) => <FieldIcon name="home" color={color} size={size} />,
         }}
       />

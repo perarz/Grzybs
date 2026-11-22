@@ -1,17 +1,15 @@
 import { useState } from 'react';
-import { Modal, Pressable, StyleSheet, View } from 'react-native';
-import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
+import { StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
+import { DialogCard } from '@/components/DialogCard';
 import { PressableScale } from '@/components/PressableScale';
 import { FieldIcon } from '@/components/icons/FieldIcon';
 import { MONTH_NAMES } from '@/features/atlas/labels';
 import type { Month } from '@/features/atlas/types';
 import { calendarDay, type LearningJourney } from '@/features/learn/journey';
 import { localDate, monthOf } from '@/features/learn/streakCalendar';
-import { durations, layout, radius, spacing, useTheme } from '@/theme';
+import { layout, spacing, useTheme } from '@/theme';
 import { MonthGrid } from './MonthGrid';
-
-const DIALOG_MAX_WIDTH = 360;
 
 type Props = { journey: LearningJourney; onClose: () => void };
 
@@ -31,54 +29,37 @@ export function StreakCalendar({ journey, onClose }: Props) {
   };
   const active = new Set(journey.activeDays);
   return (
-    <Modal transparent visible animationType="none" statusBarTranslucent onRequestClose={onClose}>
-      <Animated.View
-        entering={FadeIn.duration(durations.fast)}
-        style={[styles.backdrop, { backgroundColor: colors.backdrop }]}
-      >
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Zamknij kalendarz"
-          onPress={onClose}
-          style={StyleSheet.absoluteFill}
+    <DialogCard closeLabel="Zamknij kalendarz" onClose={onClose}>
+      <View style={styles.row}>
+        <FieldIcon name="flame" size={spacing.xl} color={colors.glow} />
+        <AppText variant="title" style={styles.grow}>
+          {journey.streak} {journey.streak === 1 ? 'dzień' : 'dni'} passy
+        </AppText>
+      </View>
+      <AppText variant="caption" color="textMuted">
+        {journey.firstDay === null
+          ? 'Ukończ lekcję, aby zacząć passę.'
+          : `Pierwsza nauka: ${localDate(journey.firstDay).toLocaleDateString('pl-PL')} · najdłuższa passa: ${journey.bestStreak}`}
+      </AppText>
+      <View style={styles.row}>
+        <MonthArrow
+          icon="back"
+          label="Poprzedni miesiąc"
+          enabled={canGoBack}
+          onPress={() => move(-1)}
         />
-        <Animated.View
-          entering={ZoomIn.duration(durations.fast)}
-          accessibilityViewIsModal
-          style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
-        >
-          <View style={styles.row}>
-            <FieldIcon name="flame" size={spacing.xl} color={colors.glow} />
-            <AppText variant="title" style={styles.grow}>
-              {journey.streak} {journey.streak === 1 ? 'dzień' : 'dni'} passy
-            </AppText>
-          </View>
-          <AppText variant="caption" color="textMuted">
-            {journey.firstDay === null
-              ? 'Ukończ lekcję, aby zacząć passę.'
-              : `Pierwsza nauka: ${localDate(journey.firstDay).toLocaleDateString('pl-PL')} · najdłuższa passa: ${journey.bestStreak}`}
-          </AppText>
-          <View style={styles.row}>
-            <MonthArrow
-              icon="back"
-              label="Poprzedni miesiąc"
-              enabled={canGoBack}
-              onPress={() => move(-1)}
-            />
-            <AppText variant="bodyStrong" style={[styles.grow, styles.center]}>
-              {MONTH_NAMES[(shown.month + 1) as Month]} {shown.year}
-            </AppText>
-            <MonthArrow
-              icon="chevronRight"
-              label="Następny miesiąc"
-              enabled={canGoForward}
-              onPress={() => move(1)}
-            />
-          </View>
-          <MonthGrid year={shown.year} month={shown.month} active={active} today={today} />
-        </Animated.View>
-      </Animated.View>
-    </Modal>
+        <AppText variant="bodyStrong" style={[styles.grow, styles.center]}>
+          {MONTH_NAMES[(shown.month + 1) as Month]} {shown.year}
+        </AppText>
+        <MonthArrow
+          icon="chevronRight"
+          label="Następny miesiąc"
+          enabled={canGoForward}
+          onPress={() => move(1)}
+        />
+      </View>
+      <MonthGrid year={shown.year} month={shown.month} active={active} today={today} />
+    </DialogCard>
   );
 }
 
@@ -106,16 +87,6 @@ function MonthArrow({ icon, label, enabled, onPress }: ArrowProps) {
 }
 
 const styles = StyleSheet.create({
-  backdrop: { flex: 1, justifyContent: 'center', padding: spacing.xl },
-  card: {
-    width: '100%',
-    maxWidth: DIALOG_MAX_WIDTH,
-    alignSelf: 'center',
-    gap: spacing.sm,
-    padding: spacing.lg,
-    borderRadius: radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
-  },
   row: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   grow: { flex: 1 },
   center: { textAlign: 'center' },

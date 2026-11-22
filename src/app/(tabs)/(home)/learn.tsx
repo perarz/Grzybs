@@ -6,10 +6,11 @@ import { Screen } from '@/components/Screen';
 import { FieldIcon } from '@/components/icons/FieldIcon';
 import { CoursePath } from '@/components/learn/CoursePath';
 import { StreakCalendar } from '@/components/learn/StreakCalendar';
+import { XpGuide } from '@/components/learn/XpGuide';
 import { PressableScale } from '@/components/PressableScale';
 import { useCourseProgress } from '@/features/learn/useCourseProgress';
 import { useLearningJourney } from '@/features/learn/useLearningJourney';
-import { LESSONS_PER_STAGE } from '@/features/learn/course';
+import { rankIndex } from '@/features/learn/ranks';
 import { LEVELS } from '@/features/learn/journey';
 import { layout, spacing, useTheme } from '@/theme';
 
@@ -17,9 +18,9 @@ export default function LearnScreen() {
   const course = useCourseProgress();
   const { journey, error: streakError, retry } = useLearningJourney(false);
   const { colors } = useTheme();
-  const [calendarOpen, setCalendarOpen] = useState(false);
-  // Every finished stage (four lessons and its test) earns the next rank.
-  const rank = LEVELS[Math.min(5, Math.floor((course.completed?.length ?? 0) / LESSONS_PER_STAGE))];
+  const [open, setOpen] = useState<'calendar' | 'xp' | null>(null);
+  const completed = course.completed?.length ?? 0;
+  const rank = LEVELS[rankIndex(completed)];
   return (
     <Screen title="Nauka" eyebrow="Krok po kroku" showBack>
       <View style={styles.summary}>
@@ -27,21 +28,33 @@ export default function LearnScreen() {
           accessibilityRole="button"
           accessibilityLabel="Pokaż kalendarz passy"
           disabled={!journey}
-          onPress={() => setCalendarOpen(true)}
+          onPress={() => setOpen('calendar')}
           style={styles.stat}
         >
           <FieldIcon name="flame" size={spacing.xl} color={colors.glow} />
           <AppText variant="heading">{streakError ? '—' : (journey?.streak ?? '…')}</AppText>
           <AppText color="textMuted">{journey?.streak === 1 ? 'dzień passy' : 'dni passy'}</AppText>
         </PressableScale>
-        <View style={styles.stat}>
+        <PressableScale
+          accessibilityRole="button"
+          accessibilityLabel={`${course.xp} XP – za co i po co`}
+          disabled={!course.completed}
+          onPress={() => setOpen('xp')}
+          style={styles.stat}
+        >
           <FieldIcon name="mushrooms" size={spacing.lg} color={colors.glow} />
           <AppText variant="bodyStrong">{course.completed ? `${course.xp} XP` : '…'}</AppText>
-        </View>
-        <View style={styles.stat}>
+        </PressableScale>
+        <PressableScale
+          accessibilityRole="button"
+          accessibilityLabel={`Ranga: ${rank.name}. Pokaż wszystkie rangi`}
+          disabled={!course.completed}
+          onPress={() => setOpen('xp')}
+          style={styles.stat}
+        >
           <FieldIcon name="trophy" size={spacing.lg} color={colors.glow} />
           <AppText variant="bodyStrong">{course.completed ? rank.name : '…'}</AppText>
-        </View>
+        </PressableScale>
       </View>
       {streakError && <Button label="Odśwież passę" variant="secondary" onPress={retry} />}
       {course.error ? (
@@ -54,8 +67,11 @@ export default function LearnScreen() {
       ) : (
         <AppText color="textMuted">Wczytuję ścieżkę…</AppText>
       )}
-      {calendarOpen && journey && (
-        <StreakCalendar journey={journey} onClose={() => setCalendarOpen(false)} />
+      {open === 'calendar' && journey && (
+        <StreakCalendar journey={journey} onClose={() => setOpen(null)} />
+      )}
+      {open === 'xp' && (
+        <XpGuide xp={course.xp} completed={completed} onClose={() => setOpen(null)} />
       )}
     </Screen>
   );

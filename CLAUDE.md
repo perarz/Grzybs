@@ -25,7 +25,7 @@ Treść zadania jest najważniejszym punktem odniesienia przy każdej decyzji.
 - Instalacja wskazana przez autora: `npx skills add https://github.com/designed-by-ai/skills --skill design-mobile-apps`.
 - Stan na 2026-11-15: potwierdzono lokalną instalację i przeczytano `/Users/kacper/.agents/skills/design-mobile-apps/SKILL.md`. W tym samym katalogu są `designing.md`, `implementing.md`, `endpoints.md` i `styling/`. Czytaj te pliki zgodnie z zadaniem. Skill wymaga połączenia z usługą Sleek; w sesji sprawdzającej `SLEEK_API_KEY` nie był skonfigurowany. Sprawdź aktualny stan autoryzacji przed użyciem API; nie utożsamiaj instalacji skilla z połączeniem konta.
 - Autor zdecydował 2026-11-15, że nie podłącza konta Sleek. Stosuj lokalne wskazówki projektowania i wdrażania tego skilla bez API Sleek; nie ponawiaj autoryzacji. Nie zapisuj kluczy API w repozytorium.
-- Kierunek UI i przegląd względem skilla: `docs/ui-direction.md`. Dwie zakładki: Start i Mapa. Start zawiera stos Atlasu, Nauki, kolekcji, szczegółów i ustawień, z widocznym dolnym paskiem.
+- Kierunek UI i przegląd względem skilla: `docs/ui-direction.md`. Dwie zakładki: Start i Mapa. Start zawiera stos Atlasu, Nauki, kolekcji, szczegółów i ustawień, z widocznym dolnym paskiem. Przejście na Mapę zwija stos Startu (`popToTopOnBlur`), więc powrót na Start pokazuje stronę Startu, a nie np. Naukę.
 
 ## Zasady kodu
 
@@ -121,6 +121,7 @@ npm test                # testy jednostkowe czystych funkcji (gdy dojdą)
   - Ikona: własna (bursztynowy grzyb z liśćmi aqua na leśnej zieleni) z `scripts/make-icon.py`, PNG przez `scripts/render-svg.js` (AppKit przez `osascript -l JavaScript`; Quick Look źle skaluje SVG). iOS używa `icon.png` – szablon `assets/expo.icon` usunięty.
   - Grzyb dnia: ukryty (pusty kafelek z „?” – bez zdjęcia, bo nawet rozmyte zdradza kolor; „Jaki grzyb dziś?”), jedno dotknięcie odsłania gatunek z obrotem karty i „Warto wiedzieć” (`dailyFact.ts`: pierwsze zdanie z zatrucia/uwagi/opisu – tylko tekst atlasu). Autor nie chce zgadywania ani wskazówek – po prostu „kliknij, żeby się dowiedzieć”. Stan do północy w `app_settings` (`daily_species_opened_on`).
   - Ustawienia: wibracje (`setHapticsEnabled`, wczytywane przy starcie w `_layout`), wspólny `SettingsSwitch`, sekcja „Twoje dane” (`SettingsData`: powitanie ponownie, kurs od nowa, usuń wszystkie znaleziska), `SettingsRow`.
+  - Nauka: dotknięcie XP albo rangi otwiera `XpGuide` (za co XP – liczby z `lessonXP` – i 6 rang, jedna za etap, z ikonami); `rankIndex` w `ranks.ts`. Wspólna karta okienka: `DialogCard` (kalendarz passy, XP).
   - Ustawienia: bez podtytułu „Po Twojemu”; usunięty poziom doświadczenia (niczego nie zmieniał; zostaje tylko w onboardingu), krótki napis o powiadomieniach, przełączniki w kolorach aplikacji.
   - Refaktor (subagenci): podzielone pliki logiki Nauki i alertów pogodowych oraz najdłuższe komponenty UI (pogoda, onboarding, `Screen`, atlas). Fakty w `src/data` sprawdzone przez agenta ze źródłami – bez błędów; sezon krowiaka potwierdzony.
 - Pozycja jednorazowa: `getCurrentPositionAsync` z `Accuracy.Balanced` wywołuje systemowe okno Google „Location Accuracy” i bez zgody zwraca angielski błąd — używaj `Accuracy.High` i `mayShowUserSettingsDialog: false`.
@@ -136,7 +137,7 @@ Otwarte sprawy:
 - Haptyka nie jest potwierdzona na fizycznym telefonie, a emulator jej nie odda.
 - README przepisane 2026-11-21 ze zrzutami (`docs/screenshots`); wpis o fizycznym urządzeniu ma `TODO` – potwierdza autor.
 - 2026-11-19 autor podał, że ma 3 dni do oddania. Priorytet: stabilność, dopracowanie istniejących funkcji i natywna weryfikacja.
-- `npm test`: 127 testów (2026-11-22; nowe w `find-details.test.cjs`, `streak-calendar.test.cjs` i `daily-fact.test.cjs`) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
+- `npm test`: 129 testów (2026-11-22; nowe w `find-details.test.cjs`, `streak-calendar.test.cjs`, `daily-fact.test.cjs` i `ranks.test.cjs`) – kolekcja, pytania, ścieżka nauki, migracje/statystyki, miejsca, geometria, światło dzienne, GPS, pogoda, trasy i start w Expo Go. Testy statystyk używają prawdziwego SQLite w pamięci przez `node:sqlite` (Node 22.13+; na tej maszynie Node 26). Testy kolekcji nadal używają atrap modułów natywnych.
 
 ## Uruchamianie (Mac autora)
 
