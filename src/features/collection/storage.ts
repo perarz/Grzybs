@@ -3,11 +3,43 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 
 import type { SpeciesId } from '@/features/atlas/types';
 
-export type Find = { id: number; species_id: SpeciesId; photo_uri: string; found_at: number };
+/** Optional details the user can add to a find, now or later. */
+export type FindDetails = {
+  weight_grams: number | null;
+  latitude: number | null;
+  longitude: number | null;
+  note: string | null;
+};
+
+export type Find = FindDetails & {
+  id: number;
+  species_id: SpeciesId;
+  photo_uri: string;
+  found_at: number;
+};
+
+export const NO_DETAILS: FindDetails = {
+  weight_grams: null,
+  latitude: null,
+  longitude: null,
+  note: null,
+};
 
 export function readFinds(db: SQLiteDatabase) {
   return db.getAllAsync<Find>(
-    'SELECT id, species_id, photo_uri, found_at FROM finds WHERE photo_uri IS NOT NULL ORDER BY found_at DESC, id DESC',
+    `SELECT id, species_id, photo_uri, found_at, weight_grams, latitude, longitude, note
+     FROM finds WHERE photo_uri IS NOT NULL ORDER BY found_at DESC, id DESC`,
+  );
+}
+
+export async function updateFindDetails(db: SQLiteDatabase, id: number, details: FindDetails) {
+  await db.runAsync(
+    'UPDATE finds SET weight_grams = ?, latitude = ?, longitude = ?, note = ? WHERE id = ?',
+    details.weight_grams,
+    details.latitude,
+    details.longitude,
+    details.note,
+    id,
   );
 }
 
@@ -15,6 +47,7 @@ export async function saveFind(
   db: SQLiteDatabase,
   speciesId: SpeciesId,
   uri: string,
+  details: FindDetails = NO_DETAILS,
 ): Promise<Find> {
   const directory = new Directory(Paths.document, 'finds');
   directory.create({ idempotent: true, intermediates: true });
@@ -27,13 +60,20 @@ export async function saveFind(
   try {
     await source.copy(photo);
     const result = await db.runAsync(
-      'INSERT INTO finds (species_id, photo_uri, found_at, created_at) VALUES (?, ?, ?, ?)',
+      `INSERT INTO finds
+         (species_id, photo_uri, found_at, created_at, weight_grams, latitude, longitude, note)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       speciesId,
       photo.uri,
       now,
       now,
+      details.weight_grams,
+      details.latitude,
+      details.longitude,
+      details.note,
     );
     return {
+      ...details,
       id: result.lastInsertRowId,
       species_id: speciesId,
       photo_uri: photo.uri,

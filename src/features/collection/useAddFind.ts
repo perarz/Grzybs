@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { Species } from '@/features/atlas/types';
 import { useCollection } from './CollectionContext';
 import { pickPhoto } from './pickPhoto';
+import type { FindDetails } from './storage';
 
 export function useAddFind(
   initialSpecies?: Species,
@@ -55,14 +56,14 @@ export function useAddFind(
       if (mounted.current) setBusy(false);
     }
   }
-  async function save() {
+  async function save(details: FindDetails) {
     if (!photo || !species || lock.current || saved || photoUnavailable) return;
     lock.current = true;
     setBusy(true);
     setError(null);
     try {
       const discovered = !collection.finds.some((find) => find.species_id === species.id);
-      await collection.add(species.id, photo);
+      await collection.add(species.id, photo, details);
       if (!mounted.current) return;
       setDiscovery(discovered);
       setSaved(true);

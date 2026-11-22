@@ -98,4 +98,10 @@ export const MIGRATIONS: string[] = [
     value TEXT NOT NULL
   );
   `,
+  `
+  -- Optional details of a find: weight in grams and where it was picked (the note column exists).
+  ALTER TABLE finds ADD COLUMN weight_grams INTEGER CHECK (weight_grams > 0);
+  ALTER TABLE finds ADD COLUMN latitude REAL;
+  ALTER TABLE finds ADD COLUMN longitude REAL;
+  `,
 ];

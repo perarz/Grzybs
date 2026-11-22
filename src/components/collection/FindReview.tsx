@@ -9,6 +9,14 @@ import { Chip } from '@/components/Chip';
 import { findLookalikes } from '@/features/atlas/findLookalikes';
 import type { Species } from '@/features/atlas/types';
 import { SPECIES_PHOTOS } from '@/data/speciesPhotos';
+import { FindDetailsForm } from './FindDetailsForm';
+import {
+  detailsFrom,
+  draftFrom,
+  weightError,
+  type FindDraft,
+} from '@/features/collection/findDraft';
+import { NO_DETAILS, type FindDetails } from '@/features/collection/storage';
 import { isDangerous } from '@/features/safety/danger';
 import { layout, radius, spacing } from '@/theme';
 
@@ -16,12 +24,13 @@ type Props = {
   canSave?: boolean;
   species: Species;
   busy: boolean;
-  onSave: () => void;
+  onSave: (details: FindDetails) => void;
   onBack: () => void;
 };
 
 export function FindReview({ species, busy, onSave, onBack, canSave = true }: Props) {
   const [confirmed, setConfirmed] = useState(false);
+  const [draft, setDraft] = useState<FindDraft>(() => draftFrom(NO_DETAILS));
   const lookalikes = findLookalikes(species.id).filter(
     (item) => isDangerous(item.species.edibility) || isDangerous(species.edibility),
   );
@@ -75,10 +84,11 @@ export function FindReview({ species, busy, onSave, onBack, canSave = true }: Pr
           }}
         />
       ) : null}
+      <FindDetailsForm draft={draft} onChange={setDraft} disabled={busy} />
       <Button
         label={busy ? 'Zapisuję…' : 'Zapisz znalezisko'}
-        disabled={!ready || busy || !canSave}
-        onPress={onSave}
+        disabled={!ready || busy || !canSave || Boolean(weightError(draft))}
+        onPress={() => onSave(detailsFrom(draft))}
       />
       <Button label="Wróć do wyboru gatunku" disabled={busy} variant="secondary" onPress={onBack} />
     </View>

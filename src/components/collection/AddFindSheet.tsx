@@ -150,7 +150,7 @@ export function AddFindSheet({
                 canSave={!photoUnavailable}
                 species={species}
                 busy={busy}
-                onSave={() => void save()}
+                onSave={(details) => void save(details)}
                 onBack={() => {
                   setSpecies(undefined);
                   setError(null);
