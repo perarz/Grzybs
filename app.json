@@ -7,9 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "grzybs",
     "userInterfaceStyle": "dark",
-    "ios": {
-      "icon": "./assets/expo.icon"
-    },
     "android": {
       "package": "com.grzybs.app",
       "adaptiveIcon": {
@@ -27,7 +24,7 @@
         {
           "backgroundColor": "#1F3B2D",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 160
         }
       ],
       "expo-sqlite",
