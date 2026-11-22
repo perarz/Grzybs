@@ -3,7 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
 import { FieldIcon } from '@/components/icons/FieldIcon';
-import { COURSE_STAGES, COURSE_LENGTH, LESSONS_PER_STAGE } from '@/features/learn/course';
+import { COURSE_STAGES } from '@/data/courseStages';
+import { COURSE_LENGTH, LESSONS_PER_STAGE } from '@/features/learn/course';
 import { layout, radius, spacing, useTheme } from '@/theme';
 import { CourseTrail } from './CourseTrail';
 
@@ -80,7 +81,7 @@ export function CoursePath({ completed }: { completed: number[] }) {
                       key={step}
                       style={[
                         styles.segment,
-                        { backgroundColor: step < count ? colors.primary : colors.border },
+                        { backgroundColor: step < count ? colors.season : colors.border },
                       ]}
                     />
                   ))}

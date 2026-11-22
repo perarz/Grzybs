@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { AppState } from 'react-native';
 import { router } from 'expo-router';
 import * as Notifications from 'expo-notifications';
-import { checkMushroomAlert } from './mushroomAlerts';
+import { checkMushroomAlert } from './alertCheck';
 
 export function MushroomAlertsLifecycle() {
   useEffect(() => {

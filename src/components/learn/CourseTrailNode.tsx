@@ -5,13 +5,14 @@ import { PressableScale } from '@/components/PressableScale';
 import { FieldIcon } from '@/components/icons/FieldIcon';
 import type { CourseLesson } from '@/features/learn/course';
 import { layout, radius, spacing, useTheme } from '@/theme';
+import { ActivePulse } from './ActivePulse';
 
 type Props = { step: CourseLesson; done: boolean; active: boolean; width: number };
 
 export function CourseTrailNode({ step, done, active, width }: Props) {
   const { colors } = useTheme();
   const locked = !done && !active;
-  const nodeColor = active ? colors.glow : done ? colors.primary : colors.surfaceMuted;
+  const nodeColor = active ? colors.glow : done ? colors.season : colors.surfaceMuted;
   return (
     <View style={[styles.container, { width }]}>
       <PressableScale
@@ -22,6 +23,7 @@ export function CourseTrailNode({ step, done, active, width }: Props) {
         onPress={() => router.push({ pathname: '/lesson/[id]', params: { id: String(step.id) } })}
         style={[styles.halo, { borderColor: active ? colors.glow : 'transparent' }]}
       >
+        {active && <ActivePulse />}
         <View style={[styles.base, { backgroundColor: colors.treeNear }]}>
           <View
             style={[
@@ -44,7 +46,7 @@ export function CourseTrailNode({ step, done, active, width }: Props) {
             style={[
               styles.badge,
               {
-                backgroundColor: done ? colors.primary : colors.background,
+                backgroundColor: done ? colors.glow : colors.background,
                 borderColor: colors.background,
               },
             ]}
@@ -52,7 +54,7 @@ export function CourseTrailNode({ step, done, active, width }: Props) {
             <FieldIcon
               name={done ? 'check' : 'lock'}
               size={spacing.lg}
-              color={done ? colors.onPrimary : colors.textMuted}
+              color={done ? colors.onGlow : colors.textMuted}
             />
           </View>
         ) : null}

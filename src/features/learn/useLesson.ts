@@ -6,7 +6,7 @@ import { useLessonSounds } from '@/features/feedback/useLessonSounds';
 
 import type { CourseLesson } from './course';
 import { completeCourseStep } from './courseStorage';
-import { lessonExercises } from './exercises';
+import { lessonExercises } from './lessonExercises';
 import {
   currentExercise,
   isComboMilestone,

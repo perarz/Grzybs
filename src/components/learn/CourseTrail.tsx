@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { courseLesson, LESSONS_PER_STAGE } from '@/features/learn/course';
-import { layout, spacing, useTheme } from '@/theme';
+import { durations, layout, spacing } from '@/theme';
 import { CourseTrailNode } from './CourseTrailNode';
 
 const bends = [0, 0.8, -0.2, -0.9, 0];
 const nodeFrame = layout.courseNode + spacing.lg;
 
 export function CourseTrail({ stage, next }: { stage: number; next: number }) {
-  const { colors } = useTheme();
   const { fontScale } = useWindowDimensions();
   const [width, setWidth] = useState(0);
   const [nodeHeights, setNodeHeights] = useState<Record<number, number>>({});
@@ -24,36 +23,16 @@ export function CourseTrail({ stage, next }: { stage: number; next: number }) {
     x: width / 2 + bend * spread,
     y: rowHeights.slice(0, index).reduce((sum, row) => sum + row, 0) + nodeFrame / 2,
   }));
-  const segments = points.slice(1).map((point, index) => {
-    const previous = points[index];
-    const middleY = (previous.y + point.y) / 2;
-    return `M ${previous.x} ${previous.y} C ${previous.x} ${middleY}, ${point.x} ${middleY}, ${point.x} ${point.y}`;
-  });
   return (
     <View style={styles.trail} onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
       {width > 0 && (
         <View style={{ height }}>
-          <Svg width={width} height={height} style={StyleSheet.absoluteFill} accessible={false}>
-            {segments.map((path, index) => {
-              const reached = stage * LESSONS_PER_STAGE + index < next;
-              return (
-                <Path
-                  key={index}
-                  d={path}
-                  fill="none"
-                  stroke={reached ? colors.primary : colors.border}
-                  strokeWidth={spacing.sm}
-                  strokeLinecap="round"
-                  strokeDasharray={reached ? undefined : `${spacing.xs} ${spacing.md}`}
-                />
-              );
-            })}
-          </Svg>
           {points.map((point, position) => {
             const step = courseLesson(stage * LESSONS_PER_STAGE + position)!;
             return (
-              <View
+              <Animated.View
                 key={step.id}
+                entering={FadeInDown.delay(position * durations.fast).duration(durations.slow)}
                 onLayout={(event) => {
                   const measured = event.nativeEvent.layout.height;
                   setNodeHeights((previous) =>
@@ -73,7 +52,7 @@ export function CourseTrail({ stage, next }: { stage: number; next: number }) {
                   active={step.id === next}
                   width={captionWidth}
                 />
-              </View>
+              </Animated.View>
             );
           })}
         </View>

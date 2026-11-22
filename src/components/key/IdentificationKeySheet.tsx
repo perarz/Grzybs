@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   scroll: {
-    flex: 1,
+    flexShrink: 1,
   },
   body: {
     paddingHorizontal: spacing.lg,

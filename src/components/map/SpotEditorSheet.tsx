@@ -100,7 +100,7 @@ export function SpotEditorSheet({ draft, saveSpot, onClose }: Props) {
   );
 }
 const styles = StyleSheet.create({
-  root: { flex: 1 },
+  root: { flexShrink: 1 },
   header: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   title: { flex: 1 },
   close: {

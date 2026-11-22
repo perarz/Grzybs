@@ -26,8 +26,9 @@ function load(file) {
   );
   return exports;
 }
-const { courseLesson, COURSE_LENGTH, COURSE_STAGES } = load('src/features/learn/course.ts');
-const { lessonExercises } = load('src/features/learn/exercises.ts');
+const { courseLesson, COURSE_LENGTH } = load('src/features/learn/course.ts');
+const { COURSE_STAGES } = load('src/data/courseStages.ts');
+const { lessonExercises } = load('src/features/learn/lessonExercises.ts');
 const { SPECIES } = load('src/data/species.ts');
 const { FIELD_RULES } = load('src/data/fieldRules.ts');
 

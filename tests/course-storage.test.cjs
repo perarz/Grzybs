@@ -20,8 +20,13 @@ function load(file) {
     {
       exports,
       Date: TestDate,
-      // Storage reads lesson metadata from the course; relative imports load the same way.
-      require: (name) => load(nodePath.resolve(nodePath.dirname(file), `${name}.ts`)),
+      // Storage reads lesson metadata from the course; relative and @/ imports load the same way.
+      require: (name) =>
+        load(
+          name.startsWith('@/')
+            ? nodePath.resolve('src', `${name.slice(2)}.ts`)
+            : nodePath.resolve(nodePath.dirname(file), `${name}.ts`),
+        ),
     },
   );
   return exports;

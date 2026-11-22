@@ -21,7 +21,7 @@ type Props = {
 };
 
 export function FindReview({ species, busy, onSave, onBack, canSave = true }: Props) {
-  const [checked, setChecked] = useState<string[]>([]);
+  const [confirmed, setConfirmed] = useState(false);
   const lookalikes = findLookalikes(species.id).filter(
     (item) => isDangerous(item.species.edibility) || isDangerous(species.edibility),
   );
@@ -34,7 +34,8 @@ export function FindReview({ species, busy, onSave, onBack, canSave = true }: Pr
       other: pair.species[0] === species.id ? difference.second : difference.first,
     })),
   );
-  const ready = checks.every(({ id }) => checked.includes(id));
+  const risky = checks.length > 0;
+  const ready = !risky || confirmed;
   return (
     <View style={{ gap: spacing.lg }}>
       <View style={styles.species}>
@@ -54,38 +55,25 @@ export function FindReview({ species, busy, onSave, onBack, canSave = true }: Pr
           </AppText>
         </View>
       </View>
-      <AlertBanner
-        tone={lookalikes.length || isDangerous(species.edibility) ? 'danger' : 'info'}
-        title="Zapis obserwacji, nie ocena jadalności"
-      >
-        Odblokowanie gatunku nie potwierdza identyfikacji ani bezpieczeństwa spożycia. Jeśli nie
-        masz pewności, wróć do wyboru gatunku i skonsultuj okaz z grzyboznawcą.
-      </AlertBanner>
+      {risky ? (
+        <AlertBanner tone="danger" title="Uwaga na sobowtóra">
+          Porównaj okaz z cechami poniżej. Zapis nie potwierdza, że grzyb jest jadalny.
+        </AlertBanner>
+      ) : null}
       {checks.map((check) => (
-        <View key={check.id} style={{ gap: spacing.sm }}>
-          <AppText variant="label">{check.trait}</AppText>
-          <AppText>
-            {species.namePl}: {check.own}
-          </AppText>
-          <AppText color="textMuted">
-            {check.name}: {check.other}
-          </AppText>
-          <Chip
-            label="Sprawdziłem tę cechę okazu"
-            selected={checked.includes(check.id)}
-            onPress={() => {
-              if (!busy)
-                setChecked((old) =>
-                  old.includes(check.id) ? old.filter((id) => id !== check.id) : [...old, check.id],
-                );
-            }}
-          />
-        </View>
-      ))}
-      {!ready ? (
-        <AppText color="textMuted">
-          Sprawdź wszystkie powyższe cechy, aby zapisać wybrany gatunek.
+        <AppText key={check.id} variant="caption" color="textMuted">
+          <AppText variant="caption">{check.trait}: </AppText>
+          {check.own} (a {check.name.toLowerCase()}: {check.other})
         </AppText>
+      ))}
+      {risky ? (
+        <Chip
+          label="Porównałem cechy okazu"
+          selected={confirmed}
+          onPress={() => {
+            if (!busy) setConfirmed((value) => !value);
+          }}
+        />
       ) : null}
       <Button
         label={busy ? 'Zapisuję…' : 'Zapisz znalezisko'}

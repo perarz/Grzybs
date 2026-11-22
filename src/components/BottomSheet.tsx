@@ -26,8 +26,8 @@ type BottomSheetProps = {
   children: (close: () => void) => ReactNode;
 };
 
-// A fixed height, so the sheet doesn't jump when its content changes (e.g. the next question).
-const HEIGHT_SHARE = 0.86;
+// The sheet is as tall as its content, but never covers the whole screen.
+const MAX_HEIGHT_SHARE = 0.86;
 // A drag this long, or a flick this fast, closes the sheet; anything less springs back.
 const CLOSE_DISTANCE = 120;
 const CLOSE_VELOCITY = 900;
@@ -105,7 +105,7 @@ export function BottomSheet({ onClose, header, children, dismissible = true }: B
             styles.sheet,
             {
               backgroundColor: colors.background,
-              height: height * HEIGHT_SHARE,
+              maxHeight: height * MAX_HEIGHT_SHARE,
               paddingBottom: insets.bottom + spacing.md,
             },
             sheetStyle,
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.md,
   },
   body: {
-    flex: 1,
+    flexShrink: 1,
   },
   handle: {
     alignSelf: 'center',

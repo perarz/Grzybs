@@ -1,12 +1,13 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { BackHandler, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn, SlideInRight } from 'react-native-reanimated';
 
 import { ChoiceExercise } from '@/components/lesson/ChoiceExercise';
 import { LessonFooter } from '@/components/lesson/LessonFooter';
 import { LessonResult } from '@/components/lesson/LessonResult';
 import { LessonTopBar } from '@/components/lesson/LessonTopBar';
+import { QuitLessonDialog } from '@/components/lesson/QuitLessonDialog';
 import { TeachRuleCard, TeachSpeciesCard } from '@/components/lesson/TeachCards';
 import { NotFound } from '@/components/NotFound';
 import { courseLesson, type CourseLesson } from '@/features/learn/course';
@@ -33,14 +34,22 @@ function Lesson({ lesson, onRetry }: { lesson: CourseLesson; onRetry: () => void
   const { colors } = useTheme();
   const run = useLesson(lesson);
   const exercise = run.exercise;
+  const [quitting, setQuitting] = useState(false);
 
   function leave() {
     if (run.finished) return router.back();
-    Alert.alert('Przerwać lekcję?', 'Postęp tej lekcji przepadnie.', [
-      { text: 'Ucz się dalej', style: 'cancel' },
-      { text: 'Przerwij', style: 'destructive', onPress: () => router.back() },
-    ]);
+    setQuitting(true);
   }
+
+  // The Android back button asks first too, instead of dropping the lesson silently.
+  useEffect(() => {
+    if (run.finished) return;
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      setQuitting(true);
+      return true;
+    });
+    return () => subscription.remove();
+  }, [run.finished]);
 
   async function finish() {
     if (run.passed && !(await run.save())) return;
@@ -97,6 +106,16 @@ function Lesson({ lesson, onRetry }: { lesson: CourseLesson; onRetry: () => void
         onCheck={run.check}
         onNext={run.next}
       />
+      {quitting && (
+        <QuitLessonDialog
+          progress={run.progress}
+          onStay={() => setQuitting(false)}
+          onQuit={() => {
+            setQuitting(false);
+            router.back();
+          }}
+        />
+      )}
     </View>
   );
 }
