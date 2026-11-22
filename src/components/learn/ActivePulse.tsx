@@ -29,14 +29,12 @@ function useWave(progress: SharedValue<number>, delay: number) {
   }));
 }
 
-/** The lesson waiting for the learner: a blinking rim and two waves rolling out of it. */
+/** The lesson waiting for the learner: a blinking rim and a wave rolling out of it. */
 export function ActivePulse() {
   const { colors } = useTheme();
   const first = useSharedValue<number>(0);
-  const second = useSharedValue<number>(0);
   const blink = useSharedValue<number>(1);
   const firstWave = useWave(first, 0);
-  const secondWave = useWave(second, WAVE_DURATION / 2);
   useEffect(() => {
     blink.set(
       withRepeat(
@@ -53,10 +51,6 @@ export function ActivePulse() {
       <Animated.View
         pointerEvents="none"
         style={[fill, { backgroundColor: colors.glow }, firstWave]}
-      />
-      <Animated.View
-        pointerEvents="none"
-        style={[fill, { backgroundColor: colors.glow }, secondWave]}
       />
       <Animated.View
         pointerEvents="none"

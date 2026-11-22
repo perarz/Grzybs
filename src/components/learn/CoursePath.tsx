@@ -34,9 +34,10 @@ export function CoursePath({ completed, onDrawn }: Props) {
       {COURSE_STAGES.map((stage, index) => {
         const expanded = shown === index;
         const locked = index > currentStage;
-        // Stages ahead stay visible, fading into the fog the further away they are.
+        // The next stage stays visible, dimmed; the ones after it show as locked cards.
         const distance = index - currentStage;
-        const trailShown = expanded || (distance > 0 && shown === currentStage);
+        // Only the next stage is drawn ahead – drawing all five at once made the screen stutter.
+        const trailShown = expanded || (distance === 1 && shown === currentStage);
         const count = Math.min(LESSONS_PER_STAGE, Math.max(0, next - index * LESSONS_PER_STAGE));
         return (
           <View key={stage.title} style={styles.content}>

@@ -41,6 +41,14 @@ npx expo start
 
 Aplikacja działa w Expo Go bez własnego buildu. Jedyna funkcja, której Expo Go nie obsługuje, to alerty pogodowe w tle (wymagają development buildu) – aplikacja mówi o tym przy próbie włączenia.
 
+### Płynność
+
+Zwykłe `npx expo start` uruchamia tryb deweloperski, w którym JavaScript działa kilka razy wolniej, a animacje mogą przycinać. Żeby zobaczyć płynność taką jak w gotowej aplikacji, uruchom tryb produkcyjny – nadal w Expo Go:
+
+```bash
+npx expo start --no-dev --minify
+```
+
 ### Własny plik APK (opcjonalnie)
 
 Do oceny wystarczy Expo Go. Samodzielny APK buduje się w chmurze przez [EAS Build](https://docs.expo.dev/build/introduction/) (profil `preview` w `eas.json`):
