@@ -5,40 +5,20 @@ import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
 import { FieldIcon } from '@/components/icons/FieldIcon';
 import { AboutAtlasSheet } from '@/components/about/AboutAtlasSheet';
-import { ExperienceSheet } from '@/components/settings/ExperienceSheet';
 import { SettingsNotifications } from '@/components/settings/SettingsNotifications';
 import { SettingsSounds } from '@/components/settings/SettingsSounds';
-import { useOnboarding } from '@/features/onboarding/OnboardingProvider';
-import { EXPERIENCES } from '@/features/onboarding/questions';
 import { layout, radius, spacing, useTheme } from '@/theme';
 import app from '../../../../app.json';
 
 export default function SettingsScreen() {
   const { colors } = useTheme();
-  const { profile } = useOnboarding();
-  const [sheet, setSheet] = useState<'experience' | 'about' | null>(null);
-  const experience = EXPERIENCES.find((item) => item.id === profile?.experience) ?? EXPERIENCES[0];
+  const [sheet, setSheet] = useState<'about' | null>(null);
   const card = [styles.card, { backgroundColor: colors.surface, borderColor: colors.border }];
   return (
     <Screen title="Ustawienia" eyebrow="Po Twojemu" showBack>
       <AppText variant="label" color="accent">
         Nauka
       </AppText>
-      <PressableScale
-        accessibilityRole="button"
-        accessibilityLabel={`Poziom doświadczenia: ${experience.title}. Zmień`}
-        onPress={() => setSheet('experience')}
-        style={[card, styles.row]}
-      >
-        <FieldIcon name={experience.icon} size={spacing.xl} color={colors.glow} />
-        <View style={styles.label}>
-          <AppText variant="bodyStrong">{experience.title}</AppText>
-          <AppText variant="caption" color="textMuted">
-            Poziom doświadczenia
-          </AppText>
-        </View>
-        <FieldIcon name="chevron" size={spacing.lg} color={colors.textMuted} />
-      </PressableScale>
       <View style={card}>
         <SettingsSounds />
       </View>
@@ -68,7 +48,6 @@ export default function SettingsScreen() {
       <AppText variant="caption" color="textMuted" style={styles.version}>
         Grzybnik · {app.expo.version}
       </AppText>
-      {sheet === 'experience' && <ExperienceSheet onClose={() => setSheet(null)} />}
       {sheet === 'about' && <AboutAtlasSheet onClose={() => setSheet(null)} />}
     </Screen>
   );

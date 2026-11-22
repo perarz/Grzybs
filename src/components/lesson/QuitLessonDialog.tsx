@@ -3,7 +3,7 @@ import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { FieldIcon } from '@/components/icons/FieldIcon';
-import { durations, layout, radius, spacing, springs, useTheme } from '@/theme';
+import { durations, layout, radius, spacing, useTheme } from '@/theme';
 
 type Props = {
   /** Share of the lesson already done, 0–1 – shown so leaving feels like a real loss. */
@@ -20,7 +20,7 @@ export function QuitLessonDialog({ progress, onStay, onQuit }: Props) {
   return (
     <Modal transparent visible animationType="none" statusBarTranslucent onRequestClose={onStay}>
       <Animated.View
-        entering={FadeIn.duration(durations.base)}
+        entering={FadeIn.duration(durations.fast)}
         style={[styles.backdrop, { backgroundColor: colors.backdrop }]}
       >
         <Pressable
@@ -30,9 +30,7 @@ export function QuitLessonDialog({ progress, onStay, onQuit }: Props) {
           style={StyleSheet.absoluteFill}
         />
         <Animated.View
-          entering={ZoomIn.springify()
-            .damping(springs.sheet.damping)
-            .stiffness(springs.sheet.stiffness)}
+          entering={ZoomIn.duration(durations.fast)}
           accessibilityViewIsModal
           style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
         >

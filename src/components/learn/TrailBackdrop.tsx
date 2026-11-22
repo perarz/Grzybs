@@ -11,16 +11,6 @@ type Props = {
   points: Point[];
 };
 
-// Contour lines like on a hiking map, a few per screen of trail.
-const CONTOUR_GAP = layout.courseNode * 1.6;
-const CONTOUR_WAVE = layout.courseNode * 0.35;
-
-/** A gently wavy line across the trail, shifted per line so they never run parallel. */
-function contour(width: number, y: number, index: number) {
-  const wave = CONTOUR_WAVE * (index % 2 ? 1 : -0.7);
-  return `M 0 ${y} C ${width * 0.3} ${y - wave}, ${width * 0.6} ${y + wave}, ${width} ${y - wave / 2}`;
-}
-
 /** A pine drawn from three stacked triangles, standing with its foot at (x, y). */
 function pine(x: number, y: number, size: number) {
   const tier = (top: number, half: number, bottom: number) =>
@@ -44,22 +34,12 @@ function mushroom(x: number, y: number, size: number) {
 
 const SCENERY = [pine, leafy, mushroom];
 
-/** Map-like scenery behind the lesson trail: contour lines and flat trees beside it. */
+/** Flat trees beside the lesson trail – each stage has its own kind. */
 export function TrailBackdrop({ stage, width, height, points }: Props) {
   const shape = SCENERY[stage % SCENERY.length];
   const { colors } = useTheme();
   return (
     <Svg width={width} height={height} style={StyleSheet.absoluteFill} accessible={false}>
-      {Array.from({ length: Math.ceil(height / CONTOUR_GAP) }, (_, index) => (
-        <Path
-          key={`contour-${index}`}
-          d={contour(width, CONTOUR_GAP * (index + 0.5), index)}
-          fill="none"
-          stroke={colors.border}
-          strokeWidth={StyleSheet.hairlineWidth * 2}
-          strokeDasharray={index % 3 === 2 ? '6 6' : undefined}
-        />
-      ))}
       <G opacity={0.55}>
         {points.map((point, index) => {
           // Pines grow on the side the trail leaves free.

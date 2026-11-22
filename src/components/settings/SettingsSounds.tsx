@@ -48,7 +48,8 @@ export function SettingsSounds() {
           value={enabled ?? false}
           disabled={enabled === null}
           onValueChange={toggle}
-          trackColor={{ true: colors.primary, false: colors.border }}
+          trackColor={{ true: colors.season, false: colors.border }}
+          thumbColor={enabled ? colors.glow : colors.textMuted}
         />
       </View>
       <AppText variant="caption" color="textMuted">

@@ -53,20 +53,17 @@ export function MushroomAlertControl({ forecast }: { forecast: WeatherForecast |
     <View style={styles.section}>
       <View style={styles.row}>
         <AppText variant="bodyStrong" style={styles.label}>
-          Daj znać, gdy warto
+          Wysyłaj powiadomienia w korzystnych warunkach
         </AppText>
         <Switch
           accessibilityLabel="Powiadomienia o dobrych warunkach na grzyby"
           value={enabled}
           disabled={busy}
           onValueChange={(value) => void toggle(value)}
-          trackColor={{ true: colors.primary, false: colors.border }}
+          trackColor={{ true: colors.season, false: colors.border }}
+          thumbColor={enabled ? colors.glow : colors.textMuted}
         />
       </View>
-      <AppText variant="caption" color="textMuted">
-        Od 7/10 · raz dziennie · 8–17, minimum godzinę przed zachodem. Dla ostatnio wybranej
-        okolicy; aktualizuj ją na mapie co tydzień.
-      </AppText>
       {error && (
         <AppText variant="caption" color="danger" accessibilityRole="alert">
           {error}

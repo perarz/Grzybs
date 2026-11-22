@@ -8,10 +8,8 @@ type Profile = { experience: Experience; score: number | null };
 const Context = createContext<{
   profile: Profile | null;
   resetDevelopment: () => void;
-  changeExperience: (experience: Experience) => Promise<void>;
 }>({
   profile: null,
-  changeExperience: async () => {},
   resetDevelopment: () => {},
 });
 export const useOnboarding = () => useContext(Context);
@@ -62,19 +60,6 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       setBusy(false);
     }
   }
-  async function changeExperience(experience: Experience) {
-    if (lock.current) throw new Error('Poczekaj na zakończenie zapisu.');
-    lock.current = true;
-    try {
-      await db.runAsync(
-        'INSERT INTO user_profile (id, experience, score) VALUES (1, ?, NULL) ON CONFLICT(id) DO UPDATE SET experience = excluded.experience',
-        experience,
-      );
-      setProfile((previous) => ({ experience, score: previous?.score ?? null }));
-    } finally {
-      lock.current = false;
-    }
-  }
   useEffect(() => {
     if (!__DEV__) return;
     let active = true;
@@ -102,7 +87,6 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     <Context.Provider
       value={{
         profile,
-        changeExperience,
         resetDevelopment: () => {
           if (__DEV__) devReset.current();
         },
