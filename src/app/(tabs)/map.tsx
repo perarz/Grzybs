@@ -14,7 +14,10 @@ import { MapActions } from '@/components/map/MapActions';
 import { WeatherSection } from '@/components/weather/WeatherSection';
 import { getWeatherLocation } from '@/features/weather/location';
 import { SpotEditorSheet } from '@/components/map/SpotEditorSheet';
+import { FindOnMapDialog } from '@/components/map/FindOnMapDialog';
 import { SavedPlacesSheet } from '@/components/map/SavedPlacesSheet';
+import { useCollection } from '@/features/collection/CollectionProvider';
+import type { Find } from '@/features/collection/storage';
 import { isFreshFix } from '@/features/spots/useSpotEditor';
 import { useMapNotebook } from '@/features/spots/useMapNotebook';
 import type { Coordinate } from '@/features/spots/storage';
@@ -35,6 +38,8 @@ function MapNotebookScreen() {
   const [centered, setCentered] = useState(false);
   const [places, setPlaces] = useState(false);
   const [picking, setPicking] = useState(false);
+  const { finds } = useCollection();
+  const [openFind, setOpenFind] = useState<Find | null>(null);
   const gps = location.status === 'tracking' ? location.position : null;
   const weather = getWeatherLocation(n.focus, gps, field.car, field.spots);
   function show(point: Coordinate, delta: number = fieldMetrics.localDelta) {
@@ -59,6 +64,8 @@ function MapNotebookScreen() {
         onLongPress={pick}
         onPick={picking ? pick : undefined}
         onSpot={(spot) => n.setDraft({ point: spot, spot })}
+        finds={finds}
+        onFind={setOpenFind}
       />
       <View pointerEvents="box-none" style={[styles.top, { top: insets.top + spacing.sm }]}>
         <WeatherSection point={weather.point} locationLabel={weather.label} />
@@ -165,6 +172,7 @@ function MapNotebookScreen() {
           onConfirm={n.confirmRemoval}
         />
       )}
+      {openFind && <FindOnMapDialog find={openFind} onClose={() => setOpenFind(null)} />}
       {n.draft && (
         <SpotEditorSheet
           draft={n.draft}

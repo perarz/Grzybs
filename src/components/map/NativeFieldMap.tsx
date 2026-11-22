@@ -7,6 +7,7 @@ import { fieldMapStyle, fieldMetrics, fieldPanel } from '@/theme/field';
 import type { FieldMapProps } from './FieldMap.types';
 import { fieldMarkers } from './fieldMarkerImages';
 
+const FIND_Z_INDEX = 4;
 const ADD_BUTTON_ZONE = spacing.lg + layout.touchTarget + spacing.sm;
 export function NativeFieldMap({
   spots,
@@ -18,6 +19,8 @@ export function NativeFieldMap({
   onLongPress,
   onSpot,
   onCenteredChange,
+  finds = [],
+  onFind,
 }: FieldMapProps) {
   const { colors } = useTheme();
   const map = useRef<MapView>(null);
@@ -116,6 +119,19 @@ export function NativeFieldMap({
             onCalloutPress={() => onSpot(spot)}
           />
         ))}
+        {finds.map((find) =>
+          find.latitude !== null && find.longitude !== null ? (
+            <Marker
+              key={`find-${find.id}`}
+              coordinate={{ latitude: find.latitude, longitude: find.longitude }}
+              pinColor={colors.poisonous}
+              tracksViewChanges={false}
+              // Above the GPS dot: a find saved where you stand must still be tappable.
+              zIndex={FIND_Z_INDEX}
+              onPress={() => onFind?.(find)}
+            />
+          ) : null,
+        )}
         {car ? (
           <Marker
             key="car-icon"

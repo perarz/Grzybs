@@ -49,9 +49,6 @@ export function HomeDestinations() {
             <AppText variant="display" color="onForest">
               Atlas grzybów
             </AppText>
-            <AppText variant="caption" color="onForest">
-              Poznaj to, co rośnie obok.
-            </AppText>
           </View>
         </View>
       </PressableScale>

@@ -5,7 +5,6 @@ import { StyleSheet, View } from 'react-native';
 import { AlertBanner } from '@/components/AlertBanner';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
-import { Chip } from '@/components/Chip';
 import { findLookalikes } from '@/features/atlas/findLookalikes';
 import type { Species } from '@/features/atlas/types';
 import { SPECIES_PHOTOS } from '@/data/speciesPhotos';
@@ -29,7 +28,6 @@ type Props = {
 };
 
 export function FindReview({ species, busy, onSave, onBack, canSave = true }: Props) {
-  const [confirmed, setConfirmed] = useState(false);
   const [draft, setDraft] = useState<FindDraft>(() => draftFrom(NO_DETAILS));
   const lookalikes = findLookalikes(species.id).filter(
     (item) => isDangerous(item.species.edibility) || isDangerous(species.edibility),
@@ -44,7 +42,6 @@ export function FindReview({ species, busy, onSave, onBack, canSave = true }: Pr
     })),
   );
   const risky = checks.length > 0;
-  const ready = !risky || confirmed;
   return (
     <View style={{ gap: spacing.lg }}>
       <View style={styles.species}>
@@ -75,19 +72,10 @@ export function FindReview({ species, busy, onSave, onBack, canSave = true }: Pr
           {check.own} (a {check.name.toLowerCase()}: {check.other})
         </AppText>
       ))}
-      {risky ? (
-        <Chip
-          label="Porównałem cechy okazu"
-          selected={confirmed}
-          onPress={() => {
-            if (!busy) setConfirmed((value) => !value);
-          }}
-        />
-      ) : null}
       <FindDetailsForm draft={draft} onChange={setDraft} disabled={busy} />
       <Button
         label={busy ? 'Zapisuję…' : 'Zapisz znalezisko'}
-        disabled={!ready || busy || !canSave || Boolean(weightError(draft))}
+        disabled={busy || !canSave || Boolean(weightError(draft))}
         onPress={() => onSave(detailsFrom(draft))}
       />
       <Button label="Wróć do wyboru gatunku" disabled={busy} variant="secondary" onPress={onBack} />
