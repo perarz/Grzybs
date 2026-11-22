@@ -4,34 +4,69 @@ import Animated, {
   Easing,
   useAnimatedStyle,
   useSharedValue,
+  withDelay,
   withRepeat,
   withTiming,
+  type SharedValue,
 } from 'react-native-reanimated';
-import { radius, useTheme } from '@/theme';
+import { layout, radius, useTheme } from '@/theme';
 
-const PULSE_DURATION = 1600;
+const WAVE_DURATION = 1800;
+const BLINK_DURATION = 700;
 
-/** A soft ring that keeps growing out of the lesson waiting for the learner. */
-export function ActivePulse() {
-  const { colors } = useTheme();
-  const progress = useSharedValue<number>(0);
+function useWave(progress: SharedValue<number>, delay: number) {
   useEffect(() => {
     progress.set(
-      withRepeat(withTiming(1, { duration: PULSE_DURATION, easing: Easing.out(Easing.quad) }), -1),
+      withDelay(
+        delay,
+        withRepeat(withTiming(1, { duration: WAVE_DURATION, easing: Easing.out(Easing.quad) }), -1),
+      ),
     );
-  }, [progress]);
-  const ringStyle = useAnimatedStyle(() => ({
-    opacity: 0.55 * (1 - progress.get()),
-    transform: [{ scale: 1 + progress.get() * 0.35 }],
+  }, [progress, delay]);
+  return useAnimatedStyle(() => ({
+    opacity: 0.6 * (1 - progress.get()),
+    transform: [{ scale: 1 + progress.get() * 0.6 }],
   }));
+}
+
+/** The lesson waiting for the learner: a blinking rim and two waves rolling out of it. */
+export function ActivePulse() {
+  const { colors } = useTheme();
+  const first = useSharedValue<number>(0);
+  const second = useSharedValue<number>(0);
+  const blink = useSharedValue<number>(1);
+  const firstWave = useWave(first, 0);
+  const secondWave = useWave(second, WAVE_DURATION / 2);
+  useEffect(() => {
+    blink.set(
+      withRepeat(
+        withTiming(0.25, { duration: BLINK_DURATION, easing: Easing.inOut(Easing.sin) }),
+        -1,
+        true,
+      ),
+    );
+  }, [blink]);
+  const rimStyle = useAnimatedStyle(() => ({ opacity: blink.get() }));
+  const fill = [StyleSheet.absoluteFill, styles.round];
   return (
-    <Animated.View
-      pointerEvents="none"
-      style={[StyleSheet.absoluteFill, styles.ring, { backgroundColor: colors.glow }, ringStyle]}
-    />
+    <>
+      <Animated.View
+        pointerEvents="none"
+        style={[fill, { backgroundColor: colors.glow }, firstWave]}
+      />
+      <Animated.View
+        pointerEvents="none"
+        style={[fill, { backgroundColor: colors.glow }, secondWave]}
+      />
+      <Animated.View
+        pointerEvents="none"
+        style={[fill, styles.rim, { borderColor: colors.glow }, rimStyle]}
+      />
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  ring: { borderRadius: radius.pill },
+  round: { borderRadius: radius.pill },
+  rim: { borderWidth: layout.courseStroke },
 });

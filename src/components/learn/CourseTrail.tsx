@@ -65,7 +65,7 @@ export function CourseTrail({ stage, next, fog }: Props) {
               </Animated.View>
             );
           })}
-          <TrailFog width={width} height={height} level={fog} />
+          <TrailFog level={fog} />
         </View>
       )}
     </View>

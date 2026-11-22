@@ -21,7 +21,7 @@ export function CourseTrailNode({ step, done, active, width }: Props) {
         accessibilityState={{ disabled: locked }}
         disabled={locked}
         onPress={() => router.push({ pathname: '/lesson/[id]', params: { id: String(step.id) } })}
-        style={[styles.halo, { borderColor: active ? colors.glow : 'transparent' }]}
+        style={styles.halo}
       >
         {active && <ActivePulse />}
         <View style={[styles.base, { backgroundColor: colors.treeNear }]}>
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
     width: layout.courseNode + spacing.lg,
     height: layout.courseNode + spacing.lg,
     borderRadius: radius.pill,
-    borderWidth: layout.courseStroke,
     alignItems: 'center',
     justifyContent: 'center',
   },
