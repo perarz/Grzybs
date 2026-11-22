@@ -3,6 +3,7 @@ import type { BottomTabBarProps } from 'expo-router/tabs';
 import { useState } from 'react';
 import { StyleSheet, View, type LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 import { selectionHaptic } from '@/features/feedback/haptics';
 import { durations, radius, spacing, useTheme } from '@/theme';
@@ -48,12 +49,19 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
     >
       {barWidth > 0 ? (
         <Animated.View
-          style={[
-            styles.plate,
-            { width: tabWidth - PLATE_INSET * 2, backgroundColor: colors.surfaceMuted },
-            indicatorStyle,
-          ]}
+          pointerEvents="none"
+          style={[styles.plate, { width: tabWidth - PLATE_INSET * 2 }, indicatorStyle]}
         >
+          {/* A soft light falling from the edge line, fading out before the label. */}
+          <Svg style={StyleSheet.absoluteFill}>
+            <Defs>
+              <LinearGradient id="tabGlow" x1="0" y1="0" x2="0" y2="1">
+                <Stop offset="0" stopColor={colors.glow} stopOpacity="0.28" />
+                <Stop offset="1" stopColor={colors.glow} stopOpacity="0" />
+              </LinearGradient>
+            </Defs>
+            <Rect width="100%" height="100%" fill="url(#tabGlow)" />
+          </Svg>
           <View style={[styles.line, { backgroundColor: colors.glow }]} />
         </Animated.View>
       ) : null}
@@ -102,8 +110,7 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     left: 0,
-    borderBottomLeftRadius: radius.md,
-    borderBottomRightRadius: radius.md,
+    overflow: 'hidden',
   },
-  line: { height: INDICATOR_HEIGHT },
+  line: { height: INDICATOR_HEIGHT, borderRadius: radius.xs },
 });

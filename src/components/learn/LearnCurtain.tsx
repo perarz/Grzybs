@@ -13,11 +13,14 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { scheduleOnRN } from 'react-native-worklets';
+import { AppText } from '@/components/AppText';
 import { FieldIcon } from '@/components/icons/FieldIcon';
 import { durations, layout, radius, spacing, springs, useTheme } from '@/theme';
 
-// Rise over Start, wait a moment once the path is drawn, then lift away to show it.
-const RISE = durations.slow;
+// Appear over Start, wait a moment once the path is drawn, then lift away to show it.
+const RISE = durations.base;
+// How far below its place the curtain starts, as a share of the screen.
+const RISE_SHARE = 0.1;
 const HOLD = durations.slow;
 const LIFT = durations.slow + durations.base;
 // If the path takes longer than this (a slow phone), the curtain lifts anyway.
@@ -62,8 +65,10 @@ export function LearnCurtain({ ready }: { ready: SharedValue<boolean> }) {
     },
   );
 
+  // It fades in while rising a little – a full slide would show Start's header above it.
   const curtainStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: (rise.get() - lift.get()) * height }],
+    opacity: 1 - rise.get(),
+    transform: [{ translateY: (rise.get() * RISE_SHARE - lift.get()) * height }],
   }));
   const badgeStyle = useAnimatedStyle(() => ({
     opacity: appear.get(),
@@ -77,7 +82,10 @@ export function LearnCurtain({ ready }: { ready: SharedValue<boolean> }) {
   if (!visible) return null;
   return (
     <Modal transparent visible animationType="none" statusBarTranslucent navigationBarTranslucent>
-      <Animated.View style={[StyleSheet.absoluteFill, curtainStyle]}>
+      {/* A solid colour under the gradient: nothing shows through before the SVG is drawn. */}
+      <Animated.View
+        style={[StyleSheet.absoluteFill, { backgroundColor: colors.learnMiddle }, curtainStyle]}
+      >
         <Svg style={StyleSheet.absoluteFill}>
           <Defs>
             <LinearGradient id="learnCurtain" x1="0" y1="0" x2="0.4" y2="1">
@@ -94,14 +102,15 @@ export function LearnCurtain({ ready }: { ready: SharedValue<boolean> }) {
           <Rect width="100%" height="100%" fill="url(#learnCurtain)" />
           <Rect width="100%" height="100%" fill="url(#learnWater)" />
         </Svg>
-        <View style={[styles.edge, { backgroundColor: colors.aqua }]} />
         <View style={styles.center}>
           <Animated.View style={[styles.badge, { borderColor: colors.aqua }, waveStyle]} />
           <Animated.View style={[styles.badge, { borderColor: colors.aqua }, badgeStyle]}>
             <FieldIcon name="book" size={spacing.xxl + spacing.md} color={colors.aqua} />
           </Animated.View>
+          <Animated.View style={[styles.title, badgeStyle]}>
+            <AppText variant="display">Nauka</AppText>
+          </Animated.View>
         </View>
-        <View style={[styles.edge, { backgroundColor: colors.aqua }]} />
       </Animated.View>
     </Modal>
   );
@@ -118,5 +127,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  edge: { height: layout.accentStroke },
+  title: { marginTop: BADGE + spacing.xxl * 2 },
 });
