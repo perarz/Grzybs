@@ -41,7 +41,6 @@ export function SettingsRow({
           {caption}
         </AppText>
       </View>
-      <FieldIcon name="chevronRight" size={spacing.lg} color={colors.textMuted} />
     </PressableScale>
   );
 }

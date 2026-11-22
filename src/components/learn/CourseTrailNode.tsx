@@ -79,7 +79,6 @@ export function CourseTrailNode({ step, done, active, width }: Props) {
             <AppText variant="label" color="accent">
               {step.isTest ? 'Rozpocznij test' : 'Ucz się'}
             </AppText>
-            <FieldIcon name="arrowRight" size={spacing.lg} color={colors.glow} />
           </PressableScale>
         )}
       </View>

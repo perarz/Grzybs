@@ -59,7 +59,6 @@ export function SpotList({ spots, busy, onShow, onAdd, onEdit, onDelete }: Props
             <View style={styles.text}>
               <AppText variant="heading">{spot.name}</AppText>
             </View>
-            <AppText color="accent">↗</AppText>
           </PressableScale>
           {spot.note ? <AppText color="textMuted">{spot.note}</AppText> : null}
           <View style={styles.actions}>

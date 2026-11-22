@@ -4,7 +4,6 @@ import { StyleSheet, View } from 'react-native';
 import Animated, { FlipInEasyY } from 'react-native-reanimated';
 import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
-import { FieldIcon } from '@/components/icons/FieldIcon';
 import { SPECIES_PHOTOS } from '@/data/speciesPhotos';
 import { EDIBILITY_LABELS } from '@/features/atlas/labels';
 import { formatSeason } from '@/features/atlas/season';
@@ -68,11 +67,6 @@ export function DailyDiscovery() {
                   : 'Dotknij, aby odkryć'}
               </AppText>
             </View>
-            <FieldIcon
-              name={revealed ? 'arrowRight' : 'help'}
-              size={layout.icon}
-              color={colors.glow}
-            />
           </View>
           {revealed && (
             <View style={[styles.fact, { borderColor: colors.aqua }]}>

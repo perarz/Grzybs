@@ -52,7 +52,6 @@ export function LearnCard() {
           />
         </View>
       </View>
-      <FieldIcon name="arrowRight" size={layout.icon} color={colors.aqua} />
     </PressableScale>
   );
 }

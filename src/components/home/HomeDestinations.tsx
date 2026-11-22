@@ -4,7 +4,6 @@ import { StyleSheet, View } from 'react-native';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
-import { FieldIcon } from '@/components/icons/FieldIcon';
 import { SPECIES } from '@/data/species';
 import { LearnCard } from './LearnCard';
 import { SPECIES_PHOTOS } from '@/data/speciesPhotos';
@@ -51,9 +50,6 @@ export function HomeDestinations() {
               Poznaj to, co rośnie obok.
             </AppText>
           </View>
-          <View style={[styles.arrow, { backgroundColor: colors.glow }]}>
-            <FieldIcon name="arrowRight" size={layout.icon} color={colors.onGlow} />
-          </View>
         </View>
       </PressableScale>
       <LearnCard />
@@ -78,11 +74,4 @@ const styles = StyleSheet.create({
   },
   heroBottom: { flexDirection: 'row', alignItems: 'flex-end', gap: spacing.sm },
   label: { flex: 1, gap: spacing.xs },
-  arrow: {
-    width: layout.touchTarget,
-    height: layout.touchTarget,
-    borderRadius: radius.pill,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 });
