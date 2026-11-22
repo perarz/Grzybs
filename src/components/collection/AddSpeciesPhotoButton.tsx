@@ -1,18 +1,18 @@
-import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
 import { FieldIcon } from '@/components/icons/FieldIcon';
 import type { Species } from '@/features/atlas/types';
 import { useCollection } from '@/features/collection/CollectionProvider';
+import { useQuickPhoto } from '@/features/collection/useQuickPhoto';
 import { layout, radius, spacing, useTheme } from '@/theme';
 import { AddFindSheet } from './AddFindSheet';
 
 export function AddSpeciesPhotoButton({ species }: { species: Species }) {
-  const [open, setOpen] = useState(false);
+  const quick = useQuickPhoto();
   const { colors } = useTheme();
   const collection = useCollection();
-  const disabled = collection.loading || Boolean(collection.error);
+  const disabled = collection.loading || Boolean(collection.error) || quick.busy;
   return (
     <>
       <PressableScale
@@ -20,7 +20,7 @@ export function AddSpeciesPhotoButton({ species }: { species: Species }) {
         accessibilityLabel="Dodaj zdjęcie znaleziska"
         accessibilityState={{ disabled }}
         disabled={disabled}
-        onPress={() => setOpen(true)}
+        onPress={() => void quick.takePhoto()}
         style={[styles.button, { backgroundColor: disabled ? colors.surfaceMuted : colors.glow }]}
       >
         <FieldIcon name="camera" size={20} color={disabled ? colors.textMuted : colors.onGlow} />
@@ -28,7 +28,14 @@ export function AddSpeciesPhotoButton({ species }: { species: Species }) {
           Dodaj zdjęcie
         </AppText>
       </PressableScale>
-      {open && <AddFindSheet initialSpecies={species} onClose={() => setOpen(false)} />}
+      {quick.draft && (
+        <AddFindSheet
+          initialSpecies={species}
+          initialPhoto={quick.draft.photo}
+          initialError={quick.draft.error}
+          onClose={quick.close}
+        />
+      )}
     </>
   );
 }
