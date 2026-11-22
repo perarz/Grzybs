@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { PressableScale } from '@/components/PressableScale';
+import { FieldIcon } from '@/components/icons/FieldIcon';
 import { successHaptic } from '@/features/feedback/haptics';
 import { useDailySpecies } from '@/features/learn/useDailySpecies';
 import { layout, radius, spacing, useTheme } from '@/theme';
@@ -14,10 +15,7 @@ export function DailyDiscovery() {
   const [open, setOpen] = useState(false);
   const { colors } = useTheme();
   return (
-    <View style={styles.section}>
-      <AppText variant="label" color="textMuted">
-        Grzyb dnia
-      </AppText>
+    <>
       <PressableScale
         accessibilityRole="button"
         accessibilityLabel="Odkryj grzyb dnia"
@@ -25,34 +23,45 @@ export function DailyDiscovery() {
           successHaptic();
           setOpen(true);
         }}
-        style={styles.row}
+        style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
       >
-        <View style={[styles.mystery, { backgroundColor: colors.surfaceMuted }]}>
+        {/* An empty specimen frame waiting for today's find. */}
+        <View style={[styles.frame, { borderColor: colors.glow }]}>
           <MysteryMark />
         </View>
         <View style={styles.copy}>
+          <AppText variant="label" color="accent">
+            Grzyb dnia
+          </AppText>
           <AppText variant="heading">Jaki grzyb dziś?</AppText>
           <AppText variant="caption" color="textMuted">
             Dotknij, aby odkryć
           </AppText>
         </View>
+        <FieldIcon name="mushroom" size={layout.icon} color={colors.border} />
       </PressableScale>
-      <View style={[styles.rule, { backgroundColor: colors.border }]} />
       {open && <DailySpeciesDialog species={species} onClose={() => setOpen(false)} />}
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  section: { gap: spacing.md },
-  row: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
-  copy: { flex: 1, gap: spacing.xs },
-  mystery: {
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.lg,
+    padding: spacing.md,
+    borderRadius: radius.lg,
+    borderWidth: StyleSheet.hairlineWidth,
+  },
+  frame: {
     width: layout.thumbnail,
     height: layout.thumbnail,
     borderRadius: radius.md,
+    borderWidth: layout.accentStroke,
+    borderStyle: 'dashed',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  rule: { height: StyleSheet.hairlineWidth, marginTop: spacing.xs },
+  copy: { flex: 1, gap: spacing.xs },
 });

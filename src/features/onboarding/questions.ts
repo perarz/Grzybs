@@ -11,7 +11,6 @@ export type OnboardingQuestion = {
   title: string;
   answers: readonly string[];
   correct: number;
-  note: string;
   fun?: true;
   format?: 'photo' | 'boolean' | 'scenario';
   photos?: readonly SpeciesId[];
@@ -24,7 +23,6 @@ const BEGINNER_QUESTIONS: readonly OnboardingQuestion[] = [
     answers: ['Zdjęcie A', 'Zdjęcie B'],
     photos: ['lactarius-deliciosus', 'cantharellus-cibarius'],
     correct: 1,
-    note: 'B to kurka, czyli pieprznik jadalny. A to mleczaj rydz. To ćwiczenie wzroku, nie ocena jadalności okazu.',
   },
   {
     icon: 'camera',
@@ -32,7 +30,6 @@ const BEGINNER_QUESTIONS: readonly OnboardingQuestion[] = [
     title: 'Sam kapelusz wystarczy, żeby rozpoznać każdy grzyb.',
     answers: ['Prawda', 'Fałsz'],
     correct: 1,
-    note: 'Sprawdza się też spód kapelusza, cały trzon z podstawą i miejsce wzrostu.',
   },
   {
     icon: 'pin',
@@ -44,14 +41,12 @@ const BEGINNER_QUESTIONS: readonly OnboardingQuestion[] = [
       'Dalej po grzyby — telefon jeszcze działa',
     ],
     correct: 0,
-    note: 'Punkt auta pokazuje kierunek, nie bezpieczną trasę. Znana droga ogranicza ryzyko zgubienia się.',
   },
   {
     icon: 'mushrooms',
     title: 'Pod kapeluszem jest „gąbka”. Co to takiego?',
     answers: ['Gęsto ułożone blaszki', 'Rurki zakończone porami', 'Warstwa grzybni'],
     correct: 1,
-    note: '„Gąbkę” tworzą rurki. Blaszki wyglądają jak cienkie listewki. Sam typ spodu nie przesądza o jadalności.',
   },
 ];
 export const QUESTIONS: readonly OnboardingQuestion[] = [
@@ -60,7 +55,6 @@ export const QUESTIONS: readonly OnboardingQuestion[] = [
     title: 'W czym wracają zbiory?',
     answers: ['W przewiewnym koszyku', 'W reklamówce po bułkach', 'W kieszeniach. Wszystkich.'],
     correct: 0,
-    note: 'Koszyk przepuszcza powietrze i mniej zgniata zbiory.',
   },
   {
     icon: 'car',
@@ -71,7 +65,6 @@ export const QUESTIONS: readonly OnboardingQuestion[] = [
       'Liczę na pilota i szczęście',
     ],
     correct: 1,
-    note: 'Zapisany punkt ułatwia powrót. W apce zaparkujesz auto jednym ruchem.',
   },
   {
     icon: 'mushrooms',
@@ -82,7 +75,6 @@ export const QUESTIONS: readonly OnboardingQuestion[] = [
       'Nie zbieram do jedzenia',
     ],
     correct: 2,
-    note: 'Ślady żerowania ani samo zdjęcie nie potwierdzają jadalności.',
   },
   {
     icon: 'pin',
@@ -93,7 +85,6 @@ export const QUESTIONS: readonly OnboardingQuestion[] = [
       'Podaję współrzędne na głos',
     ],
     correct: 0,
-    note: 'Klasyka gatunku. To pytanie z przymrużeniem oka — nie liczymy go do wyniku.',
     fun: true,
   },
   {
@@ -105,7 +96,6 @@ export const QUESTIONS: readonly OnboardingQuestion[] = [
       'Tam, gdzie większy prawdziwek',
     ],
     correct: 1,
-    note: 'Mech zależy też od wilgoci i cienia. Kierunek sprawdzaj mapą lub kompasem.',
   },
   {
     icon: 'places',
@@ -116,7 +106,6 @@ export const QUESTIONS: readonly OnboardingQuestion[] = [
       'Szansa, nie obietnica wysypu',
     ],
     correct: 2,
-    note: 'To samo miejsce może dawać zupełnie inne zbiory w różnych warunkach.',
   },
 ] as const;
 export function onboardingQuestions(experience: Experience): readonly OnboardingQuestion[] {

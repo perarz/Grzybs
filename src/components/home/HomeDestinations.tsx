@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { AppText } from '@/components/AppText';
@@ -11,6 +12,8 @@ import { durations, layout, radius, spacing, useTheme } from '@/theme';
 
 export function HomeDestinations() {
   const { colors } = useTheme();
+  // A different mushroom greets you on every start – the atlas has 26 of them.
+  const [cover] = useState(() => SPECIES[Math.floor(Math.random() * SPECIES.length)]);
   return (
     <View style={styles.group}>
       <PressableScale
@@ -20,7 +23,7 @@ export function HomeDestinations() {
         style={[styles.hero, { backgroundColor: colors.surface }]}
       >
         <Image
-          source={SPECIES_PHOTOS['cantharellus-cibarius'].source}
+          source={SPECIES_PHOTOS[cover.id].source}
           style={StyleSheet.absoluteFill}
           contentFit="cover"
           transition={durations.base}

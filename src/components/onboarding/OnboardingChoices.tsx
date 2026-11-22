@@ -30,7 +30,6 @@ export function OnboardingChoices({
   setAnswers,
 }: Props) {
   const { colors } = useTheme();
-  const answered = selected !== undefined;
   return (
     <>
       <View style={s.choices}>
@@ -80,21 +79,6 @@ export function OnboardingChoices({
               />
             )}
       </View>
-      {answered && !done && (
-        <View
-          accessibilityLiveRegion="polite"
-          style={[s.feedback, { borderColor: colors.border, backgroundColor: colors.surface }]}
-        >
-          <AppText variant="heading">
-            {'fun' in question
-              ? 'Miejscówka bezpieczna.'
-              : selected === question.correct
-                ? 'Dokładnie.'
-                : 'Warto zapamiętać.'}
-          </AppText>
-          <AppText color="textMuted">{question.note}</AppText>
-        </View>
-      )}
     </>
   );
 }

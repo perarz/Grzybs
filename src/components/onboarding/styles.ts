@@ -37,5 +37,4 @@ export const styles = StyleSheet.create({
   footer: { gap: spacing.md },
   progress: { flexDirection: 'row', gap: spacing.xs },
   segment: { flex: 1, height: spacing.xs, borderRadius: radius.pill },
-  feedback: { gap: spacing.xs, padding: spacing.lg, borderRadius: radius.lg, borderWidth: 1 },
 });

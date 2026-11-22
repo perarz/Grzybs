@@ -3,7 +3,8 @@ import { palette } from './colors';
 export const fieldMetrics = {
   compassSize: 104,
   coordinateDigits: 5,
-  localDelta: 0.008,
+  // About 400 m across – close enough to see the paths around a spot or your position.
+  localDelta: 0.004,
   carDelta: 0.002,
   mapWaitMs: 12000,
 } as const;
